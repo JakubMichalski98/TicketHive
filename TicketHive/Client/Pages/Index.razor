@@ -11,18 +11,9 @@ Welcome to your new app.
 
 <h1>HELLO</h1>
 
-@foreach (var e in eventRepo.Events)
-{
-    <tr>
-        <td>@e.EventName</td>
-    </tr>
-}
 
 @code
 {
-    protected override async Task OnInitializedAsync()
-    {
-        await eventRepo.GetAllEvents();
-    }
+
 
 }
