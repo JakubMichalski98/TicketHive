@@ -1,4 +1,4 @@
-using Humanizer;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,6 +7,7 @@ using TicketHive.Server.Models;
 
 namespace TicketHive.Server.Areas.Identity.Pages.Account
 {
+
     [BindProperties]
     public class LogInModel : PageModel
     {
@@ -37,5 +38,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
             }
             return Page();
         }
+
     }
+
 }
