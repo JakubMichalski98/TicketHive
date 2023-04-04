@@ -41,6 +41,18 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
 
     context.Database.Migrate();
 
+    ApplicationUser? user = signInManager.UserManager.FindByNameAsync("user").GetAwaiter().GetResult();
+
+    if (user == null)
+    {
+        user = new()
+        {
+            UserName = "user"
+        };
+
+        signInManager.UserManager.CreateAsync(user, "Password1234!").GetAwaiter().GetResult();
+    }
+
     ApplicationUser? adminUser = signInManager.UserManager.FindByNameAsync("admin").GetAwaiter().GetResult();
 
     if (adminUser == null)
