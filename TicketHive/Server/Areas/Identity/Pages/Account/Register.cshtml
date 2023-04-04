@@ -2,3 +2,130 @@
 @model TicketHive.Server.Areas.Identity.Pages.Account.RegisterModel
 @{
 }
+<form method="post">
+   
+    
+    <body>
+    
+    <div style="text-align:center">
+    
+
+
+
+        <div >
+           
+            <input   id="input-username" type="text" asp-for="Username" placeholder="Username" />
+            <div id="username-container">
+                <span class="text-danger" asp-validation-for="Username"></span>
+            </div>
+
+            
+         </div>
+        
+         <div >
+           
+
+            <input  id="input-password" type="password" asp-for="Password" placeholder="Password" />
+            <div>
+                <span style="margin-top:0px" class="text-danger" asp-validation-for="Password"></span>
+            </div>
+        
+        </div>
+        
+        <div>
+            <input id="input-ConfirmPassword" type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" />
+            <div>
+                <span style="margin-top:0px" class="text-danger" asp-validation-for="ConfirmPassword"></span>
+
+            </div>
+
+            <input type="submit"  style="text-align:center" value="Register"/>
+           
+         </div>
+
+       
+
+
+        <style>
+
+            body{
+                background-color: #fbe89c
+                
+            }
+
+            
+            
+
+            #input-username{
+                
+                width: 200px;
+                height: 45px;
+                border-radius: 20px;
+                border-color:black;
+                margin-top:30px;
+                text-align:center
+                
+
+            }
+
+            #input-password {
+                width: 200px;
+                height: 45px;
+                border-radius: 20px;
+                border-color: black;
+                margin-top: 30px;
+                text-align: center
+            }
+
+            #input-ConfirmPassword {
+                width: 200px;
+                height: 45px;
+                border-radius: 20px;
+                border-color: black;           
+                margin-top: 30px;
+                text-align: center
+            }
+
+            input[type="submit"] {
+                width: 250px;
+                height: 50px;
+                border-radius: 40px;
+                text-align:center;
+                font-size: larger;
+                margin: auto;
+                
+               
+                margin-top:15px;
+                
+
+
+                transition: all 0.3s;
+                
+            }
+
+                input[type="submit"]:hover {
+                    transform: translateY(-6px);
+                }
+        </style>
+
+        
+
+
+
+   
+    </div>
+    </body>
+    
+   
+    
+
+
+    
+   
+
+
+
+    <div>
+    </div>
+
+</form>
