@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject IEventRepo eventRepo
 
 <PageTitle>Index</PageTitle>
 
@@ -9,3 +10,19 @@ Welcome to your new app.
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <h1>HELLO</h1>
+
+@foreach (var e in eventRepo.Events)
+{
+    <tr>
+        <td>@e.EventName</td>
+    </tr>
+}
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        await eventRepo.GetAllEvents();
+    }
+
+}
