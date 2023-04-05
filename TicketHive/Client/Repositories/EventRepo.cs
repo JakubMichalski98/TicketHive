@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Json;
+﻿using System.ComponentModel;
+using System.Net.Http.Json;
+using System.Text.Json;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Repositories
@@ -15,25 +17,42 @@ namespace TicketHive.Client.Repositories
         }
         public async Task GetAllEvents()
         {
-            var result = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
+            Events = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
+        }
 
-            if (result != null)
+        public async Task<EventModel?> GetEvent(int id)
+        {
+            var response = await httpClient.GetAsync($"api/Events/{id}");
+
+            if (response.IsSuccessStatusCode)
             {
-                Events = result;
+                var foundEvent = await response.Content.ReadFromJsonAsync<EventModel>();
+                return foundEvent;
             }
+            return null;
+        }
+        public async Task AddEvent(EventModel eventToAdd)
+        {
+            var result = await httpClient.PostAsJsonAsync("api/Events", eventToAdd);
+
+            await SetEvents(result);
         }
 
-        public Task<EventModel?> GetEvent(int id)
+        public async Task RemoveEvent(int id)
         {
-            throw new NotImplementedException();
+            var result = await httpClient.DeleteAsync($"api/Events{id}");
+            await SetEvents(result);
         }
-        public Task AddEvent(EventModel eventToAdd)
+        
+        public async Task UpdateEvent(EventModel updatedEvent)
         {
-            throw new NotImplementedException();
+            var result = await httpClient.PutAsJsonAsync("api/Events", updatedEvent);
+            await SetEvents(result);
         }
-        public Task RemoveEvent(int id)
+        private async Task SetEvents(HttpResponseMessage? result)
         {
-            throw new NotImplementedException();
+            var response = await result.Content.ReadFromJsonAsync<List<EventModel>>();
+            Events = response;
         }
     }
 }

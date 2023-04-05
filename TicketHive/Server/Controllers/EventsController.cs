@@ -35,5 +35,19 @@ namespace TicketHive.Server.Controllers
             return NotFound("Event with provided ID not found");
         }
 
+        [HttpPost]
+
+        public async Task<ActionResult<EventModel>> AddEvent(EventModel eventModel)
+        {
+            if (eventModel != null)
+            {
+
+                await eventRepo.AddEvent(eventModel);
+
+                return Ok("Event added!");
+            }
+            return BadRequest("Something went wrong when adding event");
+        }
+
     }
 }

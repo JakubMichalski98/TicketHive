@@ -31,11 +31,31 @@ namespace TicketHive.Server.Repositories
 
         public async Task RemoveEvent(int id)
         {
-            var eventToRemove = await context.Events.FindAsync(id);
+            var eventToRemove = await context.Events.Include(e => e.Users).FirstOrDefaultAsync(e => e.Id == id);
 
             if (eventToRemove != null)
             {
                 context.Events.Remove(eventToRemove);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateEvent(EventModel updatedEvent, int id)
+        {
+            var foundEvent = await context.Events.Include(e => e.Users).FirstOrDefaultAsync(e => e.Id == id);
+
+            if (foundEvent != null)
+            {
+                foundEvent.EventName = updatedEvent.EventName;
+                foundEvent.EventType = updatedEvent.EventType;
+                foundEvent.EventPlace = updatedEvent.EventPlace;
+                foundEvent.EventDetails = updatedEvent.EventDetails;
+                foundEvent.Date = updatedEvent.Date;
+                foundEvent.PricePerTicket = updatedEvent.PricePerTicket;
+                foundEvent.SoldTickets = updatedEvent.SoldTickets;
+                foundEvent.TotalTickets= updatedEvent.TotalTickets;
+                foundEvent.Image = updatedEvent.Image;
+
                 await context.SaveChangesAsync();
             }
         }
