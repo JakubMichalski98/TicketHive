@@ -36,51 +36,53 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-using (var serviceProvider = builder.Services.BuildServiceProvider())
-{
-    var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
-    var signInManager = serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
-    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+//using (var serviceProvider = builder.Services.BuildServiceProvider())
+//{
+//    var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+//    var signInManager = serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
+//    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    context.Database.Migrate();
+//    context.Database.Migrate();
 
-    ApplicationUser? user = signInManager.UserManager.FindByNameAsync("user").GetAwaiter().GetResult();
+//    ApplicationUser? user = signInManager.UserManager.FindByNameAsync("user").GetAwaiter().GetResult();
 
-    if (user == null)
-    {
-        user = new()
-        {
-            UserName = "user"
-        };
+//    if (user == null)
+//    {
+//        user = new()
+//        {
+//            UserName = "user",
+//            UserCountry = "Denmark"
+//        };
 
-        signInManager.UserManager.CreateAsync(user, "Password1234!").GetAwaiter().GetResult();
-    }
+//        signInManager.UserManager.CreateAsync(user, "Password1234!").GetAwaiter().GetResult();
+//    }
 
-    ApplicationUser? adminUser = signInManager.UserManager.FindByNameAsync("admin").GetAwaiter().GetResult();
+//    ApplicationUser? adminUser = signInManager.UserManager.FindByNameAsync("admin").GetAwaiter().GetResult();
 
-    if (adminUser == null)
-    {
-        adminUser = new()
-        {
-            UserName = "admin",
-        };
+//    if (adminUser == null)
+//    {
+//        adminUser = new()
+//        {
+//            UserName = "admin",
+//            UserCountry = "Sweden"
+//        };
 
-        signInManager.UserManager.CreateAsync(adminUser, "Password1234!");
-    }
-    IdentityRole? adminRole = roleManager.FindByNameAsync("Admin").GetAwaiter().GetResult();
+//        signInManager.UserManager.CreateAsync(adminUser, "Password1234!");
+//    }
+//    IdentityRole? adminRole = roleManager.FindByNameAsync("Admin").GetAwaiter().GetResult();
 
-    if (adminRole == null)
-    {
-        adminRole = new()
-        {
-            Name = "Admin",
-        };
+//    if (adminRole == null)
+//    {
+//        adminRole = new()
+//        {
+//            Name = "Admin",
+//        };
 
-        roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
-    }
+//        roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
+//    }
 
-    signInManager.UserManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
-}
+//    signInManager.UserManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
+//}
 
 var app = builder.Build();
 

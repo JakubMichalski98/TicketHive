@@ -4,6 +4,6 @@ namespace TicketHive.Server.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        //public string UserCountry { get; set; } = null!;
+        public string UserCountry { get; set; } = null!;
     }
 }
