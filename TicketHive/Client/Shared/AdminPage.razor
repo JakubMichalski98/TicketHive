@@ -1,0 +1,14 @@
+﻿@page "/admin"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using TicketHive.Shared
+@attribute [Authorize(Roles ="Admin")]
+@inject HttpClient Http
+
+
+<h3>AdminPage</h3>
+
+@code {
+
+}
