@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 using TicketHive.Server.Data;
+using TicketHive.Server.Enums;
 using TicketHive.Server.Models;
 
 namespace TicketHive.Server.Areas.Identity.Pages.Account
@@ -10,9 +12,14 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
     [BindProperties]
     public class RegisterModel : PageModel
     {
+        
+    
+
         private readonly SignInManager<ApplicationUser> signInManager;
 
+        
 
+        
 
 
         [Required(ErrorMessage = "Username is required")]
@@ -25,6 +32,12 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
         [Required(ErrorMessage = "Confirm your password")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Please select a country to proceed")] 
+        public string SelectedCountry { get; set; }
+       
+
+
 
         public RegisterModel(SignInManager<ApplicationUser> signInManager)
         {
@@ -44,11 +57,16 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
                 ApplicationUser Newuser = new()
                 {
                     UserName = Username,
+                    UserCountry = SelectedCountry,
                 };
+                
+                   
+                    
+                
 
                 if(Password == ConfirmPassword)
                 {
-                    var registerResult = await signInManager.UserManager.CreateAsync(Newuser, Password);
+                    var registerResult = await signInManager.UserManager.CreateAsync(Newuser,Password);
 
                     if (registerResult.Succeeded)
                     {  

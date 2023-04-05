@@ -1,5 +1,7 @@
 ﻿@page
+@using TicketHive.Server.Enums;
 @model TicketHive.Server.Areas.Identity.Pages.Account.RegisterModel
+
 @{
 }
 <form method="post">
@@ -17,9 +19,10 @@
     <body>
     
     <div style="text-align:center">
-    
 
 
+
+           
 
         <div >
            
@@ -30,6 +33,7 @@
 
             
          </div>
+           
         
          <div >
            
@@ -48,15 +52,32 @@
 
             </div>
 
+            <div>
+                    <select id="input-combobox" asp-for="SelectedCountry">
+                        @foreach (var country in Enum.GetValues(typeof(Countries)))
+                        {   
+                           
+                            <option value=@country>@country.ToString()</option>
+                        }
+                        
+                    </select>
+                    <span  class="text-danger" asp-validation-for="SelectedCountry"></span>
+
+            </div>
+
             <input type="submit"  style="text-align:center" value="Register"/>
            
          </div>
+
 
        
 
 
         <style>
+                
+            #input-combobox{
 
+            }
 
                 .container {
                     display: flex;
@@ -131,7 +152,7 @@
         </style>
 
         
-
+        
 
 
    
