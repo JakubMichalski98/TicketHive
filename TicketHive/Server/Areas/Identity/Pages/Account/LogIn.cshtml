@@ -4,38 +4,33 @@
 }
 
 
+
 <form method="post">
     <div class="d-flex flex-column justify-content-center align-items-center">
         <div class="form-group row">
-            <label for="input-username" class="col-sm-4 col-form-label text-right">
-                Username:
-            </label>
             <div class="col-sm-8">
-                <input id="input-username" type="text" asp-for="Username" class="form-control mb-2" />
+                <input id="input-username" type="text" asp-for="Username" class="form-control mb-2" placeholder="Username"/>
+                <span class="text-danger" asp-validation-for="Username"></span>     
             </div>
         </div>
         <div class="form-group row">
-            <label for="input-password" class="col-sm-4 col-form-label text-right">
-                Password:
-            </label>
             <div class="col-sm-8">
-                <input id="input-password" type="password" asp-for="Password" class="form-control mb-2" />
-            </div>
+                <input id="input-password" type="password" asp-for="Password" class="form-control mb-2" placeholder="Password" />
+                <span class="text-danger" asp-validation-for="Password"></span>
+            </div>  
         </div>
         <input type="submit" value="Log in" class="btn btn-primary mt-3" />
-        <div>
-            <span class="text-danger" asp-validation-for="Username"></span>
-            <span class="text-danger" asp-validation-for="Password"></span>
-        </div>
     </div>
 </form>
 
+@*    <div class="d-flex flex-column justify-content-center">
+    <img style="max-width: 400px" src="/Images/yellow.png" />
+    </div> mt-3*@
 
 <style>
     body{
-        background-color: #305076;
+        background-color: #fbe89c;
     }
-
 </style>
 
 
