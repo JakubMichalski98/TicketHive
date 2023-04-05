@@ -12,6 +12,7 @@ namespace TicketHive.Shared.Models
         public string EventName { get; set; } = null!;
         public string EventType { get; set; } = null!;
         public string EventPlace { get; set; } = null!;
+        public string EventDetails { get; set; } = null!;
         public DateTime Date { get; set; }
         public decimal PricePerTicket { get; set; }
         public int TotalTickets { get; set; }
