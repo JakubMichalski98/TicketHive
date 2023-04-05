@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.ComponentModel;
+using System.Net.Http.Json;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Repositories
@@ -15,15 +16,16 @@ namespace TicketHive.Client.Repositories
         }
         public async Task GetAllEvents()
         {
-            var result = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
+            var response = await httpClient.GetAsync("/api/events");
 
-            if (result != null)
+            if (response.IsSuccessStatusCode)
             {
-                Events = result;
+                List<EventModel>? events = await response.Content.ReadFromJsonAsync<List<EventModel>>();
+                Events = events;
             }
         }
 
-        public Task<EventModel?> GetEvent(int id)
+        public async Task<EventModel?> GetEvent(int id)
         {
             throw new NotImplementedException();
         }
