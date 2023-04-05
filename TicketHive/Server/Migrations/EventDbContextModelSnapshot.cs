@@ -48,6 +48,10 @@ namespace TicketHive.Server.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EventDetails")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EventName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -81,12 +85,79 @@ namespace TicketHive.Server.Migrations
                         {
                             Id = 1,
                             Date = new DateTime(2024, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDetails = "The chess pieces gathered 'round for a thrilling showdown! With knights charging and bishops plotting, who will reign supreme as the ultimate chess champion? Let the games begin!",
                             EventName = "Chess Tournament",
                             EventPlace = "The Basement",
                             EventType = "Sport",
+                            Image = "image 25.png",
                             PricePerTicket = 200m,
                             SoldTickets = 30,
                             TotalTickets = 150
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Date = new DateTime(2024, 8, 10, 12, 30, 0, 0, DateTimeKind.Unspecified),
+                            EventDetails = "The legendary Bengt-Åke is back with a new thrilling Lama Race for the whole family to enjoy. Who will be the next Lama Race Master?",
+                            EventName = "Bengt-Åkes Lama Race",
+                            EventPlace = "Bengans Trav- & korv-service Arena",
+                            EventType = "Sport",
+                            Image = "image 13.png",
+                            PricePerTicket = 350m,
+                            SoldTickets = 639,
+                            TotalTickets = 1500
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Date = new DateTime(2025, 5, 7, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDetails = "Get your earplugs out because your baby niece that you usually only see during Christmas is performing with her friends in this once in a lifetime concert. ",
+                            EventName = "Klass 3B`s spring concert",
+                            EventPlace = "Folkets Hus, Linköping",
+                            EventType = "Concert",
+                            Image = "image 19.png",
+                            PricePerTicket = 50m,
+                            SoldTickets = 10,
+                            TotalTickets = 60
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Date = new DateTime(2025, 11, 1, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDetails = "Join Benjamin, the blogging guru, for a fun and informative session on crafting killer blog posts! With practical tips and insider secrets, you'll be a pro in no time. Bring your creativity and get ready to write!",
+                            EventName = "Benjamins Bloggskola",
+                            EventPlace = "Byaskolan",
+                            EventType = "Learning",
+                            Image = "image 2.png",
+                            PricePerTicket = 199m,
+                            SoldTickets = 1,
+                            TotalTickets = 45
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Date = new DateTime(2025, 12, 18, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDetails = "Coming up, coming up this holiday season with E-type, the legendary Swedish pop star, as he takes the stage for a festive concert! Sing and dance along to your favorite hits, and enjoy the magic of Christmas with this one-of-a-kind performance.",
+                            EventName = "E-types Christmas Tour",
+                            EventPlace = "House Arena",
+                            EventType = "Concert",
+                            Image = "image 15.png",
+                            PricePerTicket = 650m,
+                            SoldTickets = 2500,
+                            TotalTickets = 14000
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Date = new DateTime(2025, 7, 13, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventDetails = "Rock out with Lisa Ajax as she puts her own spin on classic Ozzy Osbourne hits in a night of electrifying entertainment! You wn't to miss this epic cover concert.",
+                            EventName = "Lisa Ajax vs Ozzy Osbourne",
+                            EventPlace = "Cirkus, Stockholm",
+                            EventType = "Concert",
+                            Image = "image 10.png",
+                            PricePerTicket = 700m,
+                            SoldTickets = 5000,
+                            TotalTickets = 10000
                         });
                 });
 
