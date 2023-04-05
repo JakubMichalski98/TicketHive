@@ -17,18 +17,12 @@ namespace TicketHive.Client.Repositories
         }
         public async Task GetAllEvents()
         {
-            var response = await httpClient.GetAsync("/api/events");
-
-            if (response.IsSuccessStatusCode)
-            {
-                List<EventModel>? events = await response.Content.ReadFromJsonAsync<List<EventModel>>();
-                Events = events;
-            }
+            Events = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
         }
 
         public async Task<EventModel?> GetEvent(int id)
         {
-            var response = await httpClient.GetAsync($"api/events/{id}");
+            var response = await httpClient.GetAsync($"api/Events/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -39,20 +33,20 @@ namespace TicketHive.Client.Repositories
         }
         public async Task AddEvent(EventModel eventToAdd)
         {
-            var result = await httpClient.PostAsJsonAsync("api/events", eventToAdd);
+            var result = await httpClient.PostAsJsonAsync("api/Events", eventToAdd);
 
             await SetEvents(result);
         }
 
         public async Task RemoveEvent(int id)
         {
-            var result = await httpClient.DeleteAsync($"api/events{id}");
+            var result = await httpClient.DeleteAsync($"api/Events{id}");
             await SetEvents(result);
         }
         
         public async Task UpdateEvent(EventModel updatedEvent)
         {
-            var result = await httpClient.PutAsJsonAsync("api/events", updatedEvent);
+            var result = await httpClient.PutAsJsonAsync("api/Events", updatedEvent);
             await SetEvents(result);
         }
         private async Task SetEvents(HttpResponseMessage? result)
