@@ -6,41 +6,25 @@
    <div>
 
     <div id="container">
-
-   
         <header >
             <img  id="img-logo" src="/Images/yellow only logo.png">
-
         </header>
      </div>
     </div>
     <body>
-    
     <div style="text-align:center">
-    
-
-
-
-        <div >
-           
+        <div >     
             <input   id="input-username" type="text" asp-for="Username" placeholder="Username" />
             <div id="username-container">
                 <span class="text-danger" asp-validation-for="Username"></span>
             </div>
-
-            
          </div>
-        
          <div >
-           
-
             <input  id="input-password" type="password" asp-for="Password" placeholder="Password" />
             <div>
                 <span style="margin-top:0px" class="text-danger" asp-validation-for="Password"></span>
-            </div>
-        
-        </div>
-        
+            </div>       
+        </div>   
         <div>
             <input id="input-ConfirmPassword" type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" />
             <div>
@@ -51,9 +35,6 @@
             <input type="submit"  style="text-align:center" value="Register"/>
            
          </div>
-
-       
-
 
         <style>
 
@@ -68,15 +49,10 @@
                     max-width: 250px; 
                 }
 
-             
-
             body{
                 background-color: #fbe89c
                 
             }
-
-            
-            
 
             #input-username{
                 
@@ -85,9 +61,7 @@
                 border-radius: 20px;
                 border-color:black;
                 margin-top:30px;
-                text-align:center
-                
-
+                text-align:center  
             }
 
             #input-password {
@@ -115,12 +89,7 @@
                 text-align:center;
                 font-size: larger;
                 margin: auto;
-                
-               
                 margin-top:15px;
-                
-
-
                 transition: all 0.3s;
                 
             }
@@ -129,24 +98,8 @@
                     transform: translateY(-6px);
                 }
         </style>
-
-        
-
-
-
-   
     </div>
     </body>
-    
-   
-    
-
-
-    
-   
-
-
-
     <div>
     </div>
 
