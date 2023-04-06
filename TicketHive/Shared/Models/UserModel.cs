@@ -11,5 +11,7 @@ namespace TicketHive.Shared.Models
         public int Id { get; set; }
         public string Username { get; set; } = null!;
         public List<EventModel> Events { get; set; } = new();
+
+       
     }
 }
