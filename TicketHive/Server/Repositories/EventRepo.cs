@@ -51,7 +51,7 @@ namespace TicketHive.Server.Repositories
         /// <returns></returns>
         public async Task RemoveEvent(int id)
         {
-            var eventToRemove = await context.Events.Include(e => e.Users).FirstOrDefaultAsync(e => e.Id == id);
+            var eventToRemove = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
 
             if (eventToRemove != null)
             {
