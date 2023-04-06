@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TicketHive.Server.Data;
 using TicketHive.Server.Repositories;
 using TicketHive.Shared.Models;
 
@@ -10,10 +12,12 @@ namespace TicketHive.Server.Controllers
     public class EventsController : ControllerBase
     {
         private readonly IEventRepo eventRepo;
+        private readonly EventDbContext context;
 
-        public EventsController(IEventRepo eventRepo)
+        public EventsController(IEventRepo eventRepo, EventDbContext context)
         {
             this.eventRepo = eventRepo;
+            this.context = context;
         }
 
         [HttpGet]
@@ -64,6 +68,8 @@ namespace TicketHive.Server.Controllers
         public async Task<ActionResult<List<EventModel>>> RemoveEvent(int id)
         {
             await eventRepo.RemoveEvent(id);
+
+            return Ok(eventRepo.GetAllEvents());
         }
 
     }
