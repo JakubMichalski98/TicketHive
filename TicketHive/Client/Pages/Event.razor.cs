@@ -15,10 +15,21 @@ using Microsoft.JSInterop;
 using TicketHive.Client;
 using TicketHive.Client.Shared;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using TicketHive.Client.Repositories;
+using TicketHive.Shared.Models;
+using Microsoft.Extensions.Options;
 
 namespace TicketHive.Client.Pages
 {
     public partial class Event
     {
+        EventModel chosenEvent = new();
+        [Parameter]
+        public int Id { get; set; }
+        protected async override Task OnInitializedAsync()
+        {
+            chosenEvent = await eventRepo.GetEvent(Id);
+        
+        }
     }
 }

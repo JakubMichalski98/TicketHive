@@ -1,22 +1,47 @@
-﻿@page "/event"
-<h3>Event</h3>
+﻿@page "/event/{id:int}"
+@inject IEventRepo eventRepo;
 
-
-
-<div class="card" style="width: 18rem;">
-    <img src="/Images/image 15.png" class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">An item</li>
-        <li class="list-group-item">A second item</li>
-        <li class="list-group-item">A third item</li>
-    </ul>
-    <div class="card-body">
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
-    </div>
+<header class="p-5"></header>
+<div class="row">
+<div class=" col-6" >
+    <img style="max-width: 500px" src="/Images/@chosenEvent.Image"/>
 </div>
+<div class="col-6  ">
+        <h2 class="text-decoration-underline">@chosenEvent.EventName</h2>
+        <div ><em>@chosenEvent.EventDetails</em></div>
+        <div ><p><b>@chosenEvent.EventPlace</b> @chosenEvent.Date</p></div>
+        <div ><p><b>@chosenEvent.PricePerTicket</b>:-</p></div>
+        <div>
+            <select style="background-color: #FCE693;" class="form-select border border-dark " aria-label="Default select example">
+                <option selected>Number of tickets</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        <div>
+            <button style ="background-color:#FCE693" class="m-2">Add to cart</button>
+        </div>
+</div>
+</div>
+
+
+<style>
+    p,em,h2
+    {
+        color: #32516E;
+        
+    }
+    div, select{
+        background-color: #FCE693;
+    }
+</style>
+
 
