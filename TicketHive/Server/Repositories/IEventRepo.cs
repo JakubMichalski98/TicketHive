@@ -8,5 +8,6 @@ namespace TicketHive.Server.Repositories
         public Task<EventModel?> GetEvent(int id);
         public Task AddEvent(EventModel eventToAdd);
         public Task RemoveEvent(int id);
+        public Task UpdateEvent(EventModel updatedEvent, int id);
     }
 }

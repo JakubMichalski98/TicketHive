@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Json;
+﻿using System.ComponentModel;
+using System.Net.Http.Json;
+using System.Text.Json;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Repositories
@@ -13,27 +15,70 @@ namespace TicketHive.Client.Repositories
         {
             this.httpClient = httpClient;
         }
+
+        /// <summary>
+        /// Sends HTTP GET request to API in order to fetch all events
+        /// </summary>
+        /// <returns></returns>
         public async Task GetAllEvents()
         {
-            var result = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
+            await SetEvents();
+        }
 
-            if (result != null)
+        /// <summary>
+        /// Sends HTTP GET request to API in order to fetch event with provided ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>/returns>
+        public async Task<EventModel?> GetEvent(int id)
+        {
+            var response = await httpClient.GetAsync($"api/Events/{id}");
+
+            if (response.IsSuccessStatusCode)
             {
-                Events = result;
+                var foundEvent = await response.Content.ReadFromJsonAsync<EventModel>();
+                return foundEvent;
             }
+            return null;
         }
 
-        public Task<EventModel?> GetEvent(int id)
+        /// <summary>
+        /// Sends HTTP Post request to API in order to add event
+        /// </summary>
+        /// <param name="eventToAdd"></param>
+        /// <returns></returns>
+        public async Task AddEvent(EventModel eventToAdd)
         {
-            throw new NotImplementedException();
+            var result = await httpClient.PostAsJsonAsync("api/Events", eventToAdd);
+
+            await SetEvents();
         }
-        public Task AddEvent(EventModel eventToAdd)
+
+        /// <summary>
+        /// Sends HTTP Delete request to API in order to remove an event
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task RemoveEvent(int id)
         {
-            throw new NotImplementedException();
+            var result = await httpClient.DeleteAsync($"api/Events/{id}");
+            await SetEvents();
         }
-        public Task RemoveEvent(int id)
+        
+        /// <summary>
+        /// Sends HTTP Put request to API in order to update 
+        /// </summary>
+        /// <param name="updatedEvent"></param>
+        /// <returns></returns>
+        public async Task UpdateEvent(EventModel updatedEvent)
         {
-            throw new NotImplementedException();
+            var result = await httpClient.PutAsJsonAsync($"api/Events/{updatedEvent.Id}", updatedEvent);
+            await SetEvents();
+        }
+        private async Task SetEvents()
+        {
+            //var response = await result.Content.ReadFromJsonAsync<List<EventModel>>();
+            Events = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
         }
     }
 }
