@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TicketHive.Server.Data;
 using TicketHive.Server.Models;
 using TicketHive.Server.Repositories;
+using TicketHive.Shared.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,7 @@ builder.Services.AddRazorPages();
 using (var serviceProvider = builder.Services.BuildServiceProvider())
 {
     var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+    var eventDbContext = serviceProvider.GetRequiredService<EventDbContext>();
     var signInManager = serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -54,7 +56,20 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
             UserCountry = "Denmark"
         };
 
-        signInManager.UserManager.CreateAsync(user,"Password1234!").GetAwaiter().GetResult();
+        signInManager.UserManager.CreateAsync(user, "Password1234!").GetAwaiter().GetResult();
+    }
+
+    UserModel? eventUser = eventDbContext.Users.FirstOrDefault(e => e.Username == "user");
+
+    if (eventUser == null)
+    {
+        eventUser = new()
+        {
+            Username = "user"
+        };
+
+        eventDbContext.Users.Add(eventUser);
+        eventDbContext.SaveChanges();
     }
 
     ApplicationUser? adminUser = signInManager.UserManager.FindByNameAsync("admin").GetAwaiter().GetResult();
