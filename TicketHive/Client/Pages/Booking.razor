@@ -3,7 +3,10 @@
 @inject IEventRepo eventrepo
 
 <div>
-    <h3>Our events</h3>
+    <form class="search-form m-2" role="search">
+        <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+    </form>
 </div>
 
 
@@ -11,20 +14,16 @@
     @foreach (var events in eventrepo.Events)
     {
         <div class="col">
-            <div class="card">
-               
+            <div class="card">             
                 <div class="card-body">
-
                     <img src="/Images/@events.Image" class="card-img-top" alt="...">
                     <h5 class="card-title">@events.EventName</h5>
                     <p class="card-text">@events.EventDetails</p>
-
-                    <a href="#" class="btn btn-primary">Go to event</a>
+                    <a href="#" class="btn btn-primary card-btn">Go to event</a>
                 </div>
             </div>
         </div>
     }
-
 </div>
 
 
@@ -38,4 +37,47 @@
 
 
 }   
+
+
+<style>
+    .search-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .search-input {
+        width: 20%;
+        margin-right: 10px;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+    }
+
+    .card {
+        flex: 1 1 300px;
+        margin: 10px;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .card-title{
+        margin: 10px;   
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card-btn {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+    }
+
+
+</style>
+
 

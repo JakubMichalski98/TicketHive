@@ -6,30 +6,90 @@
 
 
 <form method="post">
-    <div class="d-flex flex-column justify-content-center align-items-center">
-        <div class="form-group row">
-            <div class="col-sm-8">
-                <input id="input-username" type="text" asp-for="Username" class="form-control mb-2" placeholder="Username"/>
-                <span class="text-danger" asp-validation-for="Username"></span>     
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-8">
-                <input id="input-password" type="password" asp-for="Password" class="form-control mb-2" placeholder="Password" />
-                <span class="text-danger" asp-validation-for="Password"></span>
-            </div>  
-        </div>
-        <input type="submit" value="Log in" class="btn btn-primary mt-3" />
+    <div id="container">
+        <header>
+            <img id="img-logo" src="/Images/black.png">
+        </header>
+
     </div>
+    <body>
+        <div class="card mx-auto" style="width: 18rem;">
+            <div class="card-body">
+                <div class="col text-center">
+                    <input id="input-username" type="text" asp-for="Username" class="form-control mb-2 mx-auto" placeholder="Username" />
+                    <span class="text-danger" asp-validation-for="Username"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col text-center">
+                    <input id="input-password" type="password" asp-for="Password" class="form-control mb-2 mx-auto" placeholder="Password" />
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                </div>
+            </div>
+            <div class="text-center">
+                <input type="submit" value="Sign in" class="btn-signin btn-primary btn-sm" />
+            </div>        
+        </div>
+    </body>
+
 </form>
 
-@*    <div class="d-flex flex-column justify-content-center">
-    <img style="max-width: 400px" src="/Images/yellow.png" />
-    </div> mt-3*@
 
 <style>
     body{
         background-color: #FCE595;
+    }
+
+    #img-logo {
+        max-width: 400px;
+    }
+
+    .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .card {
+        width: 18rem;
+        margin: 0 auto;
+        border-radius:20px;
+        border-color:black;
+        background-color: #305076;
+        
+    }
+
+    .btn-signin {
+        font-size: 0.8rem;
+        width: 50%;
+    }
+
+    #input-username {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 20px;
+        text-align: center
+    }
+
+    #input-password {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 20px;
+        text-align: center
+    }
+
+    input[type="submit"] {
+        width: 80px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        text-align: center;
+        font-size: medium;
+        margin: auto;    
+        transition: all 0.3s;
     }
 </style>
 

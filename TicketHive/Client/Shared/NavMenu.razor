@@ -11,19 +11,29 @@
 <nav class="navbar bg-body-tertiary" style="background:#FCE595 ">
     <div class="container-fluid" style="background: #FCE595 ">
     <a class="navbar-brand" href="">
-      <img style="max-width: 200px" src="/Images/yellow only logo.png">
+      <img style="max-width: 200px" src="/Images/black only logo.png">
     </a>
   </div>
 </nav>
 
-<div class="@NavMenuCssClass nav-scrollable " style="background: #FCE595" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink style= "color: #305076" class="nav-link" href="home">Home</NavLink>
 
+
+<div class="@NavMenuCssClass nav-scrollable " style="background: #fbe89c" @onclick="ToggleNavMenu">
+
+<div class="@NavMenuCssClass nav-scrollable " style="background: #FCE595" @onclick="ToggleNavMenu">
+
+    <nav class="flex-column">
+        <AuthorizeView>
+        <div class="nav-item px-3">            
+            <NavLink style= "color: #305076" class="nav-link" href="home">Home</NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink style= "color: #305076" class="nav-link" href="booking">Booking</NavLink>
+        </AuthorizeView>
+        <AuthorizeView>
+            <div class="nav-item px-3">
+                <NavLink style="color: #305076" class="nav-link" href="booking">Booking</NavLink>
+            </div>
+        </AuthorizeView>
+
 
         </div>
         <AuthorizeView Roles="Admin">
@@ -32,8 +42,10 @@
 
         </div>
         </AuthorizeView>
+
     </nav>
 </div>
+
 
 @code {
     private bool collapseNavMenu = true;
