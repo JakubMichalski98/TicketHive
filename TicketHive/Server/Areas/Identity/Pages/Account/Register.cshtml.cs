@@ -6,14 +6,15 @@ using System.Diagnostics.Metrics;
 using TicketHive.Server.Data;
 using TicketHive.Server.Enums;
 using TicketHive.Server.Models;
+using TicketHive.Shared.Models;
 
 namespace TicketHive.Server.Areas.Identity.Pages.Account
 {
     [BindProperties]
     public class RegisterModel : PageModel
     {
-        
-    
+
+        EventDbContext _Context;
 
         private readonly SignInManager<ApplicationUser> signInManager;
 
@@ -39,9 +40,10 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
 
 
-        public RegisterModel(SignInManager<ApplicationUser> signInManager)
+        public RegisterModel(SignInManager<ApplicationUser> signInManager, EventDbContext context)
         {
             this.signInManager = signInManager;
+            _Context = context;
         }
 
 
@@ -59,6 +61,17 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
                     UserName = Username,
                     UserCountry = SelectedCountry,
                 };
+                UserModel NewEventUser = new()
+                {
+                    Username = Username,
+                    
+                };
+                _Context.Users.Add(NewEventUser);
+                _Context.SaveChanges();
+
+                
+                    
+                
                 
                    
                     
