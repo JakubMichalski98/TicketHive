@@ -3,10 +3,244 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using TicketHive.Shared
+@using TicketHive.Shared.Models
 @attribute [Authorize(Roles ="Admin")]
-@inject HttpClient Http
+@inject IEventRepo eventRepo
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<PageTitle>Event Manager</PageTitle>
+
+<div style="display:flex; justify-content:space-between">
+
+    
+
+   
+    <table>
+
+       <thead>
+
+           <tr id="head-display">
+              
+               <th>Name</th>
+                
+                <th>Type</th>
+               
+                <th>Place</th>
+               
+                <th>Tickets</th>
+                <th>Sold X</th>
+                <th>Date</th>
+               
 
 
-<h3>AdminPage</h3>
+           </tr>
 
+
+       </thead>
+      
+
+      
+       <tbody>
+          
+           @foreach(var items in eventRepo.Events)
+            {
+                <tr >
+                    <td id="item-display">@items.EventName</td>
+
+
+                    <td id="item-display">@items.EventType</td>
+
+                    <td id="item-display">@items.EventPlace</td>
+
+                    <td id="item-display">@items.TotalTickets</td>
+
+                    <td id="item-display">@items.SoldTickets</td>
+
+                    <td id="item-display">@items.Date</td>
+
+
+                    <button style="margin-top:15px" @onclick="DeleteEvent" class="fas fa-trash-alt"> </button>
+                    
+               
+                </tr>
+            }
+
+
+       </tbody>
+       
+    </table>
+    
+    <div style="text-align:right; margin-right:250px">
+        <EditForm Model="events" OnSubmit="SumbitHandle">
+
+            <div>
+                <InputText placeholder="Event Name" id="EventName" @bind-Value="events.EventName"></InputText>
+            </div>
+            <div>
+                <InputText placeholder="Event Type" id="EventType" @bind-Value="events.EventType"></InputText>
+            </div>
+
+            <div>
+                <InputText placeholder="Event Place" id="EventPlace" @bind-Value="events.EventPlace"></InputText>
+            </div>
+
+            <div>
+                <InputText placeholder="Event Details" id="EventDetails" @bind-Value="events.EventDetails"></InputText>
+            </div>
+            <div>
+                <InputDate id="EventDate" @bind-Value="events.Date"></InputDate>
+
+            </div>
+            <div>
+                <InputNumber placeholder="Price Per ticket" id="EventPerTicket" @bind-Value="events.PricePerTicket"></InputNumber>
+            </div>
+
+            <div>
+                <InputNumber placeholder="Total Tickets" id="EventTotalTickets" @bind-Value="events.TotalTickets"></InputNumber>
+            </div>
+            <div>
+                <InputNumber placeholder="Sold Tickets" id="EventSoldTickets" @bind-Value="events.SoldTickets"></InputNumber>
+            </div>
+            <div>
+                <button id="TheButton" type="submit">Publish Event</button>
+            </div>
+
+        </EditForm>
+    </div>
+
+
+</div>
+
+
+<style>
+    #head-display{
+        text-align:center;
+        align-content:center
+
+    }
+    #item-display{
+        padding:15px;
+        align-content:center;
+    }
+
+    #EventName{
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 30px;
+        text-align: center
+    }
+
+    #EventType {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 30px;
+        text-align: center
+    }
+
+    #EventPlace {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    #EventDetails{
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    #EventPerTicket {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    #EventTotalTickets{
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    #EventSoldTickets {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    #EventDate {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    #TheButton {
+        width: 200px;
+        height: 50px;
+        border-radius: 40px;
+        text-align: center;
+        font-size: larger;
+        margin-top: 15px;
+        
+        transition: all 0.3s;
+        background: linear-gradient(#1D4ED8, #5a5e9a);
+    }
+    
+
+
+   #TheButton:hover {
+     transform: translateY(-6px);
+   }
+
+
+  
+
+</style>
+
+
+
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await eventRepo.GetAllEvents();
+    }
+    EventModel events = new();
+
+    async Task SumbitHandle()
+    {
+        await eventRepo.AddEvent(events);
+        
+    }
+
+    async Task DeleteEvent()
+    {
+        await eventRepo.RemoveEvent(events.Id);
+    }
+
+
+}
 

@@ -18,10 +18,21 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using TicketHive.Shared;
+using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages
 {
     public partial class AdminPage
     {
+        
+    
+        public AdminPage()
+        {
+            
+        }
+
+       
+
+
     }
 }
