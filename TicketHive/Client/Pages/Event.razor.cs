@@ -18,18 +18,32 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TicketHive.Client.Repositories;
 using TicketHive.Shared.Models;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace TicketHive.Client.Pages
 {
     public partial class Event
     {
+        
         EventModel chosenEvent = new();
         [Parameter]
         public int Id { get; set; }
+
+        [Required]
+        [BindProperty]
+        public string? NumberOfTickets { get; set; }
         protected async override Task OnInitializedAsync()
         {
             chosenEvent = await eventRepo.GetEvent(Id);
         
         }
+
+        public void HandleSubmit()
+        {
+           
+        }
+            
     }
 }

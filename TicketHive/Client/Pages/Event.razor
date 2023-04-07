@@ -1,34 +1,34 @@
 ﻿@page "/event/{id:int}"
 @inject IEventRepo eventRepo;
 
+
 <header class="p-5"></header>
 <div class="row">
 <div class=" col-6" >
     <img style="max-width: 500px" src="/Images/@chosenEvent.Image"/>
 </div>
+
 <div class="col-6  ">
+        <form @onsubmit="HandleSubmit">
         <h2 class="text-decoration-underline">@chosenEvent.EventName</h2>
         <div ><em>@chosenEvent.EventDetails</em></div>
         <div ><p><b>@chosenEvent.EventPlace</b> @chosenEvent.Date</p></div>
         <div ><p><b>@chosenEvent.PricePerTicket</b>:-</p></div>
+        
         <div>
-            <select style="background-color: #FCE693;" class="form-select border border-dark " aria-label="Default select example">
-                <option selected>Number of tickets</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
+            
+                <select id="input-combobox" @bind="NumberOfTickets">
+                @for (int i = 0; i < 11; i++)
+                {
+                    <option value=@i>@i.ToString()</option>
+                }
+
             </select>
+            
+            <input type="submit" style="text-align:center" value="Add to cart" />
         </div>
-        <div>
-            <button style ="background-color:#FCE693" class="m-2">Add to cart</button>
-        </div>
+       
+        </form>
 </div>
 </div>
 
@@ -43,5 +43,4 @@
         background-color: #FCE693;
     }
 </style>
-
 
