@@ -20,7 +20,7 @@
 
 <div class="@NavMenuCssClass nav-scrollable " style="background: #fbe89c" @onclick="ToggleNavMenu">
 
-<div class="@NavMenuCssClass nav-scrollable " style="background: #FCE595" @onclick="ToggleNavMenu">
+@*<div class="@NavMenuCssClass nav-scrollable " style="background: #FCE595" @onclick="ToggleNavMenu">*@
 
     <nav class="flex-column">
         <AuthorizeView>
@@ -35,7 +35,7 @@
         </AuthorizeView>
 
 
-        </div>
+        @*</div>*@
         <AuthorizeView Roles="Admin">
         <div class="nav-item px-3">
             <NavLink style="color: #305076" class="nav-link" href="admin">Event Manager</NavLink>
