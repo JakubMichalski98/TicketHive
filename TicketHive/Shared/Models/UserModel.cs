@@ -11,7 +11,6 @@ namespace TicketHive.Shared.Models
     {
         public int Id { get; set; }
         public string Username { get; set; } = null!;
-        [JsonIgnore]
         public List<BookingModel> Bookings { get; set; } = new();
        
     }

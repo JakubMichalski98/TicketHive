@@ -18,7 +18,5 @@ namespace TicketHive.Shared.Models
         public int TotalTickets { get; set; }
         public int SoldTickets { get; set; }
         public string? Image { get; set; }
-
-        public List<BookingModel> Bookings { get; set; } = new();
     }
 }

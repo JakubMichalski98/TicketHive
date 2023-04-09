@@ -20,8 +20,8 @@ namespace TicketHive.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EventModelId = table.Column<int>(type: "int", nullable: false),
-                    UserModelId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    UserModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,8 +36,7 @@ namespace TicketHive.Server.Migrations
                         name: "FK_Bookings_Users_UserModelId",
                         column: x => x.UserModelId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

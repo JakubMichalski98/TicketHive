@@ -1,5 +1,6 @@
 ﻿@page "/home"
 @using TicketHive.Shared.Models;
+@using TicketHive.Shared;
 @inject IBookingRepo bookingRepo
 @inject IEventRepo eventRepo;
 @inject IUserRepo userRepo;
@@ -11,7 +12,7 @@
 
 @if (eventDbUser != null)
 {
-    foreach (var item in eventDbUser.Bookings)
+    foreach (var item in Bookings)
     {
         <h3>@item.EventModel.EventName</h3>
     }
@@ -23,6 +24,7 @@
 @code {
     private string? username;
     private UserModel? eventDbUser;
+    List<BookingModel> Bookings;
 
     protected override async Task OnInitializedAsync()
     {
@@ -35,6 +37,9 @@
             username = user.Identity.Name;
         }
         eventDbUser = await userRepo.GetUser(username);
+
+        Bookings = eventDbUser.Bookings;
+
     }
 
     private async Task AddBooking()
@@ -44,15 +49,20 @@
 
         if (this.eventDbUser != null && eventDbUser != null)
         {
-                BookingModel booking = new()
+            BookingModel booking = new()
                 {
-                    EventModelId = this.eventDbUser.Id,
-                    UserModelId = eventDbUser.Id,
+                    EventModelId = eventToAdd.Id,
                     Quantity = 1
 
                 };
 
-                await bookingRepo.AddBooking(booking);
+            BookingInfo bookingInfo = new()
+                {
+                    User = eventDbUser,
+                    Booking = booking
+                };
+
+                await userRepo.AddBookingToUser(bookingInfo);
         }
     }
 }

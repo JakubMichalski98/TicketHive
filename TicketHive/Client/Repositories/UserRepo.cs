@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
+using TicketHive.Shared;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Repositories
@@ -22,6 +23,11 @@ namespace TicketHive.Client.Repositories
                 return foundUser;
             }
             return null;
+        }
+
+        public async Task AddBookingToUser(BookingInfo bookingInfo)
+        {
+            var result = await httpClient.PostAsJsonAsync("api/Users", bookingInfo);
         }
     }
 }

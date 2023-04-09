@@ -36,7 +36,7 @@ namespace TicketHive.Server.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserModelId")
+                    b.Property<int?>("UserModelId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -192,25 +192,16 @@ namespace TicketHive.Server.Migrations
             modelBuilder.Entity("TicketHive.Shared.Models.BookingModel", b =>
                 {
                     b.HasOne("TicketHive.Shared.Models.EventModel", "EventModel")
-                        .WithMany("Bookings")
+                        .WithMany()
                         .HasForeignKey("EventModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TicketHive.Shared.Models.UserModel", "UserModel")
+                    b.HasOne("TicketHive.Shared.Models.UserModel", null)
                         .WithMany("Bookings")
-                        .HasForeignKey("UserModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserModelId");
 
                     b.Navigation("EventModel");
-
-                    b.Navigation("UserModel");
-                });
-
-            modelBuilder.Entity("TicketHive.Shared.Models.EventModel", b =>
-                {
-                    b.Navigation("Bookings");
                 });
 
             modelBuilder.Entity("TicketHive.Shared.Models.UserModel", b =>
