@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketHive.Server.Data;
-using TicketHive.Server.Repositories;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Server.Controllers
@@ -11,26 +10,24 @@ namespace TicketHive.Server.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
-        private readonly IEventRepo eventRepo;
         private readonly EventDbContext context;
 
-        public EventsController(IEventRepo eventRepo, EventDbContext context)
+        public EventsController(EventDbContext context)
         {
-            this.eventRepo = eventRepo;
             this.context = context;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<EventModel>>> GetEvents()
         {
-            return Ok(await eventRepo.GetAllEvents());
+            return await context.Events.ToListAsync();
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult<EventModel>> GetEvent(int id)
         {
-            EventModel? eventModel = await eventRepo.GetEvent(id);
+            EventModel? eventModel = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
 
             if (eventModel != null)
             {
@@ -45,7 +42,8 @@ namespace TicketHive.Server.Controllers
             if (eventModel != null)
             {
 
-                await eventRepo.AddEvent(eventModel);
+                context.Events.Add(eventModel);
+                await context.SaveChangesAsync();
 
                 return Ok("Event added!");
             }
@@ -57,8 +55,22 @@ namespace TicketHive.Server.Controllers
         {
             if (eventModel != null)
             {
-                await eventRepo.UpdateEvent(eventModel, id);
-                return Ok(eventRepo.GetAllEvents());
+                var foundEvent = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
+
+                if (foundEvent != null)
+                {
+                    foundEvent.EventName = eventModel.EventName;
+                    foundEvent.EventType = eventModel.EventType;
+                    foundEvent.EventPlace = eventModel.EventPlace;
+                    foundEvent.EventDetails = eventModel.EventDetails;
+                    foundEvent.Date = eventModel.Date;
+                    foundEvent.PricePerTicket = eventModel.PricePerTicket;
+                    foundEvent.SoldTickets = eventModel.SoldTickets;
+                    foundEvent.TotalTickets = eventModel.TotalTickets;
+                    foundEvent.Image = eventModel.Image;
+
+                    await context.SaveChangesAsync();
+                }
             }
             return BadRequest("Something went wrong when updating event");
         }
@@ -66,9 +78,15 @@ namespace TicketHive.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<EventModel>>> RemoveEvent(int id)
         {
-            await eventRepo.RemoveEvent(id);
+            var eventToRemove = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
 
-            return Ok(eventRepo.GetAllEvents());
+            if (eventToRemove != null)
+            {
+                context.Events.Remove(eventToRemove);
+                await context.SaveChangesAsync();
+            }
+
+            return Ok(context.Events.ToListAsync());
         }
 
     }

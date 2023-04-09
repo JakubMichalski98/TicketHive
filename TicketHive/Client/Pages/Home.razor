@@ -1,9 +1,8 @@
 ﻿@page "/home"
 @using TicketHive.Shared.Models;
 @using TicketHive.Shared;
-@inject IBookingRepo bookingRepo
-@inject IEventRepo eventRepo;
 @inject IUserRepo userRepo;
+@inject IEventRepo eventRepo;
 @inject AuthenticationStateProvider authProvider
 <h3>Home</h3>
 
@@ -17,8 +16,6 @@
         <h3>@item.EventModel.EventName</h3>
     }
 }
-
-
 
 
 @code {
@@ -44,7 +41,7 @@
 
     private async Task AddBooking()
     {
-        EventModel? eventToAdd = await eventRepo.GetEvent(1);
+        EventModel? eventToAdd = await eventRepo.GetEvent(3);
 
 
         if (this.eventDbUser != null && eventDbUser != null)
@@ -62,7 +59,9 @@
                     Booking = booking
                 };
 
-                await userRepo.AddBookingToUser(bookingInfo);
+            await userRepo.AddBookingToUser(bookingInfo);
+            eventDbUser = await userRepo.GetUser(username);
+            Bookings = eventDbUser.Bookings;
         }
     }
 }

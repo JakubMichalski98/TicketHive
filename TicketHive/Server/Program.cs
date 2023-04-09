@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using TicketHive.Server.Data;
 using TicketHive.Server.Models;
-using TicketHive.Server.Repositories;
 using TicketHive.Shared.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +16,6 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var secondConnectionString = builder.Configuration.GetConnectionString("EventDbConnection");
 builder.Services.AddDbContext<EventDbContext>(options => options.UseSqlServer(secondConnectionString));
-
-builder.Services.AddScoped<IEventRepo, EventRepo>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>()
     .AddRoles<IdentityRole>()
