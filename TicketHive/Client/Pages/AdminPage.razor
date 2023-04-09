@@ -59,7 +59,7 @@
                     <td id="item-display">@items.Date</td>
 
 
-                    <button style="margin-top:15px" @onclick="DeleteEvent" class="fas fa-trash-alt"> </button>
+                    <button style="margin-top:15px" @onclick="() => DeleteEvent(items.Id)" class="fas fa-trash-alt"> </button>
                     
                
                 </tr>
@@ -236,9 +236,9 @@
         
     }
 
-    async Task DeleteEvent()
+    async Task DeleteEvent(int id)
     {
-        await eventRepo.RemoveEvent(events.Id);
+        await eventRepo.RemoveEvent(id);
     }
 
 
