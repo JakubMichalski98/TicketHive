@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TicketHive.Shared.Models
@@ -10,8 +11,8 @@ namespace TicketHive.Shared.Models
     {
         public int Id { get; set; }
         public string Username { get; set; } = null!;
-        public List<EventModel> Events { get; set; } = new();
-
+        [JsonIgnore]
+        public List<BookingModel> Bookings { get; set; } = new();
        
     }
 }

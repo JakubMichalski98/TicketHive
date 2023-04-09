@@ -19,7 +19,7 @@ namespace TicketHive.Server.Repositories
         /// <returns></returns>
         public async Task<List<EventModel>> GetAllEvents()
         {
-            return await context.Events.Include(e => e.Users).ToListAsync();
+            return await context.Events.ToListAsync();
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace TicketHive.Server.Repositories
         /// <returns></returns>
         public async Task<EventModel?> GetEvent(int id)
         {
-            EventModel? eventModel = await context.Events.Include(e => e.Users).SingleOrDefaultAsync(e => e.Id == id);
+            EventModel? eventModel = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
 
             return eventModel;
         }
@@ -68,7 +68,7 @@ namespace TicketHive.Server.Repositories
         /// <returns></returns>
         public async Task UpdateEvent(EventModel updatedEvent, int id)
         {
-            var foundEvent = await context.Events.Include(e => e.Users).FirstOrDefaultAsync(e => e.Id == id);
+            var foundEvent = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
 
             if (foundEvent != null)
             {

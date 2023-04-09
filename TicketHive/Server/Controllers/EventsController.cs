@@ -40,7 +40,6 @@ namespace TicketHive.Server.Controllers
         }
 
         [HttpPost]
-
         public async Task<ActionResult<List<EventModel>>> AddEvent(EventModel eventModel)
         {
             if (eventModel != null)
