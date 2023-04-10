@@ -34,16 +34,10 @@ namespace TicketHive.Client.Pages
         [Required]
         [BindProperty]
         public string? NumberOfTickets { get; set; }
-        protected async override Task OnInitializedAsync()
-        {
-            chosenEvent = await eventRepo.GetEvent(Id);
+        //protected async override Task OnInitializedAsync()
+        //{
+        //    chosenEvent = await eventRepo.GetEvent(Id);
         
-        }
-
-        public void HandleSubmit()
-        {
-           
-        }
-            
+        //}   
     }
 }
