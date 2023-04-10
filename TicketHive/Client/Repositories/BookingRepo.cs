@@ -23,5 +23,10 @@ namespace TicketHive.Client.Repositories
         {
             var result = await httpClient.PostAsJsonAsync("api/bookings", bookingModel);
         }
+
+        public async Task RemoveBooking(int id)
+        {
+            var result = await httpClient.DeleteAsync($"api/Bookings/{id}");
+        }
     }
 }

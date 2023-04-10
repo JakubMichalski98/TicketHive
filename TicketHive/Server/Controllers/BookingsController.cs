@@ -35,5 +35,19 @@ namespace TicketHive.Server.Controllers
             }
             return BadRequest("Something went wrong when adding booking");
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<List<BookingModel>>> RemoveBooking(int id)
+        {
+            var bookingToRemove = await context.Bookings.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (bookingToRemove != null)
+            {
+                context.Bookings.Remove(bookingToRemove);
+                await context.SaveChangesAsync();
+            }
+
+            return Ok(context.Events.ToListAsync());
+        }
     }
 }
