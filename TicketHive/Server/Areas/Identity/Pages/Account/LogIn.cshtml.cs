@@ -53,7 +53,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
                 if (signedInResult.Succeeded)
                 {
-                    return Redirect("~/");
+                    return Redirect("/home");
                 }
                 else if (signedInResult.Succeeded == false)
                 {
