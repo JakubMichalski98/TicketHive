@@ -3,11 +3,13 @@
 @using TicketHive.Shared;
 @inject IUserRepo userRepo;
 @inject IEventRepo eventRepo;
+@inject IBookingRepo bookingRepo;
 @inject AuthenticationStateProvider authProvider
 <h3>Home</h3>
 
 
 <button @onclick="AddBooking">Add example booking to current user</button>
+<button @onclick="RemoveBooking">Remove previously added booking</button>
 
 @if (eventDbUser != null)
 {
@@ -63,5 +65,12 @@
             eventDbUser = await userRepo.GetUser(username);
             Bookings = eventDbUser.Bookings;
         }
+    }
+
+    private async Task RemoveBooking()
+    {
+        await bookingRepo.RemoveBooking(1004);
+        eventDbUser = await userRepo.GetUser(username);
+        Bookings = eventDbUser.Bookings;
     }
 }
