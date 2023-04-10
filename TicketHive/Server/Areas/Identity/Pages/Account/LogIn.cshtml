@@ -16,6 +16,7 @@
         <div class="card mx-auto" style="width: 18rem;">
             <div class="card-body">
                 <div class="col text-center">
+                    
                     <input id="input-username" type="text" asp-for="Username" class="form-control mb-2 mx-auto" placeholder="Username" />
                     <span class="text-danger" asp-validation-for="Username"></span>
                 </div>
@@ -24,11 +25,15 @@
                 <div class="col text-center">
                     <input id="input-password" type="password" asp-for="Password" class="form-control mb-2 mx-auto" placeholder="Password" />
                     <span class="text-danger" asp-validation-for="Password"></span>
+                    
                 </div>
             </div>
             <div class="text-center">
                 <input type="submit" value="Sign in" class="btn-signin btn-primary btn-sm" />
-            </div>        
+                <div>
+                </div>
+            </div>
+
         </div>
     </body>
 
@@ -53,6 +58,7 @@
         width: 18rem;
         margin: 0 auto;
         border-radius:20px;
+        border-width: 5px;
         border-color:black;
         background-color: #305076;
         

@@ -15,10 +15,19 @@ using Microsoft.JSInterop;
 using TicketHive.Client;
 using TicketHive.Client.Shared;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages
 {
     public partial class Booking
     {
+        //EventModel searchedEvent = new();
+        //[Parameter]
+        //public int Id { get; set; }
+
+        //protected async override Task OnInitializedAsync()
+        //{
+        //    searchedEvent = await eventrepo.GetEvent(Id);
+        //}
     }
 }

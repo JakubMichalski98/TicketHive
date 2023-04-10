@@ -19,7 +19,7 @@ namespace TicketHive.Server.Repositories
         /// <returns></returns>
         public async Task<List<EventModel>> GetAllEvents()
         {
-            return await context.Events.Include(e => e.Users).ToListAsync();
+            return await context.Events.ToListAsync();
         }
 
         /// <summary>
