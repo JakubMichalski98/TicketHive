@@ -39,12 +39,13 @@
         </thead>
 
 
-
+        
         <tbody>
 
             @foreach (var items in eventRepo.Events)
             {
                 <tr>
+                    
                     <td id="item-display">@items.EventName</td>
 
 
@@ -57,11 +58,15 @@
                     <td id="item-display">@items.SoldTickets</td>
 
                     <td id="item-display">@items.Date</td>
-
-
-                    <button style="margin-top:15px" @onclick=" (() => ShowConfirmation(items.Id)) " class="fas fa-trash-alt"> </button>
-
+                    <td>
+                        <button @onclick=" (() => ShowConfirmation(items.Id)) " class="fas fa-trash-alt"> </button>
+                    </td>
+   
+  
                 </tr>
+
+                
+
             }
 
 
@@ -87,17 +92,20 @@
                 <InputText placeholder="Event Details" id="EventDetails" @bind-Value="events.EventDetails"></InputText>
             </div>
             <div>
-                <InputDate id="EventDate" @bind-Value="events.Date"></InputDate>
+                <input  type="datetime-local" @bind-value="events.Date" />
 
             </div>
             <div>
+                <label>Price Per Ticket</label>
                 <InputNumber placeholder="Price Per ticket" id="EventPerTicket" @bind-Value="events.PricePerTicket"></InputNumber>
             </div>
 
             <div>
+                <label>Total Tickets</label>
                 <InputNumber placeholder="Total Tickets" id="EventTotalTickets" @bind-Value="events.TotalTickets"></InputNumber>
             </div>
             <div>
+                <label>Sold Tickets</label>
                 <InputNumber placeholder="Sold Tickets" id="EventSoldTickets" @bind-Value="events.SoldTickets"></InputNumber>
             </div>
             <div>
@@ -112,18 +120,18 @@
         <div class="modal" tabindex="-1" role="dialog" style="display:block">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirm Removal</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseConfirmation">
+                    <divid id="modal-header" class="modal-header">
+                        <h5 id="modal-title"  class="modal-title">Confirm Removal</h5>
+                        <button class="btn btn-close" data-dismiss="modal"  @onclick="CloseConfirmation">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
+                    </divid>
                     <div class="modal-body">
-                        <p>Remove event?</p>
+                        <p>Do you want to delete this event?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @onclick="DeleteEvent">Yes</button>
-                        <button type="button" class="btn btn-secondary" @onclick="CloseConfirmation" data-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-danger" @onclick="DeleteEvent">Yes</button>
+                        <button type="button" class="btn btn-success" @onclick="CloseConfirmation" data-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
@@ -134,6 +142,12 @@
 
 
 <style>
+   
+    #modal-header{
+        background-color:red;
+        
+    }
+
     #head-display {
         text-align: center;
         align-content: center
@@ -240,6 +254,12 @@
 
 
 @code {
+
+    
+   
+
+   
+
     private bool showConfirmation = false;
     private int eventToRemoveId;
 
@@ -272,6 +292,7 @@
         showConfirmation = false;
     }
 
-
+   
+    
 }
 
