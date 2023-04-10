@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using TicketHive.Shared
 @using TicketHive.Shared.Models
-@attribute [Authorize(Roles ="Admin")]
+@attribute [Authorize(Roles = "Admin")]
 @inject IEventRepo eventRepo
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -12,39 +12,39 @@
 
 <div style="display:flex; justify-content:space-between">
 
-    
 
-   
+
+
     <table>
 
-       <thead>
+        <thead>
 
-           <tr id="head-display">
-              
-               <th>Name</th>
-                
+            <tr id="head-display">
+
+                <th>Name</th>
+
                 <th>Type</th>
-               
+
                 <th>Place</th>
-               
+
                 <th>Tickets</th>
                 <th>Sold X</th>
                 <th>Date</th>
-               
 
 
-           </tr>
+
+            </tr>
 
 
-       </thead>
-      
+        </thead>
 
-      
-       <tbody>
-          
-           @foreach(var items in eventRepo.Events)
+
+
+        <tbody>
+
+            @foreach (var items in eventRepo.Events)
             {
-                <tr >
+                <tr>
                     <td id="item-display">@items.EventName</td>
 
 
@@ -59,17 +59,16 @@
                     <td id="item-display">@items.Date</td>
 
 
-                    <button style="margin-top:15px" @onclick="() => DeleteEvent(items.Id)" class="fas fa-trash-alt"> </button>
-                    
-               
+                    <button style="margin-top:15px" @onclick=" (() => ShowConfirmation(items.Id)) " class="fas fa-trash-alt"> </button>
+
                 </tr>
             }
 
 
-       </tbody>
-       
+        </tbody>
+
     </table>
-    
+
     <div style="text-align:right; margin-right:250px">
         <EditForm Model="events" OnSubmit="SumbitHandle">
 
@@ -108,22 +107,44 @@
         </EditForm>
     </div>
 
+    @if (showConfirmation == true)
+    {
+        <div class="modal" tabindex="-1" role="dialog" style="display:block">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm Removal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseConfirmation">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Remove event?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @onclick="DeleteEvent">Yes</button>
+                        <button type="button" class="btn btn-secondary" @onclick="CloseConfirmation" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
 </div>
 
 
 <style>
-    #head-display{
-        text-align:center;
-        align-content:center
-
-    }
-    #item-display{
-        padding:15px;
-        align-content:center;
+    #head-display {
+        text-align: center;
+        align-content: center
     }
 
-    #EventName{
+    #item-display {
+        padding: 15px;
+        align-content: center;
+    }
+
+    #EventName {
         width: 200px;
         height: 45px;
         border-radius: 20px;
@@ -150,7 +171,7 @@
         text-align: center;
     }
 
-    #EventDetails{
+    #EventDetails {
         width: 200px;
         height: 45px;
         border-radius: 20px;
@@ -168,7 +189,7 @@
         text-align: center;
     }
 
-    #EventTotalTickets{
+    #EventTotalTickets {
         width: 200px;
         height: 45px;
         border-radius: 20px;
@@ -202,19 +223,15 @@
         text-align: center;
         font-size: larger;
         margin-top: 15px;
-        
         transition: all 0.3s;
         background: linear-gradient(#1D4ED8, #5a5e9a);
     }
-    
 
 
-   #TheButton:hover {
-     transform: translateY(-6px);
-   }
 
-
-  
+        #TheButton:hover {
+            transform: translateY(-6px);
+        }
 
 </style>
 
@@ -223,6 +240,8 @@
 
 
 @code {
+    private bool showConfirmation = false;
+    private int eventToRemoveId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -233,12 +252,24 @@
     async Task SumbitHandle()
     {
         await eventRepo.AddEvent(events);
-        
+
     }
 
-    async Task DeleteEvent(int id)
+    private void ShowConfirmation(int id)
     {
-        await eventRepo.RemoveEvent(id);
+        showConfirmation = true;
+        eventToRemoveId = id;
+    }
+
+    private void CloseConfirmation()
+    {
+        showConfirmation = false;
+    }
+
+    async Task DeleteEvent()
+    {
+        await eventRepo.RemoveEvent(eventToRemoveId);
+        showConfirmation = false;
     }
 
 
