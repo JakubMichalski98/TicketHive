@@ -1,4 +1,67 @@
 ﻿@page "/home"
+@using TicketHive.Shared.Models;
+@using TicketHive.Shared;
+@inject IUserRepo userRepo;
+@inject IEventRepo eventRepo;
+@inject AuthenticationStateProvider authProvider
 <h3>Home</h3>
 
 
+<button @onclick="AddBooking">Add example booking to current user</button>
+
+@if (eventDbUser != null)
+{
+    foreach (var item in Bookings)
+    {
+        <h3>@item.EventModel.EventName</h3>
+    }
+}
+
+
+@code {
+    private string? username;
+    private UserModel? eventDbUser;
+    List<BookingModel> Bookings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authProvider.GetAuthenticationStateAsync();
+
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            username = user.Identity.Name;
+        }
+        eventDbUser = await userRepo.GetUser(username);
+
+        Bookings = eventDbUser.Bookings;
+
+    }
+
+    private async Task AddBooking()
+    {
+        EventModel? eventToAdd = await eventRepo.GetEvent(3);
+
+
+        if (this.eventDbUser != null && eventDbUser != null)
+        {
+            BookingModel booking = new()
+                {
+                    EventModelId = eventToAdd.Id,
+                    Quantity = 1
+
+                };
+
+            BookingInfo bookingInfo = new()
+                {
+                    User = eventDbUser,
+                    Booking = booking
+                };
+
+            await userRepo.AddBookingToUser(bookingInfo);
+            eventDbUser = await userRepo.GetUser(username);
+            Bookings = eventDbUser.Bookings;
+        }
+    }
+}

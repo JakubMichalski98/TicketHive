@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace TicketHive.Shared.Models
 {
-    public class UserModel
+    public class BookingModel
     {
         public int Id { get; set; }
-        public string Username { get; set; } = null!;
-        public List<BookingModel> Bookings { get; set; } = new();
-       
+        public int EventModelId { get; set; }
+        public EventModel? EventModel { get; set; }
+        public int Quantity { get; set; }
     }
 }
