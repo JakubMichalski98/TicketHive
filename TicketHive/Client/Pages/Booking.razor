@@ -3,40 +3,126 @@
 @inject IEventRepo eventrepo
 
 <div>
-    <form class="search-form m-2" role="search">
-        <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search">
+    <form @onsubmit="HandleSubmit" class="search-form m-2" role="search">
+        <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search" @bind-value="searchEvent">
         <button class="btn btn-outline-primary" type="submit">Search</button>
     </form>
 </div>
 
 
-<div class="row row-cols-3 row-cols-md-3 g-4">
-    @foreach (var events in eventrepo.Events)
-    {
-        <div class="col">
-            <div class="card">             
-                <div class="card-body">
-                    <img src="/Images/@events.Image" class="card-img-top" alt="...">
-                    <h5 class="card-title">@events.EventName</h5>
-                    <p class="card-text">@events.EventDetails</p>
-                    <a href="#" class="btn btn-primary card-btn">Go to event</a>
+
+
+@if (filteredEvents != null && filteredEvents.Any())
+{
+    <div class="row row-cols-3 row-cols-md-3 g-4 center">
+        @foreach (var events in filteredEvents)
+        {
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="/Images/@events.Image" class="card-img-top" alt="...">
+                        <h5 class="card-title">@events.EventName</h5>
+                        <p class="card-text">@events.EventDetails</p>
+                        <a href="#" class="btn btn-primary card-btn">Go to event</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <div class="row row-cols-3 row-cols-md-3 g-4">
+        @foreach (var events in eventrepo.Events)
+        {
 
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="/Images/@events.Image" class="card-img-top" alt="...">
+                        <h5 class="card-title">@events.EventName</h5>
+                        <p class="card-text">@events.EventDetails</p>
+                        <a href="#" class="btn btn-primary card-btn">Go to event</a>
+                    </div>
+                </div>
+            </div>
+        }
 
-@code{
+    </div>
+}
 
+@code {
+    private List<EventModel> events = new List<EventModel>();
+    private List<EventModel> filteredEvents = new List<EventModel>();
+    private string searchEvent = "";
 
     protected override async Task OnInitializedAsync()
     {
         await eventrepo.GetAllEvents();
+        events = eventrepo.Events.ToList();
+
+
     }
 
+    private void HandleSubmit()
+    {
+        if (string.IsNullOrEmpty(searchEvent))
+        {
+            filteredEvents = events;
+        }
+        else
+        {
+            filteredEvents = events.Where(e => e.EventName.ToLower().Contains(searchEvent.ToLower())).ToList();
+        }
 
-}   
+    }
+
+    private void ClearSearch()
+    {
+        searchEvent = "";
+        filteredEvents = events;
+    }
+}
+
+@*<div>
+    <form method="get" class="search-form m-2" role="search">
+        <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search" name="searchEvent">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+    </form>
+</div>
+
+
+    <div class="row row-cols-3 row-cols-md-3 g-4">
+        @foreach (var events in eventrepo.Events)
+        {
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="/Images/@events.Image" class="card-img-top" alt="...">
+                        <h5 class="card-title">@events.EventName</h5>
+                        <p class="card-text">@events.EventDetails</p>
+                        <a href="#" class="btn btn-primary card-btn">Go to event</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+
+
+
+
+@code{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await eventrepo.GetAllEvents();
+
+    }
+
+}   *@
 
 
 <style>
@@ -64,8 +150,8 @@
         overflow: hidden;
     }
 
-    .card-title{
-        margin: 10px;   
+    .card-title {
+        margin: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -76,7 +162,6 @@
         bottom: 10px;
         left: 10px;
     }
-
 
 </style>
 
