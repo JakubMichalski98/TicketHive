@@ -1,3 +1,4 @@
+using Duende.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,11 +19,6 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
         private readonly SignInManager<ApplicationUser> signInManager;
 
-        
-
-        
-
-
         [Required(ErrorMessage = "Username is required")]
         [MinLength(5, ErrorMessage = "Username needs to be 5 characters")]
 
@@ -31,6 +27,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
         [MinLength(5,ErrorMessage = "Password needs to be 5 characters")]
         public string Password { get; set; }
 
+        [Compare("Password", ErrorMessage = "Passwords do not match!")]
         [Required(ErrorMessage = "Confirm your password")]
         public string ConfirmPassword { get; set; }
 
@@ -54,7 +51,12 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
         public async Task <IActionResult> OnPost()
         {
-            if(ModelState.IsValid)
+            if (_Context.Users.Any(u => u.Username == Username))
+            {
+                ModelState.AddModelError("Username", "Username already exists");
+            }
+
+            if (ModelState.IsValid)
             {
                 ApplicationUser Newuser = new()
                 {
@@ -69,14 +71,6 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
                 _Context.Users.Add(NewEventUser);
                 _Context.SaveChanges();
 
-                
-                    
-                
-                
-                   
-                    
-                
-
                 if(Password == ConfirmPassword)
                 {
                     var registerResult = await signInManager.UserManager.CreateAsync(Newuser,Password);
@@ -90,10 +84,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
                     }
 
                 }
-
-
-
-
+               
             }
 
             return Page();        
