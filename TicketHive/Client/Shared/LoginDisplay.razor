@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Newtonsoft.Json;
+@using TicketHive.Shared.Models;
 @inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
@@ -8,7 +12,7 @@
     <Authorized>
 
        
-        <button id="btn-cart" class="fas fa-shopping-cart" @onclick="ShoppingCart"></button>
+        <button id="btn-cart" class="fas fa-shopping-cart" @onclick="ShoppingCart">@ItemCount</button>
        
         <a style= "color: #305076"  href="authentication/profile">Hello, @context.User.Identity?.Name!</a>
 
@@ -47,4 +51,41 @@
      }
 
         
-        </style>
+</style>
+
+@code{
+
+    private int ItemCount = 0;
+
+    private List<BookingModel> cartItems;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var jsonString = await localStorage.GetItemAsync<string>("cart");
+        cartItems = JsonConvert.DeserializeObject<List<BookingModel>>(jsonString);
+
+        ItemCount = cartItems.Count;
+    }
+
+
+
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    List<BookingModel> cart = await localStorage.GetItemAsync<List<BookingModel>>("cart");
+    //    ItemCount = cart.Count;
+    //}
+
+    //public async Task GetItems()
+    //{
+    //    List<BookingModel> cart = await localStorage.GetItemAsync<List<BookingModel>>("cart");
+
+    //    int ItemCount = 0;
+    //    foreach(BookingModel booking in cart)
+    //    {
+    //        ItemCount++;
+    //    }
+    //}
+
+
+}
