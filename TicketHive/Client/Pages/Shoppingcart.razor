@@ -5,10 +5,14 @@
 <h3>Shoppingcart</h3>
 
 
-@foreach (var item in cartItems)
+@if (cartItems != null)
 {
-    <h3>@item.EventModel.EventName</h3>
+    @foreach (var item in cartItems)
+    {
+        <h3>@item.EventModel.EventName</h3>
+    }
 }
+
 
 @code {
     private List<BookingModel> cartItems = new();
