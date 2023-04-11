@@ -55,22 +55,23 @@
 @code {
     private string? username;
     private UserModel? eventDbUser;
-    private List<BookingModel> Bookings = new();
+    private List<BookingModel> bookings = new();
 
     protected override async Task OnInitializedAsync()
     {
         chosenEvent = await eventRepo.GetEvent(Id);
-        CreateCart();
+        await CreateCart();
     }
 
     private async Task AddBooking()
     {
         BookingModel booking = new()
             {
-                EventModelId = 3,
+                EventModelId = chosenEvent.Id,
+                EventModel = chosenEvent,
                 Quantity = Int32.Parse(NumberOfTickets)
             };
-            UpdateCart(booking);
+            await UpdateCart(booking);
     }
     private async Task HandleSubmit()
     {
@@ -80,7 +81,7 @@
 
     private async Task CreateCart()
     {
-        string bookingsJson = JsonConvert.SerializeObject(Bookings);
+        string bookingsJson = JsonConvert.SerializeObject(bookings);
 
         await localStorage.SetItemAsync("cart", bookingsJson);
     }

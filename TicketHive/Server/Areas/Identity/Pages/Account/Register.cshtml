@@ -28,10 +28,14 @@
             <div class="form-group row">
                 <div class="col text-center">
                     <input id="input-ConfirmPassword" type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" />
-                    <span style="margin-top:0px" class="text-danger" asp-validation-for="ConfirmPassword"></span>               
+                    <div>
+                        <span style="margin-top:0px" class="text-danger" asp-validation-for="ConfirmPassword"></span>
+
+                    </div>
                 </div>
                 <div class="col text-center">
                     <select id="input-combobox" asp-for="SelectedCountry">
+                        <option value="">-Select a country-</option>
                         @foreach (var country in Enum.GetValues(typeof(Countries)))
                         {
 
@@ -39,7 +43,9 @@
                         }
 
                     </select>
-                    <span class="text-danger" asp-validation-for="SelectedCountry"></span>
+                    <div>
+                        <span class="text-danger" asp-validation-for="SelectedCountry"></span>
+                    </div>
 
                 </div>
             </div>
@@ -132,6 +138,12 @@
         margin: auto;
         transition: all 0.3s;
     }
+
+        input[type="submit"]:hover {
+            transform: translateY(-6px);
+        }
+
+
 </style>
 
 @*<form method="post">
@@ -172,6 +184,7 @@
 
             <div>
                     <select id="input-combobox" asp-for="SelectedCountry">
+                        <option value="">--Please select a country--</option>
                         @foreach (var country in Enum.GetValues(typeof(Countries)))
                         {   
                            
@@ -179,7 +192,10 @@
                         }
                         
                     </select>
-                    <span  class="text-danger" asp-validation-for="SelectedCountry"></span>
+                    <div>
+                            <span class="text-danger" asp-validation-for="SelectedCountry"></span>
+                    </div>
+                    
 
             </div>
 
@@ -249,9 +265,7 @@
                 
             }
 
-                input[type="submit"]:hover {
-                    transform: translateY(-6px);
-                }
+               
         </style>
 
     </div>

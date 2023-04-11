@@ -1,4 +1,26 @@
 ﻿@page "/shoppingcart"
+@using Newtonsoft.Json;
+@using TicketHive.Shared.Models;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
 <h3>Shoppingcart</h3>
 
 
+@if (cartItems != null)
+{
+    @foreach (var item in cartItems)
+    {
+        <h3>@item.EventModel.EventName</h3>
+    }
+}
+
+
+@code {
+    private List<BookingModel> cartItems = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var jsonString = await localStorage.GetItemAsync<string>("cart");
+        cartItems = JsonConvert.DeserializeObject<List<BookingModel>>(jsonString);
+    }
+
+}
