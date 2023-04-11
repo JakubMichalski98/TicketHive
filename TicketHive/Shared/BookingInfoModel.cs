@@ -7,7 +7,7 @@ using TicketHive.Shared.Models;
 
 namespace TicketHive.Shared
 {
-    public class BookingInfo
+    public class BookingInfoModel
     {
         public UserModel? User { get; set; }
         public BookingModel? Booking { get; set; }

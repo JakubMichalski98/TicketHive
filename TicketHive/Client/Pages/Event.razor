@@ -69,7 +69,7 @@
             {
                 EventModelId = chosenEvent.Id,
                 EventModel = chosenEvent,
-                Quantity = Int32.Parse(NumberOfTickets)
+                Quantity = NumberOfTickets
             };
         await UpdateCart(booking);
     }
