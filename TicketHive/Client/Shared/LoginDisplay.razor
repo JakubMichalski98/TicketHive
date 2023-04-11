@@ -61,7 +61,25 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await ReadLocalStorage();
+        Timer timer = new Timer(async _ =>
+        {
+            await ReadLocalStorage();
+            StateHasChanged();
+        }, null, 0, 1000);
+    }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ReadLocalStorage();
+            StateHasChanged();
+        }
+    }
+
+    private async Task ReadLocalStorage()
+    {
         var jsonString = await localStorage.GetItemAsync<string>("cart");
 
         if (jsonString != null)
@@ -70,8 +88,6 @@
             ItemCount = cartItems.Count;
         }
     }
-
-
 
 
     //protected override async Task OnInitializedAsync()
