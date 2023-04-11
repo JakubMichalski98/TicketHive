@@ -2,13 +2,19 @@
 @using TicketHive.Shared.Models;
 @inject IEventRepo eventrepo
 
-<div>
+@*<div>
     <form @onsubmit="HandleSubmit" class="search-form m-2" role="search">
         <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search" @bind-value="searchEvent">
         <button class="btn btn-outline-primary" type="submit">Search</button>
     </form>
-</div>
+</div>*@
 
+<div>
+    <form class="search-form m-2" role="search">
+        <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search" @bind-value="searchEvent" @oninput="HandleInput">
+        @*<button class="btn btn-outline-primary" type="button" @onclick="HandleSubmit">Search</button>*@
+    </form>
+</div>
 
 
 
@@ -55,27 +61,51 @@ else
     private List<EventModel> events = new List<EventModel>();
     private List<EventModel> filteredEvents = new List<EventModel>();
     private string searchEvent = "";
+    
 
     protected override async Task OnInitializedAsync()
     {
         await eventrepo.GetAllEvents();
         events = eventrepo.Events.ToList();
+        filteredEvents = events;
 
 
     }
 
-    private void HandleSubmit()
+    private void HandleInput(ChangeEventArgs e)
     {
+        searchEvent = e.Value.ToString();
         if (string.IsNullOrEmpty(searchEvent))
         {
             filteredEvents = events;
         }
         else
         {
-            filteredEvents = events.Where(e => e.EventName.ToLower().Contains(searchEvent.ToLower())).ToList();
-        }
+            //filteredEvents = events.Where(e => e.EventName.ToLower().Contains(searchEvent.ToLower())).ToList();
 
+            filteredEvents = events
+            .Where(e => e.EventName.ToLower().Contains(searchEvent.ToLower())
+            || e.EventType.ToLower().Contains(searchEvent.ToLower())
+            || e.EventPlace.ToLower().Contains(searchEvent.ToLower()))
+            .ToList();
+
+        }
     }
+
+    //private void HandleSubmit()
+    //{
+    //    if (string.IsNullOrEmpty(searchEvent))
+    //    {
+    //        filteredEvents = events;
+    //    }
+    //    else
+    //    {
+    //        filteredEvents = events.Where(e => e.EventName.ToLower().Contains(searchEvent.ToLower())).ToList();
+    //    }
+
+    //}
+
+
 
     private void ClearSearch()
     {
