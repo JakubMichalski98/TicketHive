@@ -85,9 +85,15 @@
         {
             username = user.Identity.Name;
         }
-        eventDbUser = await userRepo.GetUser(username);
+        if (username != "admin")
+        {
+            eventDbUser = await userRepo.GetUser(username);
+        }
 
-        Bookings = eventDbUser.Bookings;
+        if (eventDbUser != null)
+        {
+            Bookings = eventDbUser.Bookings;
+        }
 
         await eventRepo.GetAllEvents();
         allEvents = eventRepo.Events.ToList();
