@@ -6,10 +6,12 @@
 
 <AuthorizeView>
     <Authorized>
+
        
         <button id="btn-cart" class="fas fa-shopping-cart" @onclick="ShoppingCart"></button>
        
         <a style= "color: #305076"  href="authentication/profile">Hello, @context.User.Identity?.Name!</a>
+
         <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
