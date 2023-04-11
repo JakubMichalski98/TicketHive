@@ -71,7 +71,7 @@
                 EventModel = chosenEvent,
                 Quantity = Int32.Parse(NumberOfTickets)
             };
-            await UpdateCart(booking);
+        await UpdateCart(booking);
     }
     private async Task HandleSubmit()
     {
@@ -83,7 +83,10 @@
     {
         string bookingsJson = JsonConvert.SerializeObject(bookings);
 
-        await localStorage.SetItemAsync("cart", bookingsJson);
+        if (!await localStorage.ContainKeyAsync("cart"))
+        {
+            await localStorage.SetItemAsync("cart", bookingsJson);
+        }
     }
 
     private async Task UpdateCart(BookingModel booking)
