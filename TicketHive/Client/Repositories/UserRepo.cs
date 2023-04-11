@@ -26,7 +26,7 @@ namespace TicketHive.Client.Repositories
             return null;
         }
 
-        public async Task AddBookingToUser(BookingInfo bookingInfo)
+        public async Task AddBookingToUser(BookingInfoModel bookingInfo)
         {
             var result = await httpClient.PostAsJsonAsync("api/Users", bookingInfo);
         }

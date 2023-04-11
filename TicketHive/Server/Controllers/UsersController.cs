@@ -40,7 +40,7 @@ namespace TicketHive.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<UserModel>>> AddBookingToUser(BookingInfo bookingInfo)
+        public async Task<ActionResult<List<UserModel>>> AddBookingToUser(BookingInfoModel bookingInfo)
         {
             var foundUser = context.Users.FirstOrDefault(u => u.Username == bookingInfo.User.Username);
 
