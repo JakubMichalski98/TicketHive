@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="text-center">
-                <input id="signin-id" type="submit" value="Sign in" class="btn-signin btn-primary btn-sm" />
+                <input id="signin-id" type="submit" value="Sign in" class="btn-signin btn-sm" />
             </div>        
         </div>
     </body>
@@ -61,6 +61,26 @@
     .btn-signin {
         font-size: 0.8rem;
         width: 50%;
+        display: inline-block;
+        outline: 0;
+        border: 0;
+        cursor: pointer;
+        text-decoration: none;
+        position: relative;
+        color: #000;
+        background: #fff;
+        line-height: 30px;
+        border-radius: 40px;
+        padding: 20px;
+        font-size: 30px;
+        font-weight: 600;
+        box-shadow: #fbe89c -2px -2px 0px 2px, #000000 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 0px 2px 7px;
+        transition: all 0.2s;}
+
+
+    .btn-signin:hover{
+            box-shadow: #000000 0px 0px 0px 4px, #fbe89c 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 0px 2px 7px;
+            transform: scale(1.01);
     }
 
     #signin-id{

@@ -30,5 +30,17 @@ namespace TicketHive.Client.Repositories
         {
             var result = await httpClient.PostAsJsonAsync("api/Users", bookingInfo);
         }
+
+        public async Task<bool> ChangeUserPassword(ChangePasswordModel changePasswordModel)
+        {
+            var response = await httpClient.PutAsJsonAsync($"api/Users", changePasswordModel);
+
+            if (response.IsSuccessStatusCode) 
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

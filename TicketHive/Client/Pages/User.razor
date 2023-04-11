@@ -1,0 +1,128 @@
+﻿@page "/change-password"
+
+@using Microsoft.AspNetCore.Components.Forms
+@*@using Microsoft.AspNetCore.Identity*@
+@using System.ComponentModel.DataAnnotations
+@using TicketHive.Shared.Models;
+@inject AuthenticationStateProvider authStateProvider
+@inject IUserRepo userRepo
+@inject NavigationManager navigationManager
+
+@if(!string.IsNullOrEmpty(errorMessage))
+{
+    <h3 class="text-danger">@errorMessage</h3>
+}
+
+<EditForm Model="@changePasswordModel" OnValidSubmit="@(async() => await HandleValidSubmit())">
+    <label for="old-password-input">Old Password:</label>
+    <InputText @bind-Value="@changePasswordModel.OldPassword" id="old-password-input"/>
+    <label for="new-password-input">New Password:</label>
+    <InputText @bind-Value="@changePasswordModel.NewPassword" id="new-password-input" />
+    <input type="submit" value="Change Password"/>
+</EditForm>
+
+@code {
+    public ChangePasswordModel changePasswordModel { get; set; } = new();
+
+    private string? errorMessage;
+
+    private async Task HandleValidSubmit()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        string userName = authState.User.Identity.Name;
+
+        changePasswordModel.Username = userName;
+
+        var passwordChangeSuccessful = await userRepo.ChangeUserPassword(changePasswordModel);
+
+        if (passwordChangeSuccessful)
+        {
+            // Navigate back
+            navigationManager.NavigateTo("/");
+        }
+
+        errorMessage = "Couldn't change password...";
+    }
+}
+
+
+<style>
+    body {
+        background-color: #FCE595;
+    }
+
+    #img-logo {
+        max-width: 400px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 18rem;
+        margin: 0 auto;
+        border-radius: 20px;
+        border-color: black;
+        background-color: #305076;
+    }
+
+
+    #input-username {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 20px;
+        text-align: center
+    }
+
+    #input-password {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 20px;
+        text-align: center
+    }
+
+    #input-ConfirmPassword {
+        width: 200px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 20px;
+        text-align: center
+    }
+
+    .btn-register {
+        font-size: 0.8rem;
+        width: 50%;
+    }
+
+    #register-id {
+        margin: 10px;
+    }
+
+    #input-combobox {
+        width: 150px;
+        height: 30px;
+        border-radius: 20px;
+        border-color: black;
+        margin-top: 20px;
+        text-align: center
+    }
+
+    input[type="submit"] {
+        width: 80px;
+        height: 45px;
+        border-radius: 20px;
+        border-color: black;
+        text-align: center;
+        font-size: medium;
+        margin: auto;
+        transition: all 0.3s;
+    }
+</style>
