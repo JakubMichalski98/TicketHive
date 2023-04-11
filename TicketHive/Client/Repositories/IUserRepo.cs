@@ -8,5 +8,7 @@ namespace TicketHive.Client.Repositories
         public Task<UserModel> GetUser(string username);
 
         public Task AddBookingToUser(BookingInfo bookingInfo);
+
+        public Task<bool> ChangeUserPassword(ChangePasswordModel changePasswordModel);    
     }
 }

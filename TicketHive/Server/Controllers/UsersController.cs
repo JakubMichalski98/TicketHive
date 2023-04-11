@@ -1,8 +1,14 @@
+
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketHive.Server.Data;
+using TicketHive.Server.Models;
 using TicketHive.Shared;
 using TicketHive.Shared.Models;
 
@@ -14,10 +20,12 @@ namespace TicketHive.Server.Controllers
     public class UsersController : ControllerBase
     {
         private readonly EventDbContext context;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public UsersController(EventDbContext context)
+        public UsersController(EventDbContext context, SignInManager<ApplicationUser> signInManager)
         {
             this.context = context;
+            this.signInManager=signInManager;
         }
         [HttpGet("{username}")]
         public async Task<ActionResult<UserModel>> GetUser(string username)
@@ -43,7 +51,24 @@ namespace TicketHive.Server.Controllers
                 return (Ok("Booking added to user"));
             }
             return BadRequest("Something went wrong when adding booking to user");
+        }
 
+        [HttpPut]
+        public async Task<IActionResult> ChangeUserPassword(ChangePasswordModel changePasswordModel)
+        {
+            var applicationUser = await signInManager.UserManager.FindByNameAsync(changePasswordModel.Username!);
+
+            if(applicationUser != null)
+            {
+                var changePasswordResult = await signInManager.UserManager.ChangePasswordAsync(applicationUser, changePasswordModel.OldPassword!, changePasswordModel.NewPassword!);
+
+                if(changePasswordResult.Succeeded)
+                {
+                    return Ok();
+                }
+            }
+
+            return BadRequest();
         }
 
     }
