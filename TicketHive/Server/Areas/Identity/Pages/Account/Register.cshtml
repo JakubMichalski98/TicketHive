@@ -42,6 +42,7 @@
 
             <div>
                     <select id="input-combobox" asp-for="SelectedCountry">
+                        <option value="">--Please select a country--</option>
                         @foreach (var country in Enum.GetValues(typeof(Countries)))
                         {   
                            
@@ -49,7 +50,10 @@
                         }
                         
                     </select>
-                    <span  class="text-danger" asp-validation-for="SelectedCountry"></span>
+                    <div>
+                            <span class="text-danger" asp-validation-for="SelectedCountry"></span>
+                    </div>
+                    
 
             </div>
 
