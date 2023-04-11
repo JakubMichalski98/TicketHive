@@ -1,6 +1,13 @@
 ﻿@page "/event/{id:int}"
+@using Newtonsoft.Json;
+@using System.Net;
+@using TicketHive.Shared.Models;
+@using TicketHive.Shared;
+@using Microsoft.AspNetCore.Http;
 @inject IEventRepo eventRepo;
-
+@inject IUserRepo userRepo;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+@inject NavigationManager navigationManager;
 
 <header class="p-5"></header>
 <div class="row">
@@ -43,4 +50,52 @@
         background-color: #FCE693;
     }
 </style>
+
+
+@code {
+    private string? username;
+    private UserModel? eventDbUser;
+    private List<BookingModel> Bookings = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        chosenEvent = await eventRepo.GetEvent(Id);
+        CreateCart();
+    }
+
+    private async Task AddBooking()
+    {
+        BookingModel booking = new()
+            {
+                EventModelId = 3,
+                Quantity = Int32.Parse(NumberOfTickets)
+            };
+            UpdateCart(booking);
+    }
+    private async Task HandleSubmit()
+    {
+        await AddBooking();
+        navigationManager.NavigateTo("/shoppingcart");
+    }
+
+    private async Task CreateCart()
+    {
+        string bookingsJson = JsonConvert.SerializeObject(Bookings);
+
+        await localStorage.SetItemAsync("cart", bookingsJson);
+    }
+
+    private async Task UpdateCart(BookingModel booking)
+    {
+        string bookingsJson = await localStorage.GetItemAsync<string>("cart");
+
+        List<BookingModel>? localStorageBookings = JsonConvert.DeserializeObject<List<BookingModel>>(bookingsJson);
+
+        localStorageBookings.Add(booking);
+        string updatedBookingsJson = JsonConvert.SerializeObject(localStorageBookings);
+
+        await localStorage.SetItemAsync("cart", updatedBookingsJson);
+    }
+
+}
 

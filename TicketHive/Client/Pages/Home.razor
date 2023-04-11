@@ -5,25 +5,75 @@
 @inject IEventRepo eventRepo;
 @inject IBookingRepo bookingRepo;
 @inject AuthenticationStateProvider authProvider
-<h3>Home</h3>
 
 
-<button @onclick="AddBooking">Add example booking to current user</button>
-<button @onclick="RemoveBooking">Remove previously added booking</button>
+@if (eventDbUser != null && eventDbUser.Bookings.Count > 0)
+{
+    <header>
+        <h1 class="text-center">Welcome to TicketHive <span class="  fs-3 fst-italic">@eventDbUser.Username</span></h1>
+        <h4>Here is your bookings:</h4>
+    </header>
+    <div class="row row-cols-3 row-cols-md-3 g-4">
+        @foreach (var e in eventDbUser.Bookings)
+        {
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <img style="max-width: 100px" src="/Images/@e.EventModel.Image" class="card-img-top" alt="...">
+                        <h5 class="card-title">@e.EventModel.EventName</h5>
+                        <p class="card-text"></p>
+                        <a href="/event/@e.EventModel.Id" class="btn btn-primary card-btn">Go to event</a>
+                    </div>
+                </div>
+            </div>
 
-@if (eventDbUser != null)
+        }
+    </div>
+}
+@if (eventDbUser != null && eventDbUser.Bookings.Count == 0)
+{
+    <header>
+        <h1 class="text-center">Welcome to TicketHive <span class="  fs-3 fst-italic">@eventDbUser.Username</span></h1>
+        <h4>You have no bookings, check out these events:</h4>
+    </header>
+
+    for (int i = 0; i < 5; i++)
+    {
+        <div class="row row-cols-3 row-cols-md-3 g-4">
+            @foreach (var e in allEvents)
+            {
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="/Images/@e.Image" class="card-img-top" alt="...">
+                            <h5 class="card-title">@e.EventName</h5>
+                            <a href="/event/@e.Id" class="btn btn-primary card-btn">Go to event</a>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    }
+}
+
+
+
+@*@if (eventDbUser != null)
 {
     foreach (var item in Bookings)
     {
         <h3>@item.EventModel.EventName</h3>
     }
 }
-
+*@
 
 @code {
     private string? username;
     private UserModel? eventDbUser;
-    List<BookingModel> Bookings;
+    List<BookingModel>? Bookings;
+    UserModel? signedInUser;
+    private List<EventModel>? allEvents;
 
     protected override async Task OnInitializedAsync()
     {
@@ -38,6 +88,9 @@
         eventDbUser = await userRepo.GetUser(username);
 
         Bookings = eventDbUser.Bookings;
+
+        await eventRepo.GetAllEvents();
+        allEvents = eventRepo.Events.ToList();
 
     }
 
