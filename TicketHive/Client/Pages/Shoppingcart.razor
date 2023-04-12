@@ -127,8 +127,6 @@
             userRepo.AddBookingToUser(bookingInfo);
         }
 
-        await localStorage.RemoveItemAsync("cart");
-
         navigationManager.NavigateTo("/confirmation");
     }
 
