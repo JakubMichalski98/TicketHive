@@ -56,7 +56,7 @@
 
                     <td id="item-display">@items.TotalTickets</td>
 
-                    <td id="item-display">@items.SoldTickets</td>
+                    <td id="item-display">@items.AvailableTickets</td>
 
                     <td id="item-display">@items.Date</td>
                     <td>
@@ -107,7 +107,7 @@
             </div>
             <div>
                 <label>Sold Tickets</label>
-                <InputNumber placeholder="Sold Tickets" id="EventSoldTickets" @bind-Value="newEvent.SoldTickets"></InputNumber>
+                <InputNumber placeholder="Sold Tickets" id="EventSoldTickets" @bind-Value="newEvent.AvailableTickets"></InputNumber>
             </div>
             <div>
                 <button id="TheButton" type="submit">Publish Event</button>
