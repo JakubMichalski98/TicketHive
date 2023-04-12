@@ -8,11 +8,12 @@
 @inject IUserRepo userRepo;
 <h3>Shoppingcart</h3>
 
-<div id="TheDiv">
 
 @if (cartItems != null)
-    {
-        <table id="thetable">
+{
+
+    <div id="TheDiv">
+            <table id="thetable">
 
             <thead id="table-head">
 
@@ -40,12 +41,19 @@
 
                         <td>
 
-                            <select id="input-combobox" @bind="item.Quantity">
-                            @for (int i = 1; i < 11; i++)
+                            <select id="input-combobox" @bind="item.Quantity" @bind:event="onchange">
+                            @for (int i = 0; i < 11; i++)
                             {
-                                <option value=@i>@i.ToString()</option>
-                            }
+                                    <option value=@i>@i.ToString()
+                                        @if(i == 0)
+                                        {
+                                            RemoveFromCartZero();
+                                           
+                                        }
+                                      
+                                    </option>
 
+                            }       
                             </select>
                         </td>
                         <td>@TicketPrice(item.EventModel.PricePerTicket, item.Quantity) Kr</td>
@@ -76,18 +84,14 @@
             </tfoot>
 
         </table>
-        
-        
-}
-    @if(cartItems == null)
-    {
-        <h1>No Items</h1>
-    }
-</div>
 
-<div id="button-div">
-    
-</div>
+    </div>
+
+}
+
+
+
+
 
 
 @code {
@@ -150,7 +154,7 @@
     {
         return PricePerTicket * quantity;
     }
-   
+
     private decimal TotalPrice(List<BookingModel> cartItems)
     {
         decimal totalPrice = 0;
@@ -162,7 +166,17 @@
         return totalPrice;
     }
 
-
+    public async Task RemoveFromCartZero()
+    {
+        foreach (var item in cartItems.ToList())
+        {
+            if (item.Quantity == 0)
+            {
+                await RemoveFromCart(item.EventModelId);
+                cartItems.Remove(item);
+            }
+        }
+    }
 
 
 
