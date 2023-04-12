@@ -74,7 +74,7 @@
         await shoppingcartRepo.CreateCart(bookings);
     }
 
-    private async Task<bool> AddBooking()
+    private async Task AddBooking()
     {
         BookingModel booking = new()
             {
@@ -86,15 +86,14 @@
         if (!await shoppingcartRepo.CheckIfItemExists(booking))
         {
             await shoppingcartRepo.AddToCart(booking);
-            return true;
+            navigationManager.NavigateTo("/shoppingcart");
         }
-        return false;
+        //TODO: Implement message popping up saying that item is already in cart
 
     }
     private async Task HandleSubmit()
     {
         await AddBooking();
-        navigationManager.NavigateTo("/shoppingcart");
     }
 }
 

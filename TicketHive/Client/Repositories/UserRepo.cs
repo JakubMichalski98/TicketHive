@@ -41,6 +41,18 @@ namespace TicketHive.Client.Repositories
             return null;
         }
 
+        public async Task<bool> CheckIfBookingExists(BookingModel booking)
+        {
+            var user = await GetLoggedInUser();
+
+            foreach(var item in user.Bookings)
+            {
+                if (item.EventModelId == booking.EventModelId)
+                    return true;
+            }
+            return false;
+        }
+
         public async Task AddBookingToUser(BookingInfoModel bookingInfo)
         {
             var result = await httpClient.PostAsJsonAsync("api/Users", bookingInfo);

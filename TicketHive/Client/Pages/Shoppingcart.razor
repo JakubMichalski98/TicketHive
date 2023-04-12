@@ -115,9 +115,16 @@
                     User = eventDbUser,
                     Booking = item
                 };
-            await userRepo.AddBookingToUser(bookingInfo);
+
+            if (!await userRepo.CheckIfBookingExists(item))
+            {
+                await userRepo.AddBookingToUser(bookingInfo);
+                navigationManager.NavigateTo("/confirmation");
+            }
+            // TODO: Implement error message code here specifying which item is already booked
+
         }
-        navigationManager.NavigateTo("/confirmation");
+        
     }
 
     public decimal TicketPrice(decimal PricePerTicket, int quantity)
