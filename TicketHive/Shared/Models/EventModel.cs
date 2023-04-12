@@ -16,7 +16,7 @@ namespace TicketHive.Shared.Models
         public DateTime Date { get; set; }
         public decimal PricePerTicket { get; set; }
         public int TotalTickets { get; set; }
-        public int SoldTickets { get; set; }
+        public int AvailableTickets { get; set; }
         public string? Image { get; set; }
     }
 }

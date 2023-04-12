@@ -67,7 +67,7 @@ namespace TicketHive.Server.Controllers
                     foundEvent.EventDetails = eventModel.EventDetails;
                     foundEvent.Date = eventModel.Date;
                     foundEvent.PricePerTicket = eventModel.PricePerTicket;
-                    foundEvent.SoldTickets = eventModel.SoldTickets;
+                    foundEvent.AvailableTickets = eventModel.AvailableTickets;
                     foundEvent.TotalTickets = eventModel.TotalTickets;
                     foundEvent.Image = eventModel.Image;
 
