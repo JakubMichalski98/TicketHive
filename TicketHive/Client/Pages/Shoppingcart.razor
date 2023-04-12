@@ -8,69 +8,86 @@
 @inject IUserRepo userRepo;
 <h3>Shoppingcart</h3>
 
+<div id="TheDiv">
 
 @if (cartItems != null)
-{
-    <div class="row row-cols-3 row-cols-md-3 g-4 center">
-        @foreach (var item in cartItems)
-        {
+    {
+        <table id="thetable">
+
+            <thead id="table-head">
+
+                <tr id="head-display">
+                    <th></th>
+                    <th>Name</th>
+                    <th>Change Amount Tickets?</th>
+                    <th>Price</th>
+                    <th></th>
+
+                </tr>
 
 
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <img src="/Images/@item.EventModel.Image" class="card-img-top" alt="...">
-                        <h5 class="card-title">@item.EventModel.EventName</h5>
-                        <div>
-                            <p>Do you want to change the amount of tickets?</p>
+            </thead>
+
+            <tbody id="table-body">
+
+
+                @foreach (var item in cartItems) 
+                {
+                    <tr id="table-row">
+                        <td><img id="img" src="/Images/@item.EventModel.Image"/></td>
+                        <td id="item-display">@item.EventModel.EventName</td>
+
+
+                        <td>
+
                             <select id="input-combobox" @bind="item.Quantity">
-                                @for (int i = 1; i < 11; i++)
-                                {
-                                    <option value=@i>@i.ToString()</option>
-                                }
+                            @for (int i = 1; i < 11; i++)
+                            {
+                                <option value=@i>@i.ToString()</option>
+                            }
 
                             </select>
-                        </div>
-
+                        </td>
+                        <td>@TicketPrice(item.EventModel.PricePerTicket, item.Quantity) Kr</td>
+                        <td> <input class="btn btn-danger" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))" value="REMOVE" /> </td>
                         
-                        <input class="btn btn-success" type="button" style="text-align:center" value="Book" @onclick="AddBookingsToUser" />
-                        <input class="btn btn-danger" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))" value="REMOVE" />
-                        
-                    </div>
-                </div>
-            </div>
-           
 
 
+                    </tr>
+               
+
+                }
+            
 
 
+            </tbody>
 
-            @*<img src="@item.EventModel.Image" />
-            <h1 id="Title">@item.EventModel.EventName</h1>
+            <tfoot id="tfoot">
+                <tr >
+                    <td colspan="4"style="text-align:right">Total Price:@TotalPrice(cartItems) Kr</td>
+                    <td colspan="5" style="text-align:right">
+                        <input class="btn btn-success" type="button" value="Book Events" @onclick="AddBookingsToUser" />
+                    </td>
+                    
+                </tr>
 
-            <div>
-                <p>Do you want to change the amount of tickets?</p>
-                <select id="input-combobox" @bind="item.Quantity">
-                    @for (int i = 1; i < 11; i++)
-                    {
-                        <option value=@i>@i.ToString()</option>
-                    }
+            
 
-                </select>
-            </div>
+            </tfoot>
 
-
-            <div>
-                <input class="btn btn-danger" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))" value="REMOVE" />
-            </div>*@
-
-        }
-    </div>
-
-
-   
+        </table>
+        
+        
 }
+    @if(cartItems == null)
+    {
+        <h1>No Items</h1>
+    }
+</div>
 
+<div id="button-div">
+    
+</div>
 
 
 @code {
@@ -132,8 +149,21 @@
         navigationManager.NavigateTo("/confirmation");
     }
 
+    public decimal TicketPrice(decimal PricePerTicket, int quantity)
+    {
+        return PricePerTicket * quantity;
+    }
+   
+    private decimal TotalPrice(List<BookingModel> cartItems)
+    {
+        decimal totalPrice = 0;
 
-
+        foreach (var item in cartItems)
+        {
+            totalPrice += TicketPrice(item.EventModel.PricePerTicket, item.Quantity);
+        }
+        return totalPrice;
+    }
 
 
 
@@ -141,12 +171,67 @@
 
 }
 <style>
+    #tfoot{
+        background-color:white;
+    }
 
+    #button-div{
+        position: absolute; 
+        bottom: 0; 
+        right: 0; 
+        margin: 10px; 
+       
+    }
+    #table-row{
+        text-align:center;
+        margin-left:10px;
+    }
+    #table-body{
+        background-color:white;
+        border-bottom: 2px solid black;
+        padding: 20px 0;
+    }
     #title{
         text-align:center;
         font-family:monospace;
         color: #305076
     }
+    #img{
+        margin-top:30px;
+        margin-bottom:30px;
+        max-width:300px;
+
+    }
+    #TheDiv{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        align-content:space-between;
+        
+        
+    }
+    #thetable{
+        border-collapse:collapse;
+        border-spacing:100px;
+        width:65%;
+        height:350px;
+        
+        
+        
+        
+    }
+    #table-head{
+        background-color:grey;
+        text-align:center;
+    }
+    tr{
+        border-bottom: 2px solid black;
+        padding: 20px 0;
+        
+    }
+    
+
+    
 
     
 
@@ -154,3 +239,12 @@
 
 
 </style>
+
+
+
+
+         
+
+
+
+           
