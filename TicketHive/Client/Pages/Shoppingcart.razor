@@ -11,24 +11,66 @@
 
 @if (cartItems != null)
 {
-    @foreach (var item in cartItems)
-    {
-        <h3>@item.EventModel.EventName</h3>
-        <input type="button" @onclick="(() => RemoveFromCart(item.EventModelId))" value="REMOVE" />
-        <div>
+    <div class="row row-cols-3 row-cols-md-3 g-4 center">
+        @foreach (var item in cartItems)
+        {
 
-            <select id="input-combobox" @bind="item.Quantity">
-                @for (int i = 1; i < 11; i++)
-                {
-                    <option value=@i>@i.ToString()</option>
-                }
 
-            </select>
-        </div>
-    }
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="/Images/@item.EventModel.Image" class="card-img-top" alt="...">
+                        <h5 class="card-title">@item.EventModel.EventName</h5>
+                        <div>
+                            <p>Do you want to change the amount of tickets?</p>
+                            <select id="input-combobox" @bind="item.Quantity">
+                                @for (int i = 1; i < 11; i++)
+                                {
+                                    <option value=@i>@i.ToString()</option>
+                                }
+
+                            </select>
+                        </div>
+
+                        
+                        <input class="btn btn-success" type="button" style="text-align:center" value="Book" @onclick="AddBookingsToUser" />
+                        <input class="btn btn-danger" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))" value="REMOVE" />
+                        
+                    </div>
+                </div>
+            </div>
+           
+
+
+
+
+
+            @*<img src="@item.EventModel.Image" />
+            <h1 id="Title">@item.EventModel.EventName</h1>
+
+            <div>
+                <p>Do you want to change the amount of tickets?</p>
+                <select id="input-combobox" @bind="item.Quantity">
+                    @for (int i = 1; i < 11; i++)
+                    {
+                        <option value=@i>@i.ToString()</option>
+                    }
+
+                </select>
+            </div>
+
+
+            <div>
+                <input class="btn btn-danger" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))" value="REMOVE" />
+            </div>*@
+
+        }
+    </div>
+
+
+   
 }
 
-<input type="button" style="text-align:center" value="Book" @onclick="AddBookingsToUser" />
 
 
 @code {
@@ -90,4 +132,25 @@
         navigationManager.NavigateTo("/confirmation");
     }
 
+
+
+
+
+
+
+
 }
+<style>
+
+    #title{
+        text-align:center;
+        font-family:monospace;
+        color: #305076
+    }
+
+    
+
+
+
+
+</style>
