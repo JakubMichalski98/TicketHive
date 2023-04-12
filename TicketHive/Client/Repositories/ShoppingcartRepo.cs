@@ -35,6 +35,20 @@ namespace TicketHive.Client.Repositories
             return null;
         }
 
+        public async Task<bool> CheckIfItemExists(BookingModel booking)
+        {
+            List<BookingModel> bookings = await GetCartFromLocalStorage();
+
+            foreach (var item in bookings)
+            {
+                if (item.EventModelId == booking.EventModelId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public async Task AddToCart(BookingModel booking)
         {
             string bookingsJson = await localStorage.GetItemAsync<string>("cart");

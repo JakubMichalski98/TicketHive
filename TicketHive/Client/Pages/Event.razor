@@ -74,7 +74,7 @@
         await shoppingcartRepo.CreateCart(bookings);
     }
 
-    private async Task AddBooking()
+    private async Task<bool> AddBooking()
     {
         BookingModel booking = new()
             {
@@ -82,7 +82,14 @@
                 EventModel = chosenEvent,
                 Quantity = NumberOfTickets
             };
-        await shoppingcartRepo.AddToCart(booking);
+
+        if (!await shoppingcartRepo.CheckIfItemExists(booking))
+        {
+            await shoppingcartRepo.AddToCart(booking);
+            return true;
+        }
+        return false;
+
     }
     private async Task HandleSubmit()
     {
