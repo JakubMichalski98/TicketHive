@@ -53,28 +53,20 @@ namespace TicketHive.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<List<EventModel>>> UpdateEvent(EventModel eventModel, int id)
+        public async Task<ActionResult<List<EventModel>>> UpdateAvailableEventTickets(int? eventModelId, int quantity)
         {
-            if (eventModel != null)
+            if (eventModelId != null)
             {
-                var foundEvent = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
+                var foundEvent = await context.Events.FirstOrDefaultAsync(e => e.Id == eventModelId);
 
                 if (foundEvent != null)
                 {
-                    foundEvent.EventName = eventModel.EventName;
-                    foundEvent.EventType = eventModel.EventType;
-                    foundEvent.EventPlace = eventModel.EventPlace;
-                    foundEvent.EventDetails = eventModel.EventDetails;
-                    foundEvent.Date = eventModel.Date;
-                    foundEvent.PricePerTicket = eventModel.PricePerTicket;
-                    foundEvent.AvailableTickets = eventModel.AvailableTickets;
-                    foundEvent.TotalTickets = eventModel.TotalTickets;
-                    foundEvent.Image = eventModel.Image;
+                    foundEvent.AvailableTickets = quantity;
 
                     await context.SaveChangesAsync();
                 }
             }
-            return BadRequest("Something went wrong when updating event");
+            return BadRequest("Something went wrong when updating amount of available tickets for event");
         }
 
         [HttpDelete("{id}")]

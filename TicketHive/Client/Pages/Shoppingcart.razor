@@ -7,6 +7,7 @@
 @inject IShoppingcartRepo shoppingcartRepo;
 @inject NavigationManager navigationManager;
 @inject IUserRepo userRepo;
+@inject IEventRepo eventRepo;
 <h3>Shoppingcart</h3>
 
 <div id="TheDiv">
@@ -118,6 +119,7 @@
 
             if (!await userRepo.CheckIfBookingExists(item))
             {
+                await eventRepo.UpdateAvailableEventTickets(item.EventModelId, item.Quantity);
                 await userRepo.AddBookingToUser(bookingInfo);
                 navigationManager.NavigateTo("/confirmation");
             }

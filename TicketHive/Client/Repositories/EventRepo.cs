@@ -71,13 +71,13 @@ namespace TicketHive.Client.Repositories
         }
         
         /// <summary>
-        /// Sends HTTP Put request to API in order to update 
+        /// Sends HTTP Put request to API in order to update available tickets property for event
         /// </summary>
-        /// <param name="updatedEvent"></param>
+        /// <param name=""></param>
         /// <returns></returns>
-        public async Task UpdateEvent(EventModel updatedEvent)
+        public async Task UpdateAvailableEventTickets(int eventModelId, int quantity)
         {
-            var result = await httpClient.PutAsJsonAsync($"api/Events/{updatedEvent.Id}", updatedEvent);
+            var result = await httpClient.PutAsJsonAsync($"api/Events/{eventModelId}", quantity);
         }
     }
 }
