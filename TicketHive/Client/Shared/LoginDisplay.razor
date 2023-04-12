@@ -8,21 +8,21 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
-<AuthorizeView>
-    <Authorized>
+    <AuthorizeView>
+        <Authorized>
+            <button id="btn-cart" class="fas fa-shopping-cart" @onclick="ShoppingCart"><i id="counter">@ItemCount</i></button>
 
-       
-        <button id="btn-cart" class="fas fa-shopping-cart" @onclick="ShoppingCart"><i id="counter">@ItemCount</i></button>
-       
-        <a style= "color: #305076"  href="authentication/profile">Hello, @context.User.Identity?.Name!</a>
+            <a style="color: #305076" href="/user-page">@context.User.Identity?.Name!</a>
 
-        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
-    </Authorized>
-    <NotAuthorized>
-        <a style= "color: #305076"  href="authentication/register">Register</a>
-        <a style= "color: #305076"  href="authentication/login">Log in</a>
-    </NotAuthorized>
-</AuthorizeView>
+            <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+        </Authorized>
+        <NotAuthorized>
+            <a style="color: #305076" href="authentication/register">Register</a>
+            <a style="color: #305076" href="authentication/login">Log in</a>
+        </NotAuthorized>
+    </AuthorizeView>
+
+
 
 @code{
     private void BeginLogOut()
