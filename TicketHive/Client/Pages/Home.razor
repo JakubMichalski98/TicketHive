@@ -11,7 +11,7 @@
 @if (eventDbUser != null && eventDbUser.Bookings.Count > 0)
 {
     <header>
-        <h1 class="text-center">Welcome to TicketHive <span class="  fs-3 fst-italic">@eventDbUser.Username</span></h1>
+        <h1 class="text-center">Welcome to TicketHive <span class="fs-3 fst-italic">@eventDbUser.Username</span></h1>
         <h4>Here is your bookings:</h4>
     </header>
     <div class="row row-cols-3 row-cols-md-3 g-4">
@@ -38,9 +38,7 @@
         <h4>You have no bookings, check out these events:</h4>
     </header>
 
-    for (int i = 0; i < 5; i++)
-    {
-        <div class="row row-cols-3 row-cols-md-3 g-4">
+      <div class="row row-cols-3 row-cols-md-3 g-4">
             @foreach (var e in allEvents)
             {
                 <div class="col">
@@ -55,19 +53,8 @@
 
             }
         </div>
-    }
+   
 }
-
-
-
-@*@if (eventDbUser != null)
-{
-    foreach (var item in Bookings)
-    {
-        <h3>@item.EventModel.EventName</h3>
-    }
-}
-*@
 
 @code {
     private string? username;
@@ -101,36 +88,5 @@
 
     }
 
-    private async Task AddBooking()
-    {
-        EventModel? eventToAdd = await eventRepo.GetEvent(3);
-
-
-        if (this.eventDbUser != null && eventDbUser != null)
-        {
-            BookingModel booking = new()
-                {
-                    EventModelId = eventToAdd.Id,
-                    Quantity = 1
-
-                };
-
-            BookingInfoModel bookingInfo = new()
-                {
-                    User = eventDbUser,
-                    Booking = booking
-                };
-
-            await userRepo.AddBookingToUser(bookingInfo);
-            eventDbUser = await userRepo.GetUser(username);
-            Bookings = eventDbUser.Bookings;
-        }
-    }
-
-    private async Task RemoveBooking()
-    {
-        await bookingRepo.RemoveBooking(1004);
-        eventDbUser = await userRepo.GetUser(username);
-        Bookings = eventDbUser.Bookings;
-    }
+    
 }
