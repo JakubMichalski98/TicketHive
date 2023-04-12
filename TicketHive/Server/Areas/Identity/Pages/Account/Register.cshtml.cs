@@ -65,7 +65,8 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
                 };
                 UserModel NewEventUser = new()
                 {
-                    Username = Username,
+                    Username = Username, 
+                    UserCountry = SelectedCountry,
                     
                 };
                 _Context.Users.Add(NewEventUser);

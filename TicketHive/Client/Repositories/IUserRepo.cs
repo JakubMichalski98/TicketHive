@@ -9,6 +9,8 @@ namespace TicketHive.Client.Repositories
 
         public Task AddBookingToUser(BookingInfoModel bookingInfo);
 
-        public Task<bool> ChangeUserPassword(ChangePasswordModel changePasswordModel);    
+        public Task<bool> ChangeUserPassword(ChangePasswordModel changePasswordModel);
+
+        public Task<bool> ChangeUserCountry(ChangeUserCountryModel changeUserCountryModel);
     }
 }
