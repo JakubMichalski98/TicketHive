@@ -8,7 +8,7 @@
 @using Microsoft.AspNetCore.Http;
 @inject IEventRepo eventRepo;
 @inject IUserRepo userRepo;
-@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+@inject IShoppingcartRepo shoppingcartRepo;
 @inject NavigationManager navigationManager;
 
 <header class="p-5"></header>
@@ -62,7 +62,7 @@
     protected override async Task OnInitializedAsync()
     {
         chosenEvent = await eventRepo.GetEvent(Id);
-        await CreateCart();
+        await shoppingcartRepo.CreateCart(bookings);
     }
 
     private async Task AddBooking()
@@ -73,35 +73,12 @@
                 EventModel = chosenEvent,
                 Quantity = NumberOfTickets
             };
-        await UpdateCart(booking);
+        await shoppingcartRepo.AddToCart(booking);
     }
     private async Task HandleSubmit()
     {
         await AddBooking();
         navigationManager.NavigateTo("/shoppingcart");
     }
-
-    private async Task CreateCart()
-    {
-        string bookingsJson = JsonConvert.SerializeObject(bookings);
-
-        if (!await localStorage.ContainKeyAsync("cart"))
-        {
-            await localStorage.SetItemAsync("cart", bookingsJson);
-        }
-    }
-
-    private async Task UpdateCart(BookingModel booking)
-    {
-        string bookingsJson = await localStorage.GetItemAsync<string>("cart");
-
-        List<BookingModel>? localStorageBookings = JsonConvert.DeserializeObject<List<BookingModel>>(bookingsJson);
-
-        localStorageBookings.Add(booking);
-        string updatedBookingsJson = JsonConvert.SerializeObject(localStorageBookings);
-
-        await localStorage.SetItemAsync("cart", updatedBookingsJson);
-    }
-
 }
 
