@@ -1,5 +1,5 @@
-﻿@page "/change-password"
-@attribute [Authorize]
+﻿@page "/user-page"
+@*@attribute [Authorize]*@
 @using TicketHive.Shared.Enums
 @using Microsoft.AspNetCore.Components.Forms
 @*@using Microsoft.AspNetCore.Identity*@
@@ -16,31 +16,52 @@
 }
 
 <EditForm Model="@changePasswordModel" OnValidSubmit="@(async() => await HandleValidSubmit())">
-    <label for="old-password-input">Old Password:</label>
-    <InputText @bind-Value="@changePasswordModel.OldPassword" id="old-password-input" />
-    <label for="new-password-input">New Password:</label>
-    <InputText @bind-Value="@changePasswordModel.NewPassword" id="new-password-input" />
+   <body>
+        <div class="card mx-auto" style="width: 18rem;">
+            <div class="card-body">
+                <div class="col text-center">
+                    <label for="old-password-input">Old Password:</label>
+                    <InputText @bind-Value="@changePasswordModel.OldPassword" id="old-password-input" />
+                </div>
+            </div>
+         
+            <div class="card-body">
+                <div class="col text-center">
+                    <label for="new-password-input">New Password:</label>
+                    <InputText @bind-Value="@changePasswordModel.NewPassword" id="new-password-input" />
+                </div>
+            </div>
+           
 
-    <EditForm Model="@changeUserCountryModel" Context="Test">
-        <InputSelect id="input-combobox" @bind-Value=@changeUserCountryModel.UserCountry>
-        
-        @*<option>@userCountry</option>*@
-        @foreach (var country in Enum.GetValues(typeof(Countries)))
-        {
+            <div class="card-body">
+                <div class="col text-center">
+                    <label for="new-country-input">Change country:</label>
+                    <EditForm Model="@changeUserCountryModel" Context="Test">
+                        <InputSelect id="input-combobox" @bind-Value=@changeUserCountryModel.UserCountry>
 
-                <option value=@country>@country.ToString().Replace("_", " ")</option>
-        }
-        </InputSelect>
-    </EditForm>
-    
+                            @*<option>@userCountry</option>*@
+                            @foreach (var country in Enum.GetValues(typeof(Countries)))
+                            {
 
-    <input type="submit" value="Save Changes" />
+                                <option value=@country>@country.ToString().Replace("_", " ")</option>
+                            }
+                        </InputSelect>
+                    </EditForm>
+                </div>
+            </div>
 
-    <div>
-        <span class="text-danger" asp-validation-for="SelectedCountry"></span>
+
+            <div class="text-center">
+                <input id="savechanges-id" type="submit" value="Save" class="btn-savechanges" />
+            </div>
+            
+
+            <div>
+                <span class="text-danger" asp-validation-for="SelectedCountry"></span>
+            </div>
     </div>
 
-
+  </body>
 </EditForm>
 
 @code {
@@ -90,14 +111,9 @@
     }
 }
 
-
 <style>
     body {
         background-color: #FCE595;
-    }
-
-    #img-logo {
-        max-width: 400px;
     }
 
     .container {
@@ -114,7 +130,6 @@
         background-color: #305076;
     }
 
-
     #input-username {
         width: 200px;
         height: 45px;
@@ -124,7 +139,7 @@
         text-align: center
     }
 
-    #input-password {
+    #old-password-input {
         width: 200px;
         height: 45px;
         border-radius: 20px;
@@ -133,7 +148,7 @@
         text-align: center
     }
 
-    #input-ConfirmPassword {
+    #new-password-input {
         width: 200px;
         height: 45px;
         border-radius: 20px;
@@ -142,12 +157,30 @@
         text-align: center
     }
 
-    .btn-register {
+    .btn-savechanges {
         font-size: 0.8rem;
         width: 50%;
+        display: inline-block;
+        outline: 0;
+        border: 0;
+        cursor: pointer;
+        text-decoration: none;
+        position: relative;
+        color: #000;
+        background: #fff;
+        border-radius: 40px;
+        font-size: 30px;
+        font-weight: 600;
+        box-shadow: #fbe89c -2px -2px 0px 2px, #000000 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 0px 2px 7px;
+        transition: all 0.2s;
     }
 
-    #register-id {
+        .btn-savechanges:hover {
+            box-shadow: #000000 0px 0px 0px 4px, #fbe89c 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 0px 2px 7px;
+            transform: scale(1.01);
+    }
+
+    #savechanges-id {
         margin: 10px;
     }
 
@@ -169,5 +202,9 @@
         font-size: medium;
         margin: auto;
         transition: all 0.3s;
+    }
+
+    input[type="submit"]:hover {
+            transform: translateY(-6px);
     }
 </style>

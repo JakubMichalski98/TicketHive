@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="text-center">
-                <input id="register-id" type="submit" style="text-align:center" value="Register" class="btn-register btn-primary btn-sm" />
+                <input id="register-id" type="submit" style="text-align:center" value="Register" class="btn-register btn-sm" />
                 
             </div>
         </div>
@@ -112,6 +112,24 @@
     .btn-register {
         font-size: 0.8rem;
         width: 50%;
+        display: inline-block;
+        outline: 0;
+        border: 0;
+        cursor: pointer;
+        text-decoration: none;
+        position: relative;
+        color: #000;
+        background: #fff;
+        border-radius: 40px;
+        font-size: 30px;
+        font-weight: 600;
+        box-shadow: #fbe89c -2px -2px 0px 2px, #000000 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 0px 2px 7px;
+        transition: all 0.2s;
+    }
+
+    .btn-register:hover{
+            box-shadow: #000000 0px 0px 0px 4px, #fbe89c 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 0px 2px 7px;
+            transform: scale(1.01);
     }
 
     #register-id{
