@@ -4,9 +4,7 @@
 @using Newtonsoft.Json;
 @using TicketHive.Shared.Models;
 @using TicketHive.Shared;
-@inject Blazored.LocalStorage.ILocalStorageService localStorage;
 @inject IShoppingcartRepo shoppingcartRepo;
-@inject AuthenticationStateProvider authProvider;
 @inject NavigationManager navigationManager;
 @inject IUserRepo userRepo;
 <h3>Shoppingcart</h3>
@@ -111,7 +109,7 @@
     {
         foreach (var item in cartItems)
         {
-            UserModel eventDbUser = await GetEventDbUser();
+            UserModel eventDbUser = await userRepo.GetLoggedInUser();
             BookingInfoModel bookingInfo = new()
                 {
                     User = eventDbUser,
@@ -136,18 +134,6 @@
             totalPrice += TicketPrice(item.EventModel.PricePerTicket, item.Quantity);
         }
         return totalPrice;
-    }
-
-    private async Task<UserModel> GetEventDbUser()
-    {
-        var authState = await authProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            return await userRepo.GetUser(user.Identity.Name);
-        }
-        return null;
     }
 
     private async Task UpdateCartItems()

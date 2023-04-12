@@ -1,5 +1,6 @@
 ﻿@page "/home"
 @attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization;
 @using TicketHive.Shared.Models;
 @using TicketHive.Shared;
 @inject IUserRepo userRepo;
@@ -60,22 +61,15 @@
     private string? username;
     private UserModel? eventDbUser;
     List<BookingModel>? Bookings;
-    UserModel? signedInUser;
     private List<EventModel>? allEvents;
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await authProvider.GetAuthenticationStateAsync();
+        var user = await userRepo.GetLoggedInUser();
 
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            username = user.Identity.Name;
-        }
         if (username != "admin")
         {
-            eventDbUser = await userRepo.GetUser(username);
+            eventDbUser = user;
         }
 
         if (eventDbUser != null)
@@ -83,7 +77,6 @@
             Bookings = eventDbUser.Bookings;
         }
 
-        await eventRepo.GetAllEvents();
         allEvents = eventRepo.Events.ToList();
 
     }

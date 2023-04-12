@@ -77,7 +77,6 @@ namespace TicketHive.Client.Repositories
         }
         private async Task SetEvents()
         {
-            //var response = await result.Content.ReadFromJsonAsync<List<EventModel>>();
             Events = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
         }
     }

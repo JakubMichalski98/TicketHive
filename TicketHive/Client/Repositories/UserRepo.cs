@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Net.Http.Json;
 using TicketHive.Shared;
@@ -9,10 +10,12 @@ namespace TicketHive.Client.Repositories
     public class UserRepo : IUserRepo
     {
         private readonly HttpClient httpClient;
+        private readonly AuthenticationStateProvider authStateProvider;
 
-        public UserRepo(HttpClient httpClient)
+        public UserRepo(HttpClient httpClient, AuthenticationStateProvider authStateProvider)
         {
             this.httpClient = httpClient;
+            this.authStateProvider = authStateProvider;
         }
         public async Task<UserModel> GetUser(string username)
         {
@@ -22,6 +25,18 @@ namespace TicketHive.Client.Repositories
             {
                 var foundUser = await response.Content.ReadFromJsonAsync<UserModel>();
                 return foundUser;
+            }
+            return null;
+        }
+
+        public async Task<UserModel> GetLoggedInUser()
+        {
+            var authState = await authStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                return await GetUser(user.Identity.Name);
             }
             return null;
         }

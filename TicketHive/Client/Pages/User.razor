@@ -83,14 +83,8 @@
 
     private async Task HandleValidSubmit()
     {
-        //var authState = await authStateProvider.GetAuthenticationStateAsync();
-        //string userName = authState.User.Identity.Name;
-
-        //UserModel eventDbUser = await userRepo.GetUser(userName);
-
         changePasswordModel.Username = userName;
         changeUserCountryModel.Username = userName;
-        //changeUserCountryModel.UserCountry = userCountry;
 
         var passwordChangeSuccessful = await userRepo.ChangeUserPassword(changePasswordModel);
 
