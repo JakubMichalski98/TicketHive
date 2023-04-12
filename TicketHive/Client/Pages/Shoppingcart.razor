@@ -1,9 +1,11 @@
 ﻿@page "/shoppingcart"
 @attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization;
 @using Newtonsoft.Json;
 @using TicketHive.Shared.Models;
 @using TicketHive.Shared;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage;
+@inject IShoppingcartRepo shoppingcartRepo;
 @inject AuthenticationStateProvider authProvider;
 @inject NavigationManager navigationManager;
 @inject IUserRepo userRepo;
@@ -93,56 +95,29 @@
 
 @code {
     private List<BookingModel> cartItems = new();
-    private string username;
 
     protected override async Task OnInitializedAsync()
     {
-        var jsonString = await localStorage.GetItemAsync<string>("cart");
-
-        if (jsonString != null)
-        {
-            cartItems = JsonConvert.DeserializeObject<List<BookingModel>>(jsonString);
-        }
+        await UpdateCartItems();
     }
 
     private async Task RemoveFromCart(int eventId)
     {
-        string bookingsJson = await localStorage.GetItemAsync<string>("cart");
-
-        List<BookingModel>? localStorageBookings = JsonConvert.DeserializeObject<List<BookingModel>>(bookingsJson);
-
-        localStorageBookings.RemoveAll(b => b.EventModelId == eventId);
-
-        string updatedBookingsJson = JsonConvert.SerializeObject(localStorageBookings);
-
-        await localStorage.SetItemAsync("cart", updatedBookingsJson);
-
-        var jsonString = await localStorage.GetItemAsync<string>("cart");
-        cartItems = JsonConvert.DeserializeObject<List<BookingModel>>(jsonString);
+        await shoppingcartRepo.RemoveFromCart(eventId);
+        await UpdateCartItems();
     }
 
     private async Task AddBookingsToUser()
     {
-        UserModel eventDbUser;
-        var authState = await authProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            username = user.Identity.Name;
-        }
-
-        eventDbUser = await userRepo.GetUser(username);
-
         foreach (var item in cartItems)
         {
-
+            UserModel eventDbUser = await GetEventDbUser();
             BookingInfoModel bookingInfo = new()
                 {
                     User = eventDbUser,
                     Booking = item
                 };
-            userRepo.AddBookingToUser(bookingInfo);
+            await userRepo.AddBookingToUser(bookingInfo);
         }
         navigationManager.NavigateTo("/confirmation");
     }
@@ -151,7 +126,7 @@
     {
         return PricePerTicket * quantity;
     }
-   
+
     private decimal TotalPrice(List<BookingModel> cartItems)
     {
         decimal totalPrice = 0;
@@ -161,6 +136,23 @@
             totalPrice += TicketPrice(item.EventModel.PricePerTicket, item.Quantity);
         }
         return totalPrice;
+    }
+
+    private async Task<UserModel> GetEventDbUser()
+    {
+        var authState = await authProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            return await userRepo.GetUser(user.Identity.Name);
+        }
+        return null;
+    }
+
+    private async Task UpdateCartItems()
+    {
+        cartItems = await shoppingcartRepo.GetCartFromLocalStorage();
     }
 
 
