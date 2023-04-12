@@ -71,20 +71,16 @@ namespace TicketHive.Server.Controllers
             return BadRequest();
         }
 
-        [HttpPut]
+        [HttpPut("country")]
         public async Task<IActionResult> ChangeUserCountry(ChangeUserCountryModel changeUserCountryModel)
         {
-            var applicationUser = await signInManager.UserManager.FindByNameAsync(changeUserCountryModel.Username!);
+            UserModel user = await context.Users.FirstOrDefaultAsync(u => u.Username == changeUserCountryModel.Username);
 
-            if (applicationUser != null)
+            if (user != null)
             {
-                applicationUser.UserCountry = changeUserCountryModel.UserCountry;
-                var result = signInManager.UserManager.UpdateAsync(applicationUser);
-
-                if (result.IsCompleted)
-                {
-                    return Ok();
-                }
+                user.UserCountry = changeUserCountryModel.UserCountry;
+                await context.SaveChangesAsync();
+                return Ok();
             }
 
             return BadRequest();
