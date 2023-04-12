@@ -22,7 +22,6 @@ namespace TicketHive.Client.Repositories
         /// <returns></returns>
         public async Task<List<EventModel>> GetAllEvents()
         {
-            //await SetEvents();
 
             var response = await httpClient.GetAsync("api/events");
 
@@ -59,7 +58,6 @@ namespace TicketHive.Client.Repositories
         {
             var result = await httpClient.PostAsJsonAsync("api/Events", eventToAdd);
 
-            //await SetEvents();
         }
 
         /// <summary>
@@ -70,7 +68,6 @@ namespace TicketHive.Client.Repositories
         public async Task RemoveEvent(int id)
         {
             var result = await httpClient.DeleteAsync($"api/Events/{id}");
-            //await SetEvents();
         }
         
         /// <summary>
@@ -81,11 +78,6 @@ namespace TicketHive.Client.Repositories
         public async Task UpdateEvent(EventModel updatedEvent)
         {
             var result = await httpClient.PutAsJsonAsync($"api/Events/{updatedEvent.Id}", updatedEvent);
-            //await SetEvents();
-        }
-        private async Task SetEvents()
-        {
-            Events = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
         }
     }
 }

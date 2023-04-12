@@ -36,5 +36,10 @@ namespace TicketHive.Client.Repositories
             await localStorage.SetItemAsync("cart", updatedBookingsJson);
 
         }
+
+        public async Task RemoveCart()
+        {
+            await localStorage.RemoveItemAsync("cart");
+        }
     }
 }

@@ -7,5 +7,7 @@ namespace TicketHive.Client.Repositories
         public Task<List<BookingModel>> GetCartFromLocalStorage();
 
         public Task RemoveFromCart(int eventId);
+
+        public Task RemoveCart();
     }
 }

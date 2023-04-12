@@ -1,8 +1,9 @@
 ﻿@page "/confirmation"
+@using Microsoft.AspNetCore.Authorization;
 @using Newtonsoft.Json;
 @using TicketHive.Shared.Models;
 @attribute [Authorize]
-@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+@inject IShoppingcartRepo shoppingcartRepo;
 
 
 @if (cartItems.Count > 0)
@@ -45,19 +46,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var jsonString = await localStorage.GetItemAsync<string>("cart");
+        cartItems = await shoppingcartRepo.GetCartFromLocalStorage();
 
-        if (jsonString != null)
-        {
-            cartItems = JsonConvert.DeserializeObject<List<BookingModel>>(jsonString);
-        }
-
-        await RemoveFromCart();
-    }
-
-    private async Task RemoveFromCart()
-    {
-        await localStorage.RemoveItemAsync("cart");
+        await shoppingcartRepo.RemoveCart();
     }
 
     public decimal CalculateTotalPrice(decimal PricePerTicket, int quantity)
