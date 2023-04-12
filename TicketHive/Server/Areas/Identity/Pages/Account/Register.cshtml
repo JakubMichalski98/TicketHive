@@ -39,7 +39,7 @@
                         @foreach (var country in Enum.GetValues(typeof(Countries)))
                         {
 
-                            <option value=@country>@country.ToString()</option>
+                            <option value=@country>@country.ToString().Replace("_", " ")</option>
                         }
 
                     </select>

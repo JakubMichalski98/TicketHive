@@ -23,11 +23,11 @@
     <EditForm Model="@changeUserCountryModel" Context="Test">
         <InputSelect id="input-combobox" @bind-Value=@changeUserCountryModel.UserCountry>
         
-        <option value="">@userCountry</option>
+        @*<option>@userCountry</option>*@
         @foreach (var country in Enum.GetValues(typeof(Countries)))
         {
 
-            <option value=@country>@country.ToString()</option>
+                <option value=@country>@country.ToString().Replace("_", " ")</option>
         }
         </InputSelect>
     </EditForm>
