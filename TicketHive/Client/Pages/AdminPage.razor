@@ -43,7 +43,7 @@
         
         <tbody id="table-body" >
 
-            @foreach (var items in eventRepo.Events)
+            @foreach (var items in events)
             {
                 <tr id="table-row">
                     
@@ -76,38 +76,38 @@
     </table>
 
     <div style="text-align:right; margin-right:250px">
-        <EditForm Model="events" OnSubmit="SumbitHandle">
+        <EditForm Model="newEvent" OnSubmit="SumbitHandle">
 
             <div>
-                <InputText placeholder="Event Name" id="EventName" @bind-Value="events.EventName"></InputText>
+                <InputText placeholder="Event Name" id="EventName" @bind-Value="newEvent.EventName"></InputText>
             </div>
             <div>
-                <InputText placeholder="Event Type" id="EventType" @bind-Value="events.EventType"></InputText>
-            </div>
-
-            <div>
-                <InputText placeholder="Event Place" id="EventPlace" @bind-Value="events.EventPlace"></InputText>
+                <InputText placeholder="Event Type" id="EventType" @bind-Value="newEvent.EventType"></InputText>
             </div>
 
             <div>
-                <InputText placeholder="Event Details" id="EventDetails" @bind-Value="events.EventDetails"></InputText>
+                <InputText placeholder="Event Place" id="EventPlace" @bind-Value="newEvent.EventPlace"></InputText>
+            </div>
+
+            <div>
+                <InputText placeholder="Event Details" id="EventDetails" @bind-Value="newEvent.EventDetails"></InputText>
             </div>
             <div>
-                <input  type="datetime-local" @bind-value="events.Date" />
+                <input  type="datetime-local" @bind-value="newEvent.Date" />
 
             </div>
             <div>
                 <label>Price Per Ticket</label>
-                <InputNumber placeholder="Price Per ticket" id="EventPerTicket" @bind-Value="events.PricePerTicket"></InputNumber>
+                <InputNumber placeholder="Price Per ticket" id="EventPerTicket" @bind-Value="newEvent.PricePerTicket"></InputNumber>
             </div>
 
             <div>
                 <label>Total Tickets</label>
-                <InputNumber placeholder="Total Tickets" id="EventTotalTickets" @bind-Value="events.TotalTickets"></InputNumber>
+                <InputNumber placeholder="Total Tickets" id="EventTotalTickets" @bind-Value="newEvent.TotalTickets"></InputNumber>
             </div>
             <div>
                 <label>Sold Tickets</label>
-                <InputNumber placeholder="Sold Tickets" id="EventSoldTickets" @bind-Value="events.SoldTickets"></InputNumber>
+                <InputNumber placeholder="Sold Tickets" id="EventSoldTickets" @bind-Value="newEvent.SoldTickets"></InputNumber>
             </div>
             <div>
                 <button id="TheButton" type="submit">Publish Event</button>
@@ -285,16 +285,18 @@
 
     private bool showConfirmation = false;
     private int eventToRemoveId;
+    private List<EventModel> events = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await eventRepo.GetAllEvents();
+        events = await eventRepo.GetAllEvents();
     }
-    EventModel events = new();
+    EventModel newEvent = new();
 
     async Task SumbitHandle()
     {
-        await eventRepo.AddEvent(events);
+        await eventRepo.AddEvent(newEvent);
+        events = await eventRepo.GetAllEvents();
 
     }
 
@@ -313,6 +315,7 @@
     {
         await eventRepo.RemoveEvent(eventToRemoveId);
         showConfirmation = false;
+        events = await eventRepo.GetAllEvents();
     }
 
    
