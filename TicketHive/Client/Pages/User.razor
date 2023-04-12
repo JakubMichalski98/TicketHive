@@ -69,22 +69,19 @@
     public ChangeUserCountryModel changeUserCountryModel { get; set; } = new();
 
     private string? errorMessage;
-    private UserModel eventDbUser;
-    private string userName;
+    private UserModel user;
     private string userCountry;
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await authStateProvider.GetAuthenticationStateAsync();
-        userName = authState.User.Identity.Name;
-        eventDbUser = await userRepo.GetUser(userName);
-        userCountry = eventDbUser.UserCountry;
+        user = await userRepo.GetLoggedInUser();
+        userCountry = user.UserCountry;
     }
 
     private async Task HandleValidSubmit()
     {
-        changePasswordModel.Username = userName;
-        changeUserCountryModel.Username = userName;
+        changePasswordModel.Username = user.Username;
+        changeUserCountryModel.Username = user.Username;
 
         var passwordChangeSuccessful = await userRepo.ChangeUserPassword(changePasswordModel);
 
