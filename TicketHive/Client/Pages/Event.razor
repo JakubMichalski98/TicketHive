@@ -33,8 +33,16 @@
                 }
 
             </select>
+            @if (chosenEvent.AvailableTickets < 1)
+            {
+                    <em>Not available</em>
+                    <input disabled="@isDisabled" type="submit" style="text-align:center" value="Add to cart" />
+            }
+            else
+            {
+                <input type="submit" style="text-align:center" value="Add to cart" />
+            }
             
-            <input type="submit" style="text-align:center" value="Add to cart" />
         </div>
        
         </form>
@@ -55,6 +63,7 @@
 
 
 @code {
+    private bool isDisabled = true;
     private string? username;
     private UserModel? eventDbUser;
     private List<BookingModel> bookings = new();

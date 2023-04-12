@@ -77,7 +77,7 @@
             Bookings = eventDbUser.Bookings;
         }
 
-        allEvents = eventRepo.Events.ToList();
+        allEvents = await eventRepo.GetAllEvents();
 
     }
 
