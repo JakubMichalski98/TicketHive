@@ -62,7 +62,8 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
     {
         eventUser = new()
         {
-            Username = "user"
+            Username = "user",
+            UserCountry = "Denmark"
         };
 
         eventDbContext.Users.Add(eventUser);

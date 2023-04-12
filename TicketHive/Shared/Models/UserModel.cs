@@ -11,6 +11,7 @@ namespace TicketHive.Shared.Models
     {
         public int Id { get; set; }
         public string Username { get; set; } = null!;
+        public string? UserCountry { get; set; }
         public List<BookingModel> Bookings { get; set; } = new();
        
     }

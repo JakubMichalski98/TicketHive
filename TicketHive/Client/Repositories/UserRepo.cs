@@ -42,5 +42,16 @@ namespace TicketHive.Client.Repositories
 
             return false;
         }
+
+        public async Task<bool> ChangeUserCountry(ChangeUserCountryModel changeUserCountryModel)
+        {
+            var response = await httpClient.PutAsJsonAsync($"api/Users", changeUserCountryModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

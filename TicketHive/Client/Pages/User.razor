@@ -1,9 +1,10 @@
 ﻿@page "/change-password"
-
+@using TicketHive.Shared.Enums
 @using Microsoft.AspNetCore.Components.Forms
 @*@using Microsoft.AspNetCore.Identity*@
 @using System.ComponentModel.DataAnnotations
 @using TicketHive.Shared.Models;
+@using TicketHive.Shared;
 @inject AuthenticationStateProvider authStateProvider
 @inject IUserRepo userRepo
 @inject NavigationManager navigationManager
@@ -15,14 +16,31 @@
 
 <EditForm Model="@changePasswordModel" OnValidSubmit="@(async() => await HandleValidSubmit())">
     <label for="old-password-input">Old Password:</label>
-    <InputText @bind-Value="@changePasswordModel.OldPassword" id="old-password-input"/>
+    <InputText @bind-Value="@changePasswordModel.OldPassword" id="old-password-input" />
     <label for="new-password-input">New Password:</label>
     <InputText @bind-Value="@changePasswordModel.NewPassword" id="new-password-input" />
-    <input type="submit" value="Change Password"/>
+
+    <InputSelect id="input-combobox" @bind-Value=@changeUserCountryModel.UserCountry>
+        <option value="">-Select a country-</option>
+        @foreach (var country in Enum.GetValues(typeof(Countries)))
+        {
+
+            <option value=@country>@country.ToString()</option>
+        }
+    </InputSelect>
+
+    <input type="submit" value="Save Changes" />
+
+    <div>
+        <span class="text-danger" asp-validation-for="SelectedCountry"></span>
+    </div>
+
+
 </EditForm>
 
 @code {
     public ChangePasswordModel changePasswordModel { get; set; } = new();
+    public ChangeUserCountryModel changeUserCountryModel { get; set; } = new();
 
     private string? errorMessage;
 
@@ -31,11 +49,19 @@
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         string userName = authState.User.Identity.Name;
 
+        UserModel eventDbUser = await userRepo.GetUser(userName);
+
+        string userCountry = eventDbUser.UserCountry;
+
         changePasswordModel.Username = userName;
+        changeUserCountryModel.Username = userName;
+        changeUserCountryModel.UserCountry = userCountry;
 
         var passwordChangeSuccessful = await userRepo.ChangeUserPassword(changePasswordModel);
 
-        if (passwordChangeSuccessful)
+        var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
+
+        if (passwordChangeSuccessful && countryChangeSuccessful)
         {
             // Navigate back
             navigationManager.NavigateTo("/");
