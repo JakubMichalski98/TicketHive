@@ -22,11 +22,12 @@
 
     <EditForm Model="@changeUserCountryModel" Context="Test">
         <InputSelect id="input-combobox" @bind-Value=@changeUserCountryModel.UserCountry>
-        <option value="">-Select a country-</option>
+        
+        @*<option>@userCountry</option>*@
         @foreach (var country in Enum.GetValues(typeof(Countries)))
         {
 
-            <option value=@country>@country.ToString()</option>
+                <option value=@country>@country.ToString().Replace("_", " ")</option>
         }
         </InputSelect>
     </EditForm>
@@ -46,28 +47,42 @@
     public ChangeUserCountryModel changeUserCountryModel { get; set; } = new();
 
     private string? errorMessage;
+    private UserModel eventDbUser;
+    private string userName;
+    private string userCountry;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        userName = authState.User.Identity.Name;
+        eventDbUser = await userRepo.GetUser(userName);
+        userCountry = eventDbUser.UserCountry;
+    }
 
     private async Task HandleValidSubmit()
     {
-        var authState = await authStateProvider.GetAuthenticationStateAsync();
-        string userName = authState.User.Identity.Name;
+        //var authState = await authStateProvider.GetAuthenticationStateAsync();
+        //string userName = authState.User.Identity.Name;
 
-        UserModel eventDbUser = await userRepo.GetUser(userName);
-
-        string userCountry = eventDbUser.UserCountry;
+        //UserModel eventDbUser = await userRepo.GetUser(userName);
 
         changePasswordModel.Username = userName;
         changeUserCountryModel.Username = userName;
-        changeUserCountryModel.UserCountry = userCountry;
+        //changeUserCountryModel.UserCountry = userCountry;
 
         var passwordChangeSuccessful = await userRepo.ChangeUserPassword(changePasswordModel);
 
-        //var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
-
-        if (passwordChangeSuccessful /*&& countryChangeSuccessful*/)
+        if (passwordChangeSuccessful)
         {
-            // Navigate back
-            navigationManager.NavigateTo("/");
+            {
+                var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
+
+                if (countryChangeSuccessful)
+                {
+                    navigationManager.NavigateTo("/");
+                }
+                
+            }
         }
 
         errorMessage = "Couldn't change password...";

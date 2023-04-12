@@ -45,7 +45,7 @@ namespace TicketHive.Client.Repositories
 
         public async Task<bool> ChangeUserCountry(ChangeUserCountryModel changeUserCountryModel)
         {
-            var response = await httpClient.PutAsJsonAsync($"api/Users", changeUserCountryModel);
+            var response = await httpClient.PutAsJsonAsync($"api/Users/country", changeUserCountryModel);
 
             if (response.IsSuccessStatusCode)
             {
