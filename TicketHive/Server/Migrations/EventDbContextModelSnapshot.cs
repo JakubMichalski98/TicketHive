@@ -45,7 +45,7 @@ namespace TicketHive.Server.Migrations
 
                     b.HasIndex("UserModelId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("TicketHive.Shared.Models.EventModel", b =>
@@ -89,7 +89,7 @@ namespace TicketHive.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
 
                     b.HasData(
                         new
@@ -189,7 +189,7 @@ namespace TicketHive.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("TicketHive.Shared.Models.BookingModel", b =>
