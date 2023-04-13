@@ -8,8 +8,13 @@
 <div>
     <form class="search-form m-2" role="search">
         <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search" @bind-value="searchEvent" @oninput="HandleInput">
+        
     </form>
+    <button @onclick="SortDateByDescending" style="height:20px">order by date</button>
+    <button style="height:20px" @onclick="OrderByPrice">OrderByprice</button>
 </div>
+
+
 
 
 
@@ -24,6 +29,8 @@
                         <img src="/Images/@events.Image" class="card-img-top" alt="...">
                         <h5 class="card-title">@events.EventName</h5>
                         <p class="card-text">@events.EventDetails</p>
+                        <h6>@events.Date</h6>
+                        <h1>@events.PricePerTicket</h1>
                         <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                     </div>
                 </div>
@@ -43,6 +50,9 @@ else
                         <img src="/Images/@events.Image" class="card-img-top" alt="...">
                         <h5 class="card-title">@events.EventName</h5>
                         <p class="card-text">@events.EventDetails</p>
+                        <h1>@events.Date</h1>
+                        <h1>@events.PricePerTicket</h1>
+                        
                         <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                     </div>
                 </div>
@@ -62,6 +72,7 @@ else
     {
         events = await eventrepo.GetAllEvents();
         filteredEvents = events;
+
 
 
     }
@@ -89,6 +100,26 @@ else
     {
         searchEvent = "";
         filteredEvents = events;
+    }
+    public enum SortOrder
+    {
+        Ascending,
+        Descending
+    }
+
+    private void SortDateByDescending()
+    {
+
+      filteredEvents = events.OrderByDescending(c => c.Date).ToList();
+        
+    }    
+
+    private void OrderByPrice()
+    {
+        
+        
+            events = events.OrderByDescending(c => c.PricePerTicket).ToList();
+        
     }
 }
 
