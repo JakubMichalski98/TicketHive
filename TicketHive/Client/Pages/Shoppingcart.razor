@@ -12,7 +12,7 @@
 
 <div id="TheDiv">
 
-@if (cartItems != null)
+@if (cartItems != null && cartItems.Count > 0)
     {
         <table id="thetable">
 
@@ -61,10 +61,6 @@
 
                     }
                 }
-                
-            
-
-
             </tbody>
 
             <tfoot id="tfoot">
@@ -73,21 +69,22 @@
                     <td colspan="5" style="text-align:right">
                         <input class="btn btn-success" type="button" value="Book Events" @onclick="AddBookingsToUser" />
                     </td>
-                    
+
                 </tr>
 
-            
+
 
             </tfoot>
 
         </table>
-        
-        
-}
-    @if(cartItems == null)
+
+    }
+    else if (cartItems.Count() == 0)
     {
         <h1>No Items</h1>
     }
+
+    
 </div>
 
 <div id="button-div">

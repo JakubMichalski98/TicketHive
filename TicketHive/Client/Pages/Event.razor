@@ -77,7 +77,7 @@
     protected override async Task OnInitializedAsync()
     {
         chosenEvent = await eventRepo.GetEvent(Id);
-        await shoppingcartRepo.CreateCart(bookings);
+        //await shoppingcartRepo.CreateCart(bookings);
     }
 
     private async Task AddBooking()
