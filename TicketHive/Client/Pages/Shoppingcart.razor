@@ -32,33 +32,36 @@
 
             <tbody id="table-body">
 
-
-                @foreach (var item in cartItems) 
+                @if (cartItems.Count != 0)
                 {
-                    <tr id="table-row">
-                        <td><img id="img" src="/Images/@item.EventModel.Image"/></td>
-                        <td id="item-display">@item.EventModel.EventName</td>
+                    @foreach (var item in cartItems)
+                    {
+                        <tr id="table-row">
+                            <td><img id="img" src="/Images/@item.EventModel.Image" /></td>
+                            <td id="item-display">@item.EventModel.EventName</td>
 
 
-                        <td>
+                            <td>
 
-                            <select id="input-combobox" @bind="item.Quantity">
-                            @for (int i = 1; i < 11; i++)
-                            {
-                                <option value=@i>@i.ToString()</option>
-                            }
+                                <select id="input-combobox" @bind="item.Quantity">
+                                    @for (int i = 1; i < 11; i++)
+                                    {
+                                        <option value=@i>@i.ToString()</option>
+                                    }
 
-                            </select>
-                        </td>
-                        <td>@TicketPrice(item.EventModel.PricePerTicket, item.Quantity) Kr</td>
-                        <td> <input class="btn btn-danger" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))" value="REMOVE" /> </td>
-                        
+                                </select>
+                            </td>
+                            <td>@TicketPrice(item.EventModel.PricePerTicket, item.Quantity) Kr</td>
+                            <td> <input class="btn btn-danger" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))" value="REMOVE" /> </td>
 
 
-                    </tr>
-               
 
+                        </tr>
+
+
+                    }
                 }
+                
             
 
 

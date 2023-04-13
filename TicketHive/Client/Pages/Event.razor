@@ -41,6 +41,11 @@
             else
             {
                 <input type="submit" style="text-align:center" value="Add to cart" />
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <h3 class="text-danger">@errorMessage</h3>
+                    }
             }
             
         </div>
@@ -63,6 +68,7 @@
 
 
 @code {
+    private string errorMessage = "";
     private bool isDisabled = true;
     private string? username;
     private UserModel? eventDbUser;
@@ -89,6 +95,7 @@
             navigationManager.NavigateTo("/shoppingcart");
         }
         //TODO: Implement message popping up saying that item is already in cart
+        errorMessage = "Event already in your cart";
 
     }
     private async Task HandleSubmit()
