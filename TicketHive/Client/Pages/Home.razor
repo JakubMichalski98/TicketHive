@@ -12,7 +12,7 @@
 @if (eventDbUser != null && eventDbUser.Bookings.Count > 0)
 {
     <header>
-        <h1 class="text-center">Welcome to TicketHive <span class="fs-3 fst-italic">@eventDbUser.Username</span></h1>
+        <h1 class="text-center">Welcome to TicketHive</h1>
         <h4>Here is your bookings:</h4>
     </header>
     <div class="row row-cols-3 row-cols-md-3 g-4">
@@ -35,7 +35,7 @@
 @if (eventDbUser != null && eventDbUser.Bookings.Count == 0)
 {
     <header>
-        <h1 class="text-center">Welcome to TicketHive <span class="  fs-3 fst-italic">@eventDbUser.Username</span></h1>
+        <h1 class="text-center">Welcome to TicketHive</h1>
         <h4>You have no bookings, check out these events:</h4>
     </header>
 
