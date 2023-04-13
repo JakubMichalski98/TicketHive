@@ -4,14 +4,15 @@
 @using TicketHive.Shared.Models;
 @inject IEventRepo eventrepo
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
 <div>
     <form class="search-form m-2" role="search">
         <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search" @bind-value="searchEvent" @oninput="HandleInput">
         
     </form>
-    <button @onclick="SortDateByDescending" style="height:20px">order by date</button>
-    <button style="height:20px" @onclick="OrderByPrice">OrderByprice</button>
+    <button class="fas fa-sort" @onclick="SortDateByDescending" style="height:20px">order by date</button>
+    <button class="fa-solid fa-pen" style="height:20px" @onclick="OrderByPrice">OrderByprice</button>
 </div>
 
 
@@ -46,6 +47,8 @@
                             <img src="/Images/@events.Image" class="card-img-top" alt="...">
                             <h5 class="card-title">@events.EventName</h5>
                             <p class="card-text">@events.EventDetails</p>
+                            <h6>@events.Date</h6>
+                            <h1>@events.PricePerTicket</h1>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>
                     </div>
@@ -82,6 +85,8 @@ else
                             <img src="/Images/@events.Image" class="card-img-top" alt="...">
                             <h5 class="card-title">@events.EventName</h5>
                             <p class="card-text">@events.EventDetails</p>
+                            <h6>@events.Date</h6>
+                            <h1>@events.PricePerTicket</h1>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>
 
@@ -169,7 +174,7 @@ else
         {
             filteredEvents = filteredEvents
                 .Where(e => e.EventType.ToLower().Contains(searchEvent.ToLower()))
-                .OrderBy(c => c.Date)
+                .OrderBy(c => c.PricePerTicket)
                 .ToList();
         }
         
