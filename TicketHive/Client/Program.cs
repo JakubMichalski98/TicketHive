@@ -20,6 +20,7 @@ builder.Services.AddScoped<IEventRepo, EventRepo>();
 builder.Services.AddScoped<IBookingRepo, BookingRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IShoppingcartRepo, ShoppingcartRepo>();
+builder.Services.AddScoped<ICurrencyRepo, CurrencyRepo>();
 
 builder.Services.AddApiAuthorization();
 
