@@ -142,15 +142,36 @@ else
     private void SortDateByDescending()
     {
 
-      filteredEvents = events.OrderByDescending(c => c.Date).ToList();
+
+        if (string.IsNullOrEmpty(searchEvent))
+        {
+            filteredEvents = filteredEvents.OrderBy(c => c.Date).ToList();
+        }
+        else
+        {
+            filteredEvents = filteredEvents
+                .Where(e => e.EventType.ToLower().Contains(searchEvent.ToLower()))
+                .OrderBy(c => c.Date)
+                .ToList();
+        }
         
     }    
 
     private void OrderByPrice()
     {
-        
-        
-            events = events.OrderByDescending(c => c.PricePerTicket).ToList();
+
+
+        if (string.IsNullOrEmpty(searchEvent))
+        {
+            filteredEvents = filteredEvents.OrderBy(c => c.PricePerTicket).ToList();
+        }
+        else
+        {
+            filteredEvents = filteredEvents
+                .Where(e => e.EventType.ToLower().Contains(searchEvent.ToLower()))
+                .OrderBy(c => c.Date)
+                .ToList();
+        }
         
     }
 }
