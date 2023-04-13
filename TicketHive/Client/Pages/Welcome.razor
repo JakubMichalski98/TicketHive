@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using TicketHive.Shared.Models;
-@inject IShoppingcartRepo shoppingcartRepo;
 
 
 <div class="container">
@@ -38,16 +37,6 @@
 
 
 
-@code {
-    private List<BookingModel> bookings = new();
-
-    protected override async Task OnInitializedAsync()
-    {
-        await shoppingcartRepo.RemoveCart();
-        await shoppingcartRepo.CreateCart(bookings);
-    }
-
-}
 
 <style>
     body {

@@ -6,6 +6,7 @@
 @inject IUserRepo userRepo;
 @inject IEventRepo eventRepo;
 @inject IBookingRepo bookingRepo;
+@inject IShoppingcartRepo shoppingcartRepo;
 @inject AuthenticationStateProvider authProvider
 
 
@@ -62,9 +63,13 @@
     private UserModel? eventDbUser;
     List<BookingModel>? Bookings;
     private List<EventModel>? allEvents;
+    List<BookingModel> Empty = new();
 
     protected override async Task OnInitializedAsync()
     {
+        await shoppingcartRepo.RemoveCart();
+        await shoppingcartRepo.CreateCart(Empty);
+
         var user = await userRepo.GetLoggedInUser();
 
         if (username != "admin")
