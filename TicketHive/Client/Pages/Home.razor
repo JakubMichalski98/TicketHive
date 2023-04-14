@@ -67,7 +67,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await shoppingcartRepo.RemoveCart();
+        //await shoppingcartRepo.RemoveCart();
         await shoppingcartRepo.CreateCart(Empty);
 
         var user = await userRepo.GetLoggedInUser();
