@@ -50,7 +50,7 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
         user = new()
         {
             UserName = "user",
-            UserCountry = "Denmark"
+            UserCountry = "Sweden"
         };
 
         signInManager.UserManager.CreateAsync(user, "Password1234!").GetAwaiter().GetResult();
@@ -63,7 +63,8 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
         eventUser = new()
         {
             Username = "user",
-            UserCountry = "Denmark"
+            UserCountry = "Sweden",
+            Currency = "SEK"
         };
 
         eventDbContext.Users.Add(eventUser);
