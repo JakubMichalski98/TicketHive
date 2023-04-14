@@ -17,7 +17,6 @@ namespace TicketHive.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<EventModel>().HasData(new EventModel
             {
                 Id = 1,

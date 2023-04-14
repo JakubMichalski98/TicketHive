@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using TicketHive.Server.Data;
 using TicketHive.Shared.Models;
 
@@ -52,8 +53,8 @@ namespace TicketHive.Server.Controllers
             return BadRequest("Something went wrong when adding event");
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<List<EventModel>>> UpdateAvailableEventTickets(int? eventModelId, int quantity)
+        [HttpPut("{eventModelId}")]
+        public async Task<ActionResult<List<EventModel>>> UpdateAvailableEventTickets(int? eventModelId, [FromBody]int quantity)
         {
             if (eventModelId != null)
             {
@@ -61,7 +62,13 @@ namespace TicketHive.Server.Controllers
 
                 if (foundEvent != null)
                 {
-                    foundEvent.AvailableTickets = quantity;
+                    foundEvent.AvailableTickets = foundEvent.AvailableTickets - quantity;
+
+
+
+                    context.ChangeTracker.DetectChanges();
+
+                    //context.Update(foundEvent);
 
                     await context.SaveChangesAsync();
                 }
