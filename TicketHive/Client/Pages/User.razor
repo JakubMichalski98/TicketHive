@@ -10,6 +10,7 @@
 @inject IUserRepo userRepo
 @inject NavigationManager navigationManager
 
+<PageTitle>User</PageTitle>
 @if(!string.IsNullOrEmpty(errorMessage))
 {
     <h3 class="text-danger">@errorMessage</h3>
@@ -131,6 +132,7 @@
     {
         changeUserCountryModel.Username = user.Username;
 
+
         var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
 
         if (countryChangeSuccessful)
@@ -138,6 +140,7 @@
             navigationManager.NavigateTo("/");
         }
         
+
     }
 }
 

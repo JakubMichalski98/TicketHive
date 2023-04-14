@@ -11,6 +11,8 @@ namespace TicketHive.Client.Repositories
 
         public Task<bool> CheckIfItemExists(BookingModel booking);
         public Task AddToCart(BookingModel booking);
+
+        public Task<bool> CheckIfCartExists();
         public Task RemoveCart();
     }
 }

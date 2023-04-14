@@ -74,6 +74,15 @@ namespace TicketHive.Client.Repositories
 
         }
 
+        public async Task<bool> CheckIfCartExists()
+        {
+            if (await localStorage.ContainKeyAsync("cart"))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task RemoveCart()
         {
             await localStorage.RemoveItemAsync("cart");
