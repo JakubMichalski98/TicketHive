@@ -11,11 +11,13 @@ namespace TicketHive.Client.Repositories
     {
         private readonly HttpClient httpClient;
         private readonly AuthenticationStateProvider authStateProvider;
+        private readonly ICurrencyRepo currencyRepo;
 
-        public UserRepo(HttpClient httpClient, AuthenticationStateProvider authStateProvider)
+        public UserRepo(HttpClient httpClient, AuthenticationStateProvider authStateProvider, ICurrencyRepo currencyRepo)
         {
             this.httpClient = httpClient;
             this.authStateProvider = authStateProvider;
+            this.currencyRepo = currencyRepo;
         }
         public async Task<UserModel> GetUser(string username)
         {
@@ -79,6 +81,13 @@ namespace TicketHive.Client.Repositories
                 return true;
             }
             return false;
+        }
+
+        public async Task SetUserCurrency()
+        {
+            var user = await GetLoggedInUser();
+
+            var response = await httpClient.PutAsJsonAsync($"api/Users/currency", user.Username);
         }
     }
 }

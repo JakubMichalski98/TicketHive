@@ -8,7 +8,7 @@ namespace TicketHive.Client.Repositories
     {
         private readonly HttpClient httpClient;
 
-        private double currencyRate;
+        public static double exchangeRate;
         private string currencyCode = "EUR";
         private string accessKey = "LhRJ2zFT23P5DZ8Vg2xfNQ1nXCA6RmoI";
 
@@ -16,7 +16,7 @@ namespace TicketHive.Client.Repositories
         {
             this.httpClient = httpClient;
         }
-        public async Task GetExchangeRate()
+        public async Task GetExchangeRates()
         {
             httpClient.DefaultRequestHeaders.Add("apikey", accessKey);
 
@@ -29,11 +29,11 @@ namespace TicketHive.Client.Repositories
 
             if (currencyCode == "EUR")
             {
-                currencyRate = currency.rates.EUR;
+                exchangeRate = currency.rates.EUR;
             }
             else if (currencyCode == "GBP")
             {
-                currencyRate = currency.rates.GBP;
+                exchangeRate = currency.rates.GBP;
             }
         }
         public async Task<string> GetCurrencyForCountry(string country)

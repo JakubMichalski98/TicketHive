@@ -2,7 +2,7 @@
 {
     public interface ICurrencyRepo
     {
-        public Task GetExchangeRate();
+        public Task GetExchangeRates();
         public Task<string> GetCurrencyForCountry(string country);
     }
 }

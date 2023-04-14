@@ -137,6 +137,7 @@
 
         if (countryChangeSuccessful)
         {
+            await userRepo.SetUserCurrency();
             navigationManager.NavigateTo("/");
         }
         

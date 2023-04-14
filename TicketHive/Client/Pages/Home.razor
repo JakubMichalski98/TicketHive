@@ -81,6 +81,7 @@
         if (eventDbUser != null)
         {
             Bookings = eventDbUser.Bookings;
+            await userRepo.SetUserCurrency();
         }
 
         allEvents = await eventRepo.GetAllEvents();
