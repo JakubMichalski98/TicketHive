@@ -5,15 +5,20 @@
 @attribute [Authorize]
 @inject IShoppingcartRepo shoppingcartRepo;
 
+<PageTitle>Confirmation</PageTitle>
 
 @if (cartItems.Count > 0)
 {
     <header>
-        <h1>Thank you for your purchase!</h1>
+        <h1 style="text-align:center;">Thank you for your purchase!</h1>
+        <div id="check-div">
+            <i id="checkmark"style="font-size:100px; background-color:#dddddd"  class="fas fa-check"></i>
+
+        </div>
     </header>
 
     <main>
-        <div class="row row-cols-3 row-cols-md-3 g-4 center">
+        <div id="display-div" class="row row-cols-3 row-cols-md-3 g-4 center">
             @foreach (var item in cartItems)
             {
                 decimal totalPrice = CalculateTotalPrice(item.EventModel.PricePerTicket, item.Quantity);
@@ -57,3 +62,23 @@
     }
 
 }
+
+<style>
+    #checkmark{
+        background-color:green;
+        border-radius:40%;
+        
+    }
+
+    #check-div{
+        display:flex;
+        justify-content:center;
+        align-content:center;
+    }
+
+    #display-div{
+        display:flex;
+        align-content:center;
+        justify-content:center;
+    }
+</style>
