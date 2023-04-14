@@ -109,6 +109,8 @@ else
     private List<EventModel> events = new List<EventModel>();
     private List<EventModel> filteredEvents = new List<EventModel>();
     private string searchEvent = "";
+    private decimal convertedPrice;
+    private double exchangeRate;
 
 
     protected override async Task OnInitializedAsync()

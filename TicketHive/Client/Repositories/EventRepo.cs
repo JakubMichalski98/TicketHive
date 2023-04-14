@@ -79,5 +79,6 @@ namespace TicketHive.Client.Repositories
         {
             var result = await httpClient.PutAsJsonAsync($"api/Events/{eventModelId}", quantity);
         }
+
     }
 }

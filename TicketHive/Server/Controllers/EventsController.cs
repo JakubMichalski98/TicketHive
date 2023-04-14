@@ -14,6 +14,7 @@ namespace TicketHive.Server.Controllers
     public class EventsController : ControllerBase
     {
         private readonly EventDbContext context;
+        private static double exchangeRate;
 
         public EventsController(EventDbContext context)
         {
@@ -23,7 +24,9 @@ namespace TicketHive.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<EventModel>>> GetEvents()
         {
-            return await context.Events.ToListAsync();
+
+           return await context.Events.ToListAsync();
+
         }
 
         [HttpGet]
@@ -34,7 +37,7 @@ namespace TicketHive.Server.Controllers
 
             if (eventModel != null)
             {
-                return Ok(eventModel);
+                return eventModel;
             }
             return NotFound("Event with provided ID not found");
         }
@@ -88,6 +91,12 @@ namespace TicketHive.Server.Controllers
             }
 
             return Ok(context.Events.ToListAsync());
+        }
+
+        [HttpPost("{exchangerate}")]
+        public void SetExchangeRate([FromBody]double exchangerate)
+        {
+            exchangeRate = exchangerate;
         }
 
     }

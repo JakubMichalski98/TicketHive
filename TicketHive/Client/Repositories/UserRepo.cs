@@ -11,13 +11,11 @@ namespace TicketHive.Client.Repositories
     {
         private readonly HttpClient httpClient;
         private readonly AuthenticationStateProvider authStateProvider;
-        private readonly ICurrencyRepo currencyRepo;
 
-        public UserRepo(HttpClient httpClient, AuthenticationStateProvider authStateProvider, ICurrencyRepo currencyRepo)
+        public UserRepo(HttpClient httpClient, AuthenticationStateProvider authStateProvider)
         {
             this.httpClient = httpClient;
             this.authStateProvider = authStateProvider;
-            this.currencyRepo = currencyRepo;
         }
         public async Task<UserModel> GetUser(string username)
         {

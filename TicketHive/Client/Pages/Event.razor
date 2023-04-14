@@ -9,6 +9,7 @@
 @inject IEventRepo eventRepo;
 @inject IUserRepo userRepo;
 @inject IShoppingcartRepo shoppingcartRepo;
+@inject ICurrencyRepo currencyRepo;
 @inject NavigationManager navigationManager;
 
 <PageTitle>Event</PageTitle>
@@ -23,7 +24,7 @@
         <h2 class="text-decoration-underline">@chosenEvent.EventName</h2>
         <div ><em>@chosenEvent.EventDetails</em></div>
             <div><p><b>@chosenEvent.EventPlace</b> @chosenEvent.Date.ToString("HH:mm")</p></div>
-            <div><p><b>@chosenEvent.PricePerTicket.ToString("0")</b>:-</p></div>
+            <div><p><b>@convertedPrice</b>:-</p></div>
         
         <div>
             
@@ -73,6 +74,8 @@
 
 @code {
     private string errorMessage = "";
+    private double exchangeRate;
+    decimal convertedPrice;
     private bool isDisabled = true;
     private string? username;
     private UserModel? eventDbUser;
@@ -80,8 +83,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        exchangeRate = currencyRepo.GetExchangeRate();
         await shoppingcartRepo.CreateCart(bookings);
         chosenEvent = await eventRepo.GetEvent(Id);
+        convertedPrice = chosenEvent.PricePerTicket * (decimal)exchangeRate;
         //await shoppingcartRepo.CreateCart(bookings);
     }
 
