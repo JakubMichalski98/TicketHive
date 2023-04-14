@@ -16,62 +16,84 @@
     <h3 class="text-danger">@errorMessage</h3>
 }
 
-<EditForm Model="@changePasswordModel" OnValidSubmit="@(async() => await HandleValidSubmit())">
-   <body>
-        <div class="card mx-auto" style="width: 18rem;">
+    
+  <body>
+    <div class="card mx-auto" style="width: 18rem;">
+        <EditForm Model="@changePasswordModel" OnValidSubmit="@(async() => await HandleValidSubmit())">
+            <DataAnnotationsValidator />
+
             <div class="card-body">
                 <div class="col text-center">
                     <label for="old-password-input">Old Password:</label>
-                    <InputText @bind-Value="@changePasswordModel.OldPassword" id="old-password-input" />
+                    <InputText @bind-Value="@changePasswordModel.OldPassword" id="old-password-input" type="password" asp-for="oldPassword" />
+                    <ValidationMessage For="@(() => changePasswordModel.OldPassword)" />
                 </div>
             </div>
          
             <div class="card-body">
                 <div class="col text-center">
                     <label for="new-password-input">New Password:</label>
-                    <InputText @bind-Value="@changePasswordModel.NewPassword" id="new-password-input" />
+                    <InputText @bind-Value="@changePasswordModel.NewPassword" id="new-password-input" type="password" asp-for="Password" />
+                    <ValidationMessage For="@(() => changePasswordModel.NewPassword)" />
                 </div>
             </div>
-           
-
-            <div class="card-body">
-                <div class="col text-center">
-                    <label for="new-country-input">Change country:</label>
-                    <EditForm Model="@changeUserCountryModel" Context="Test">
-                        <InputSelect id="input-combobox" @bind-Value=@changeUserCountryModel.UserCountry>
-
-                            @*<option>@userCountry</option>*@
-                            @foreach (var country in Enum.GetValues(typeof(Countries)))
-                            {
-
-                                <option value=@country>@country.ToString().Replace("_", " ")</option>
-                            }
-                        </InputSelect>
-                    </EditForm>
-                </div>
+            <div class="text-center">
+                <input id="savechanges-id" type="submit" value="Save password" class="btn-savechanges" />
             </div>
+        </EditForm>
 
+        <div class="card-body">
+            <div class="col text-center">
+                <label for="new-country-input">Change country:</label>
+
+                    
+            <EditForm Model="@changeUserCountryModel" OnValidSubmit="@(async () => await HandleCountrySubmit())">
+                <InputSelect id="input-combobox" @bind-Value=@changeUserCountryModel.UserCountry>
+                    @foreach (var country in Enum.GetValues(typeof(Countries)))
+                    {
+                        <option value=@country>@country.ToString().Replace("_", " ")</option>
+                    }
+                </InputSelect>
+                <div class="text-center">
+                    <input id="savechanges-id" type="submit" value="Save country" class="btn-savechanges" />
+                </div>
+            </EditForm>
+            </div>
+        </div>
+
+@*   
 
             <div class="text-center">
-                <input id="savechanges-id" type="submit" value="Save" class="btn-savechanges" />
+                <input id="savechanges-id" type="submit" value="Save password" class="btn-savechanges" />
+            </div>
+            <div class="text-center">
+                <input id="savechanges-id" type="submit" value="Save country" class="btn-savechanges" @onclick="HandleCountrySubmit" />
             </div>
             
 
             <div>
                 <span class="text-danger" asp-validation-for="SelectedCountry"></span>
-            </div>
+            </div>*@
     </div>
 
   </body>
-</EditForm>
+
 
 @code {
     public ChangePasswordModel changePasswordModel { get; set; } = new();
     public ChangeUserCountryModel changeUserCountryModel { get; set; } = new();
 
+
+
+
+    private string? oldPassword;
+    private string newPassword;
+    private string? oldPasswordError;
+    private string? newPasswordError;
     private string? errorMessage;
     private UserModel user;
     private string userCountry;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -84,23 +106,41 @@
         changePasswordModel.Username = user.Username;
         changeUserCountryModel.Username = user.Username;
 
-        var passwordChangeSuccessful = await userRepo.ChangeUserPassword(changePasswordModel);
 
+        var passwordChangeSuccessful = await userRepo.ChangeUserPassword(changePasswordModel);
+        //var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
         if (passwordChangeSuccessful)
         {
-            {
-                var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
 
-                if (countryChangeSuccessful)
-                {
-                    navigationManager.NavigateTo("/");
-                }
-                
-            }
+            //var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
+
+            navigationManager.NavigateTo("/");
+
+        }
+        //else if (countryChangeSuccessful)
+        //{
+        //    navigationManager.NavigateTo("/");
+        //}
+        else
+        {
+            errorMessage = "Your password is not strong enough";
         }
 
+    }
 
-        errorMessage = "Couldn't change password...";
+    private async Task HandleCountrySubmit()
+    {
+        changeUserCountryModel.Username = user.Username;
+
+
+        var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
+
+        if (countryChangeSuccessful)
+        {
+            navigationManager.NavigateTo("/");
+        }
+        
+
     }
 }
 

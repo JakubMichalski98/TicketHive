@@ -22,8 +22,8 @@
         <form @onsubmit="HandleSubmit">
         <h2 class="text-decoration-underline">@chosenEvent.EventName</h2>
         <div ><em>@chosenEvent.EventDetails</em></div>
-        <div ><p><b>@chosenEvent.EventPlace</b> @chosenEvent.Date</p></div>
-        <div ><p><b>@chosenEvent.PricePerTicket</b>:-</p></div>
+            <div><p><b>@chosenEvent.EventPlace</b> @chosenEvent.Date.ToString("HH:mm")</p></div>
+            <div><p><b>@chosenEvent.PricePerTicket.ToString("0")</b>:-</p></div>
         
         <div>
             
