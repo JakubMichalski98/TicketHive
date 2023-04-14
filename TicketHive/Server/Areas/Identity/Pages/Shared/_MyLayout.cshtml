@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RemoveThis.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
     <header style="background-color:#305076">
@@ -20,7 +21,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/" asp-page="/Index">Home</a>
+                            <a id="btn-home" class="fa fa-home nav-link text-dark" href="/" asp-page="/Index"></a>
                         </li>
                     </ul>
                 </div>
@@ -46,4 +47,23 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<style>
+
+/*    #btn-home {
+        background-color: #305076;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.4s;
+        position: relative;
+    }*/
+
+        #btn-home:hover {
+            transform: translateY(-5px)
+        }
+</style>
 

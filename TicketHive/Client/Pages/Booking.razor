@@ -30,7 +30,7 @@
                     <div class="card">
                         <div class="card-body" >
                             <img src="/Images/@events.Image" class="card-img-top" alt="...">
-                            <h5 class="card-title">@events.EventName</h5>
+                            <h5 class="card-title" style="margin-top: 20px;">@events.EventName</h5>
                             <h1 class="text-danger text-center">SOLD OUT!</h1>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>
@@ -44,10 +44,13 @@
                     <div class="card">
                         <div class="card-body">
                             <img src="/Images/@events.Image" class="card-img-top" alt="...">
-                            <h5 class="card-title">@events.EventName</h5>
+                            <h5 class="card-title" style="margin-top: 20px;">@events.EventName</h5>
                             <p class="card-text">@events.EventDetails</p>
-                            <h6>@events.Date</h6>
-                            <h6>@events.PricePerTicket</h6>
+                            <hr>
+                            <h6 class="fas fa-calendar">&nbsp;@events.Date.ToShortDateString()</h6>
+                            <p></p>
+                            <h6 class="fas fa-coins">&nbsp;@events.PricePerTicket.ToString("0")</h6>
+                            <hr>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>
                     </div>
@@ -69,7 +72,8 @@ else
                     <div class="card">
                         <div class="card-body" style="background-color: gray">
                             <img src="/Images/@events.Image" class="card-img-top" alt="...">
-                            <h5 class="card-title">@events.EventName</h5>
+                            <h5 class="card-title" style="margin-top: 20px;">@events.EventName</h5>
+                            <hr>
                             <em>SOLD OUT!</em>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>
@@ -82,10 +86,11 @@ else
                     <div class="card">
                         <div class="card-body">
                             <img src="/Images/@events.Image" class="card-img-top" alt="...">
-                            <h5 class="card-title">@events.EventName</h5>
+                            <h5 class="card-title" style="margin-top: 20px;">@events.EventName</h5>
                             <p class="card-text">@events.EventDetails</p>
-                            <h6>@events.Date</h6>
-                            <h6>@events.PricePerTicket</h6>
+                            <hr>
+                            <h6 class="fas fa-calendar"> @events.Date.ToShortDateString()</h6>
+                            <h6>Price: @events.PricePerTicket.ToString("0")</h6>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>
 
@@ -212,13 +217,13 @@ else
     }
 
     .card-title {
-        margin: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
     .card-btn {
+        margin:auto;
         position: absolute;
         bottom: 10px;
         left: 10px;
