@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 namespace TicketHive.Shared.Models
 {
     public class ChangePasswordModel
-    { 
-
+    {
         public string? Username { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Old password is required")]
         public string? OldPassword { get; set; }
-        [Required]
+        [Required(ErrorMessage = "New password is required")]
         public string? NewPassword { get; set; }
     }
 }
