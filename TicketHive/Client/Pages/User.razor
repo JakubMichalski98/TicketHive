@@ -10,6 +10,7 @@
 @inject IUserRepo userRepo
 @inject NavigationManager navigationManager
 
+<PageTitle>User</PageTitle>
 @if(!string.IsNullOrEmpty(errorMessage))
 {
     <h3 class="text-danger">@errorMessage</h3>
@@ -97,6 +98,7 @@
                 
             }
         }
+
 
         errorMessage = "Couldn't change password...";
     }

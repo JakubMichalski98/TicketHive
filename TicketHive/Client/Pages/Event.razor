@@ -11,6 +11,7 @@
 @inject IShoppingcartRepo shoppingcartRepo;
 @inject NavigationManager navigationManager;
 
+<PageTitle>Event</PageTitle>
 <header class="p-5"></header>
 <div class="row">
 <div class=" col-6" >
@@ -98,6 +99,7 @@
             await shoppingcartRepo.AddToCart(booking);
             navigationManager.NavigateTo("/shoppingcart");
         }
+        
         //TODO: Implement message popping up saying that item is already in cart
         errorMessage = "Event already in your cart";
 

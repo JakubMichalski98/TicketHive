@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Authorization;
 @using TicketHive.Shared.Models;
 @inject IEventRepo eventrepo
-
+<PageTitle>Booking</PageTitle>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
 <div>
@@ -11,8 +11,10 @@
         <input class="form-control search-input" type="search" placeholder="Search" aria-label="Search" @bind-value="searchEvent" @oninput="HandleInput">
         
     </form>
-    <button id="btn" class="fas fa-calendar" @onclick="SortDateByDescending"><i>Order By Dat</i>e</button>
-    <button id="btn" class="fas fa-coins" @onclick="OrderByPrice"><i>Order By Price</i></button>
+</div>
+<div id="btn-div">
+    <button id="btn" style="margin-right:6px" class="fas fa-calendar" @onclick="SortDateByDescending"><i>&nbsp; Order By Date</i></button>
+    <button id="btn" class="fas fa-coins" @onclick="OrderByPrice"><i>&nbsp; Order By Price</i></button>
 </div>
 
 
@@ -243,6 +245,15 @@ else
         cursor: pointer;
         transition: all 0.4s;
         position: relative;
+    }
+    #btn:hover{
+        transform:translateY(-6px)
+    }
+    #btn-div{
+        display:flex;
+        justify-content:center;
+        align-content:center;
+        
     }
 
 

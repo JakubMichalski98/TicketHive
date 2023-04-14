@@ -8,8 +8,9 @@
 @inject NavigationManager navigationManager;
 @inject IUserRepo userRepo;
 @inject IEventRepo eventRepo;
-<h3>Shoppingcart</h3>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<PageTitle>Shoppingcart</PageTitle>
 <div id="TheDiv">
 
 @if (cartExists && cartItems != null && cartItems.Count > 0)
@@ -39,6 +40,7 @@
                         <tr id="table-row">
                             <td><img id="img" src="/Images/@item.EventModel.Image" /></td>
                             <td id="item-display">@item.EventModel.EventName</td>
+                            
 
 
                             <td>
@@ -52,14 +54,15 @@
                                 </select>
                             </td>
                             <td>@TicketPrice(item.EventModel.PricePerTicket, item.Quantity) Kr</td>
-                            <td> <input class="btn btn-danger" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))" value="REMOVE" /> </td>
-
-
+                            <td> <button id="btn" class="fas fa-trash-alt" style="background-color:red" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))"></button> </td>
+                           <h5>@Errormessage</h5>
+                            
 
                         </tr>
 
-
+                       
                     }
+                    
                 }
             </tbody>
 
@@ -67,7 +70,7 @@
                 <tr >
                     <td colspan="4"style="text-align:right">Total Price:@TotalPrice(cartItems) Kr</td>
                     <td colspan="5" style="text-align:right">
-                        <input class="btn btn-success" type="button" value="Book Events" @onclick="AddBookingsToUser" />
+                        <button id="btn" style="background-color:green" class="fas fa-handshake" type="button" value="Book Events" @onclick="AddBookingsToUser" >Book</button> 
                     </td>
 
                 </tr>
@@ -95,6 +98,8 @@
 @code {
     private List<BookingModel> cartItems = new();
     private bool cartExists;
+
+    private string Errormessage = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -124,6 +129,12 @@
                 await eventRepo.UpdateAvailableEventTickets(item.EventModelId, item.Quantity);
                 await userRepo.AddBookingToUser(bookingInfo);
                 navigationManager.NavigateTo("/confirmation");
+
+
+            }
+            else
+            {
+                Errormessage = "This item already exists";
             }
             // TODO: Implement error message code here specifying which item is already booked
 
@@ -215,6 +226,21 @@
         border-bottom: 2px solid black;
         padding: 20px 0;
         
+    }
+
+    #btn {
+        
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.4s;
+        position: relative;
+    }
+    #btn:hover{
+        transform:translateY(-3px)
     }
     
 
