@@ -12,7 +12,7 @@
 
 <div id="TheDiv">
 
-@if (cartItems != null && cartItems.Count > 0)
+@if (cartExists && cartItems != null && cartItems.Count > 0)
     {
         <table id="thetable">
 
@@ -79,7 +79,7 @@
         </table>
 
     }
-    else if (cartItems.Count() == 0)
+    else if ( !cartExists || cartItems.Count() == 0)
     {
         <h1>No Items</h1>
     }
@@ -94,9 +94,11 @@
 
 @code {
     private List<BookingModel> cartItems = new();
+    private bool cartExists;
 
     protected override async Task OnInitializedAsync()
     {
+        cartExists = await shoppingcartRepo.CheckIfCartExists();
         await UpdateCartItems();
     }
 
