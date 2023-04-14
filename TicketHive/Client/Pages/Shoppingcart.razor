@@ -117,27 +117,35 @@
     {
         foreach (var item in cartItems)
         {
-            UserModel eventDbUser = await userRepo.GetLoggedInUser();
-            BookingInfoModel bookingInfo = new()
-                {
-                    User = eventDbUser,
-                    Booking = item
-                };
-
-            if (!await userRepo.CheckIfBookingExists(item))
+            if (item.Quantity != null && item.Quantity > 0)
             {
-                await eventRepo.UpdateAvailableEventTickets(item.EventModelId, item.Quantity);
-                await userRepo.AddBookingToUser(bookingInfo);
-                navigationManager.NavigateTo("/confirmation");
+                UserModel eventDbUser = await userRepo.GetLoggedInUser();
+                BookingInfoModel bookingInfo = new()
+                    {
+                        User = eventDbUser,
+                        Booking = item
+                    };
 
+                if (!await userRepo.CheckIfBookingExists(item))
+                {
+                    await eventRepo.UpdateAvailableEventTickets(item.EventModelId, item.Quantity);
+                    await userRepo.AddBookingToUser(bookingInfo);
+                    navigationManager.NavigateTo("/confirmation");
+
+
+                }
+                else
+                {
+                    Errormessage = "This item already exists";
+                }
+                // TODO: Implement error message code here specifying which item is already booked
 
             }
             else
             {
-                Errormessage = "This item already exists";
+                Errormessage = "Please select amount of tickets!";
             }
-            // TODO: Implement error message code here specifying which item is already booked
-
+            
         }
         
     }
