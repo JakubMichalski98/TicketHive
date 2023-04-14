@@ -29,6 +29,34 @@ namespace TicketHive.Server.Controllers
 
         }
 
+        [HttpGet("views")]
+        public async Task<ActionResult<List<EventViewModel>>> GetEventViews()
+        {
+            List<EventModel> events = await context.Events.ToListAsync();
+            List<EventViewModel> eventViews = new();
+
+            foreach (EventModel eventModel in events)
+            {
+                EventViewModel eventViewModel = new()
+                {
+                    Id = eventModel.Id,
+                    EventName = eventModel.EventName,
+                    EventType = eventModel.EventType,
+                    EventPlace = eventModel.EventPlace,
+                    EventDetails = eventModel.EventDetails,
+                    Date = eventModel.Date,
+                    PricePerTicket = eventModel.PricePerTicket * (decimal)exchangeRate,
+                    TotalTickets = eventModel.TotalTickets,
+                    AvailableTickets = eventModel.AvailableTickets,
+                    Image = eventModel.Image
+
+                };
+                eventViews.Add(eventViewModel);
+            }
+
+            return eventViews;
+        }
+
         [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult<EventModel>> GetEvent(int id)
@@ -38,6 +66,31 @@ namespace TicketHive.Server.Controllers
             if (eventModel != null)
             {
                 return eventModel;
+            }
+            return NotFound("Event with provided ID not found");
+        }
+
+        [HttpGet("views/{id}")]
+        public async Task<ActionResult<EventViewModel>> GetEventView(int id)
+        {
+            EventModel? eventModel = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (eventModel != null)
+            {
+                EventViewModel eventViewModel = new()
+                {
+                    Id = eventModel.Id,
+                    EventName = eventModel.EventName,
+                    EventType = eventModel.EventType,
+                    EventPlace = eventModel.EventPlace,
+                    EventDetails = eventModel.EventDetails,
+                    Date = eventModel.Date,
+                    PricePerTicket = eventModel.PricePerTicket * (decimal)exchangeRate,
+                    TotalTickets = eventModel.TotalTickets,
+                    AvailableTickets = eventModel.AvailableTickets,
+                    Image = eventModel.Image
+                };
+                return eventViewModel;
             }
             return NotFound("Event with provided ID not found");
         }

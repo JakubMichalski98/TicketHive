@@ -69,11 +69,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (currencyRepo.GetExchangeRate() < 0.0001 && currencyRepo.GetExchangeRate != null)
-    {
-            await currencyRepo.GetExchangeRates();
-        }
-
         //await shoppingcartRepo.RemoveCart();
         await shoppingcartRepo.CreateCart(Empty);
 
@@ -89,12 +84,19 @@
             Bookings = eventDbUser.Bookings;
             await userRepo.SetUserCurrency();
         }
-
+        await currencyRepo.GetExchangeRates();
         allEvents = await eventRepo.GetAllEvents();
 
     }
 
-    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await currencyRepo.GetExchangeRates();
+        }
+    }
+
 }
 
 <style>

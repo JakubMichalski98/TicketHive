@@ -32,6 +32,17 @@ namespace TicketHive.Client.Repositories
             return null;
         }
 
+        public async Task<List<EventViewModel>> GetAllEventViews()
+        {
+            var response = await httpClient.GetAsync("api/events/views");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<List<EventViewModel>>();
+            }
+            return null;
+        }
+
         /// <summary>
         /// Sends HTTP GET request to API in order to fetch event with provided ID
         /// </summary>
@@ -44,6 +55,18 @@ namespace TicketHive.Client.Repositories
             if (response.IsSuccessStatusCode)
             {
                 var foundEvent = await response.Content.ReadFromJsonAsync<EventModel>();
+                return (foundEvent);
+            }
+            return null;
+        }
+
+        public async Task<EventViewModel> GetEventView(int id)
+        {
+            var response = await httpClient.GetAsync($"api/Events/views/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var foundEvent = await response.Content.ReadFromJsonAsync<EventViewModel>();
                 return (foundEvent);
             }
             return null;

@@ -39,6 +39,10 @@ namespace TicketHive.Client.Repositories
             {
                 exchangeRate = currency.rates.GBP;
             }
+            else if (currencyCode == "SEK")
+            {
+                exchangeRate = 1;
+            }
 
             await SetExchangeRate();
         }

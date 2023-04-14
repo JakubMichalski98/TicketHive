@@ -2,6 +2,7 @@
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization;
 @using TicketHive.Shared.Models;
+@inject ICurrencyRepo currencyRepo;
 @inject IEventRepo eventrepo
 <PageTitle>Booking</PageTitle>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -92,7 +93,7 @@ else
                             <p class="card-text">@events.EventDetails</p>
                             <hr>
                             <h6 class="fas fa-calendar"> @events.Date.ToShortDateString()</h6>
-                            <h6>Price: @events.PricePerTicket.ToString("0")</h6>
+                            <h6>Price: @events.PricePerTicket</h6>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>
 
@@ -106,8 +107,8 @@ else
 }
 
 @code {
-    private List<EventModel> events = new List<EventModel>();
-    private List<EventModel> filteredEvents = new List<EventModel>();
+    private List<EventViewModel> events = new List<EventViewModel>();
+    private List<EventViewModel> filteredEvents = new List<EventViewModel>();
     private string searchEvent = "";
     private decimal convertedPrice;
     private double exchangeRate;
@@ -115,10 +116,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        events = await eventrepo.GetAllEvents();
+        exchangeRate = currencyRepo.GetExchangeRate();
+        events = await eventrepo.GetAllEventViews();
+
         filteredEvents = events;
-
-
 
     }
 
