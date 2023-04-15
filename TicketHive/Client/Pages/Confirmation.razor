@@ -4,6 +4,7 @@
 @using TicketHive.Shared.Models;
 @attribute [Authorize]
 @inject IShoppingcartRepo shoppingcartRepo;
+@inject IEventRepo eventRepo;
 
 <PageTitle>Confirmation</PageTitle>
 
@@ -19,16 +20,16 @@
 
     <main>
         <div id="display-div" class="row row-cols-3 row-cols-md-3 g-4 center">
-            @foreach (var item in cartItems)
+            @foreach (var item in bookingViews)
             {
-                decimal totalPrice = CalculateTotalPrice(item.EventModel.PricePerTicket, item.Quantity);
+                decimal totalPrice = CalculateTotalPrice(item.EventViewModel.PricePerTicket, item.Quantity);
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <img style="max-width:100px" src="/Images/@item.EventModel.Image" class="card-img-top" alt="...">
-                            <h5 class="card-title">@item.EventModel.EventName</h5>
-                            <p class="card-text">@item.EventModel.EventPlace</p>
-                            <p class="card-text">@item.EventModel.Date</p>
+                            <img style="max-width:100px" src="/Images/@item.EventViewModel.Image" class="card-img-top" alt="...">
+                            <h5 class="card-title">@item.EventViewModel.EventName</h5>
+                            <p class="card-text">@item.EventViewModel.EventPlace</p>
+                            <p class="card-text">@item.EventViewModel.Date</p>
                             <p class="card-text">@item.Quantity /pcs @totalPrice</p>
                         </div>
                     </div>
@@ -48,17 +49,36 @@
 @code
 {
     private List<BookingModel>? cartItems = new();
+    private List<BookingViewModel> bookingViews = new();
 
     protected override async Task OnInitializedAsync()
     {
         cartItems = await shoppingcartRepo.GetCartFromLocalStorage();
-
+        await UpdateBookingViews();
         await shoppingcartRepo.RemoveCart();
     }
 
     public decimal CalculateTotalPrice(decimal PricePerTicket, int quantity)
     {
         return PricePerTicket * quantity;
+    }
+
+    private async Task UpdateBookingViews()
+    {
+        bookingViews.Clear();
+
+        foreach (var item in cartItems)
+        {
+            var eventView = await eventRepo.GetEventView(item.EventModelId);
+
+            BookingViewModel bookingView = new()
+                {
+                    EventModelId = eventView.Id,
+                    EventViewModel = await eventRepo.GetEventView(item.EventModelId),
+                    Quantity = item.Quantity
+                };
+            bookingViews.Add(bookingView);
+        }
     }
 
 }

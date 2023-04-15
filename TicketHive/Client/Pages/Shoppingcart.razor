@@ -181,18 +181,22 @@
     {
         bookingViews.Clear();
 
-        foreach(var item in cartItems)
+        if (cartItems != null)
         {
-            var eventView = await eventRepo.GetEventView(item.EventModelId);
+            foreach (var item in cartItems)
+            {
+                var eventView = await eventRepo.GetEventView(item.EventModelId);
 
-            BookingViewModel bookingView = new()
-                {
-                    EventModelId = eventView.Id,
-                    EventViewModel = await eventRepo.GetEventView(item.EventModelId),
-                    Quantity = item.Quantity
-                };
+                BookingViewModel bookingView = new()
+                    {
+                        EventModelId = eventView.Id,
+                        EventViewModel = await eventRepo.GetEventView(item.EventModelId),
+                        Quantity = item.Quantity
+                    };
                 bookingViews.Add(bookingView);
+            }
         }
+        
     }
 
 
