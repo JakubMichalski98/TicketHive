@@ -61,7 +61,6 @@
 }
 
 @code {
-    private string? username;
     private UserModel? eventDbUser;
     List<BookingModel>? Bookings;
     private List<EventModel>? allEvents;
@@ -72,23 +71,24 @@
         //await shoppingcartRepo.RemoveCart();
         await shoppingcartRepo.CreateCart(Empty);
 
-        var user = await userRepo.GetLoggedInUser();
+        UserModel? user = await userRepo.GetLoggedInUser();
 
-        if (username != "admin")
+        if (user != null)
         {
             eventDbUser = user;
-        }
-
-        if (eventDbUser != null)
-        {
             Bookings = eventDbUser.Bookings;
             await userRepo.SetUserCurrency();
         }
+
         allEvents = await eventRepo.GetAllEvents();
 
-        if (currencyRepo.GetExchangeRate() < 0.001)
+        if (currencyRepo.GetExchangeRate() < 0.001 && user != null)
         {
             await currencyRepo.GetExchangeRates();
+        }
+        else
+        {
+            userRepo.SetUserCurrency();
         }
 
     }
