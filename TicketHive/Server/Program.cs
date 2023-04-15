@@ -96,6 +96,20 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
     }
 
     signInManager.UserManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
+
+    IdentityRole? userRole = roleManager.FindByNameAsync("User").GetAwaiter().GetResult();
+
+    if (userRole == null)
+    {
+        userRole = new()
+        {
+            Name = "User"
+        };
+
+        roleManager.CreateAsync(userRole).GetAwaiter().GetResult();
+    }
+
+    signInManager.UserManager.AddToRoleAsync(user, "User").GetAwaiter().GetResult();
 }
 
 var app = builder.Build();
