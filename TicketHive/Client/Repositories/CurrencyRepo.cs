@@ -13,6 +13,7 @@ namespace TicketHive.Client.Repositories
         private string currencyCode = "";
         private string accessKey = "LhRJ2zFT23P5DZ8Vg2xfNQ1nXCA6RmoI";
         private Root? currency;
+       
 
         public CurrencyRepo(HttpClient httpClient, IUserRepo userRepo)
         {
@@ -48,6 +49,7 @@ namespace TicketHive.Client.Repositories
             if (currencyCode == "EUR")
             {
                 exchangeRate = currency.rates.EUR;
+                
             }
             else if (currencyCode == "GBP")
             {
@@ -63,6 +65,11 @@ namespace TicketHive.Client.Repositories
         public double GetExchangeRate()
         {
             return exchangeRate;
+        }
+
+        public string GetCurrencyCode()
+        {
+            return currencyCode;
         }
 
     }

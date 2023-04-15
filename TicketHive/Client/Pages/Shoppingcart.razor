@@ -54,7 +54,7 @@
 
                                 </select>
                             </td>
-                            <td>@TicketPrice(item.EventViewModel.PricePerTicket, item.Quantity) Kr</td>
+                            <td>@Math.Round(TicketPrice(item.EventViewModel.PricePerTicket,item.Quantity),2) @currencyRepo.GetCurrencyCode()</td>
                             <td> <button id="btn" class="fas fa-trash-alt" style="background-color:red" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))"></button> </td>
                            <h5>@Errormessage</h5>
                             
@@ -69,7 +69,7 @@
 
             <tfoot id="tfoot">
                 <tr >
-                    <td colspan="4" style="text-align:right">Total Price:@TotalPrice(bookingViews) Kr</td>
+                    <td colspan="4" style="text-align:right">Total Price:@Math.Round(TotalPrice(bookingViews),2) &nbsp; @currencyRepo.GetCurrencyCode()</td>
                     <td colspan="5" style="text-align:right">
                         <button id="btn" style="background-color:green" class="fas fa-handshake" type="button" value="Book Events" @onclick="AddBookingsToUser" >Book</button> 
                     </td>

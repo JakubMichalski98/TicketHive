@@ -52,7 +52,7 @@
                             <hr>
                             <h6 class="fas fa-calendar">&nbsp;@events.Date.ToShortDateString()</h6>
                             <p></p>
-                            <h6 class="fas fa-coins">&nbsp;@events.PricePerTicket.ToString("0")</h6>
+                            <h6 class="fas fa-coins">&nbsp;@events.PricePerTicket.ToString("0") <h6>&nbsp;@currencyRepo.GetCurrencyCode()</h6></h6>
                             <hr>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>
@@ -93,7 +93,7 @@ else
                             <p class="card-text">@events.EventDetails</p>
                             <hr>
                             <h6 class="fas fa-calendar"> @events.Date.ToShortDateString()</h6>
-                            <h6>Price: @events.PricePerTicket</h6>
+                            <h6>Price: @events.PricePerTicket <h6>&nbsp;@currencyRepo.GetCurrencyCode()</h6></h6>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>
 
