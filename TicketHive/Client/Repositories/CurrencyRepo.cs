@@ -46,12 +46,12 @@ namespace TicketHive.Client.Repositories
         {
             await SetCurrencyCode();
 
-            if (currencyCode == "EUR")
+            if (currencyCode == "€")
             {
                 exchangeRate = currency.rates.EUR;
                 
             }
-            else if (currencyCode == "GBP")
+            else if (currencyCode == "£")
             {
                 exchangeRate = currency.rates.GBP;
             }

@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Authorization;
 @using Newtonsoft.Json;
 @using TicketHive.Shared.Models;
-@attribute [Authorize]
+@attribute [Authorize(Roles = "User")]
 @inject IShoppingcartRepo shoppingcartRepo;
 @inject IEventRepo eventRepo;
 @inject ICurrencyRepo currencyRepo
@@ -31,7 +31,7 @@
                             <h5 class="card-title">@item.EventViewModel.EventName</h5>
                             <p class="card-text">@item.EventViewModel.EventPlace</p>
                             <p class="card-text">@item.EventViewModel.Date</p>
-                            <p class="card-text">@item.Quantity /pcs @totalPrice</p>
+                            <p class="card-text">@item.Quantity /pcs @totalPrice @currencyRepo.GetCurrencyCode()</p>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
     public decimal CalculateTotalPrice(decimal PricePerTicket, int quantity)
     {
         return PricePerTicket * quantity;
-        currencyRepo.GetCurrencyCode();
+        
     }
 
     private async Task UpdateBookingViews()

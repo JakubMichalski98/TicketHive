@@ -10,9 +10,11 @@
 
     <AuthorizeView>
         <Authorized>
+            <AuthorizeView Roles="User" Context="User">
             <button id="btn-cart" class="fas fa-shopping-cart" @onclick="ShoppingCart"><i id="counter">@ItemCount</i></button>
-
             <a style="color: #305076" href="/user-page">@context.User.Identity?.Name!</a>
+            </AuthorizeView>
+            
 
             <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
         </Authorized>

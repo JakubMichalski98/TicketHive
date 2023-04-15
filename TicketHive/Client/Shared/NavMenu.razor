@@ -23,15 +23,18 @@
 <div class="@NavMenuCssClass" style="background: #FCE595; " @onclick="ToggleNavMenu">
 
     <nav class="flex-column">
-        <AuthorizeView>
+        <AuthorizeView Roles="User">
+            
             <div class="nav-item px-3">
                 <NavLink style="color: #305076" class="nav-link" href="home">Home</NavLink>
             </div>
         </AuthorizeView>
-        <AuthorizeView>
+        <AuthorizeView Roles="User">
+            
             <div class="nav-item px-3">
                 <NavLink style="color: #305076" class="nav-link" href="booking">Booking</NavLink>
             </div>
+            
         </AuthorizeView>
         <AuthorizeView Roles="Admin">
             <div class="nav-item px-3">

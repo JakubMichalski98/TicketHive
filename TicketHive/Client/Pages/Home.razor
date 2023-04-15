@@ -8,6 +8,7 @@
 @inject IBookingRepo bookingRepo;
 @inject ICurrencyRepo currencyRepo;
 @inject IShoppingcartRepo shoppingcartRepo;
+@attribute [Authorize(Roles = "user")]
 @inject AuthenticationStateProvider authProvider
 
 <PageTitle>Home</PageTitle>

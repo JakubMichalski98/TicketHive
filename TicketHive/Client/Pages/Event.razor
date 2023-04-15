@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Authorization;
 @using Newtonsoft.Json;
 @using System.Net;
+@attribute [Authorize(Roles = "User")]
 @using TicketHive.Shared.Models;
 @using TicketHive.Shared;
 @using Microsoft.AspNetCore.Http;
