@@ -80,5 +80,12 @@ namespace TicketHive.Client.Repositories
             }
             return false;
         }
+
+        public async Task SetUserCurrency()
+        {
+            var user = await GetLoggedInUser();
+
+            var response = await httpClient.PutAsJsonAsync($"api/Users/currency", user.Username);
+        }
     }
 }

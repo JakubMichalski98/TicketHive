@@ -6,6 +6,7 @@
 @inject IUserRepo userRepo;
 @inject IEventRepo eventRepo;
 @inject IBookingRepo bookingRepo;
+@inject ICurrencyRepo currencyRepo;
 @inject IShoppingcartRepo shoppingcartRepo;
 @inject AuthenticationStateProvider authProvider
 
@@ -81,14 +82,19 @@
         if (eventDbUser != null)
         {
             Bookings = eventDbUser.Bookings;
+            await userRepo.SetUserCurrency();
         }
-
         allEvents = await eventRepo.GetAllEvents();
+
+        if (currencyRepo.GetExchangeRate() < 0.001)
+        {
+            await currencyRepo.GetExchangeRates();
+        }
 
     }
 
-    
-}
+    }
+
 
 <style>
     #img{

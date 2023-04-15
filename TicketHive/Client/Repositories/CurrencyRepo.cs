@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http;
+using System.Net.Http.Json;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Repositories
@@ -7,49 +8,62 @@ namespace TicketHive.Client.Repositories
     public class CurrencyRepo : ICurrencyRepo
     {
         private readonly HttpClient httpClient;
-
-        private double currencyRate;
-        private string currencyCode = "EUR";
+        private readonly IUserRepo userRepo;
+        public static double exchangeRate;
+        private string currencyCode = "";
         private string accessKey = "LhRJ2zFT23P5DZ8Vg2xfNQ1nXCA6RmoI";
+        private Root? currency;
 
-        public CurrencyRepo(HttpClient httpClient)
+        public CurrencyRepo(HttpClient httpClient, IUserRepo userRepo)
         {
             this.httpClient = httpClient;
+            this.userRepo = userRepo;
         }
-        public async Task GetExchangeRate()
+        public async Task GetExchangeRates()
         {
             httpClient.DefaultRequestHeaders.Add("apikey", accessKey);
 
-            var response = await httpClient.GetAsync($"https://api.apilayer.com/exchangerates_data/latest?symbols={currencyCode}&base=SEK");
+            await SetCurrencyCode();
+
+           var response = await httpClient.GetAsync($"https://api.apilayer.com/exchangerates_data/latest?symbols=EUR,GBP&base=SEK");
             var content = response.Content;
 
             var stringResponse = await content.ReadAsStringAsync();
 
-            Root currency = JsonConvert.DeserializeObject<Root>(stringResponse);
+            currency = JsonConvert.DeserializeObject<Root>(stringResponse);
+
+            await SetExchangeRate();
+        }
+        private async Task SetCurrencyCode()
+        {
+            UserModel? user = await userRepo.GetLoggedInUser();
+
+            currencyCode = user.Currency;
+        }
+
+        public async Task SetExchangeRate()
+        {
+            await SetCurrencyCode();
 
             if (currencyCode == "EUR")
             {
-                currencyRate = currency.rates.EUR;
+                exchangeRate = currency.rates.EUR;
             }
             else if (currencyCode == "GBP")
             {
-                currencyRate = currency.rates.GBP;
+                exchangeRate = currency.rates.GBP;
             }
+            else if (currencyCode == "SEK")
+            {
+                exchangeRate = 1;
+            }
+            var result = await httpClient.PostAsJsonAsync("api/Events/exchangerate", exchangeRate);
         }
-        public async Task<string> GetCurrencyForCountry(string country)
+
+        public double GetExchangeRate()
         {
-            if (country == "England" || country == "Ireland" || country == "Northern_Ireland" || country == "Scotland")
-            {
-                return "GBP";
-            }
-            else if (country == "Sweden")
-            {
-                return "SEK";
-            }
-            else
-            {
-                return "EUR";
-            }
+            return exchangeRate;
         }
+
     }
 }

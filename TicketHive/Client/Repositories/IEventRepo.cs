@@ -8,7 +8,11 @@ namespace TicketHive.Client.Repositories
 
         public Task<List<EventModel>> GetAllEvents();
 
+        public Task<List<EventViewModel>> GetAllEventViews();
+
         public Task<EventModel?> GetEvent(int id);
+
+        public Task<EventViewModel> GetEventView(int id);
 
         public Task AddEvent(EventModel eventToAdd);
 

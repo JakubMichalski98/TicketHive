@@ -16,5 +16,7 @@ namespace TicketHive.Client.Repositories
         public Task<bool> ChangeUserPassword(ChangePasswordModel changePasswordModel);
 
         public Task<bool> ChangeUserCountry(ChangeUserCountryModel changeUserCountryModel);
+
+        public Task SetUserCurrency();
     }
 }

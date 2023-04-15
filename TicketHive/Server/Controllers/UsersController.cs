@@ -11,6 +11,8 @@ using TicketHive.Server.Data;
 using TicketHive.Server.Models;
 using TicketHive.Shared;
 using TicketHive.Shared.Models;
+using TicketHive.Client.Repositories;
+using System.Diagnostics.Metrics;
 
 namespace TicketHive.Server.Controllers
 {
@@ -84,6 +86,30 @@ namespace TicketHive.Server.Controllers
             }
 
             return BadRequest();
+        }
+        [HttpPut("currency")]
+        public async Task SetUserCurrency([FromBody] string username)
+        {
+            UserModel? user = await context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            string currency = "";
+
+            if (user.UserCountry == "England" || user.UserCountry == "Ireland" || user.UserCountry == "Northern_Ireland" || user.UserCountry == "Scotland")
+            {
+                currency = "GBP";
+            }
+            else if (user.UserCountry == "Sweden")
+            {
+                currency =  "SEK";
+            }
+            else
+            {
+                currency =  "EUR";
+            }
+            if (user != null)
+            {
+                user.Currency = currency;
+                await context.SaveChangesAsync();
+            }
         }
 
 

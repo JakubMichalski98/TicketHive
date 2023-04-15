@@ -6,6 +6,7 @@
 @using TicketHive.Shared;
 @inject IShoppingcartRepo shoppingcartRepo;
 @inject NavigationManager navigationManager;
+@inject ICurrencyRepo currencyRepo;
 @inject IUserRepo userRepo;
 @inject IEventRepo eventRepo;
 
@@ -35,11 +36,11 @@
 
                 @if (cartItems.Count != 0)
                 {
-                    @foreach (var item in cartItems)
+                    @foreach (var item in bookingViews)
                     {
                         <tr id="table-row">
-                            <td><img id="img" src="/Images/@item.EventModel.Image" /></td>
-                            <td id="item-display">@item.EventModel.EventName</td>
+                            <td><img id="img" src="/Images/@item.EventViewModel.Image" /></td>
+                            <td id="item-display">@item.EventViewModel.EventName</td>
                             
 
 
@@ -53,7 +54,7 @@
 
                                 </select>
                             </td>
-                            <td>@TicketPrice(item.EventModel.PricePerTicket, item.Quantity) Kr</td>
+                            <td>@TicketPrice(item.EventViewModel.PricePerTicket, item.Quantity) Kr</td>
                             <td> <button id="btn" class="fas fa-trash-alt" style="background-color:red" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))"></button> </td>
                            <h5>@Errormessage</h5>
                             
@@ -68,7 +69,7 @@
 
             <tfoot id="tfoot">
                 <tr >
-                    <td colspan="4"style="text-align:right">Total Price:@TotalPrice(cartItems) Kr</td>
+                    <td colspan="4" style="text-align:right">Total Price:@TotalPrice(bookingViews) Kr</td>
                     <td colspan="5" style="text-align:right">
                         <button id="btn" style="background-color:green" class="fas fa-handshake" type="button" value="Book Events" @onclick="AddBookingsToUser" >Book</button> 
                     </td>
@@ -97,14 +98,18 @@
 
 @code {
     private List<BookingModel> cartItems = new();
+    private List<BookingViewModel> bookingViews = new();
+    private double exchangeRate;
     private bool cartExists;
 
     private string Errormessage = "";
 
     protected override async Task OnInitializedAsync()
     {
+        exchangeRate = currencyRepo.GetExchangeRate();
         cartExists = await shoppingcartRepo.CheckIfCartExists();
         await UpdateCartItems();
+
     }
 
     private async Task RemoveFromCart(int eventId)
@@ -145,9 +150,9 @@
             {
                 Errormessage = "Please select amount of tickets!";
             }
-            
+
         }
-        
+
     }
 
     public decimal TicketPrice(decimal PricePerTicket, int quantity)
@@ -155,13 +160,13 @@
         return PricePerTicket * quantity;
     }
 
-    private decimal TotalPrice(List<BookingModel> cartItems)
+    private decimal TotalPrice(List<BookingViewModel> cartItems)
     {
         decimal totalPrice = 0;
 
         foreach (var item in cartItems)
         {
-            totalPrice += TicketPrice(item.EventModel.PricePerTicket, item.Quantity);
+            totalPrice += TicketPrice(item.EventViewModel.PricePerTicket, item.Quantity);
         }
         return totalPrice;
     }
@@ -169,6 +174,29 @@
     private async Task UpdateCartItems()
     {
         cartItems = await shoppingcartRepo.GetCartFromLocalStorage();
+        await UpdateBookingViews();
+    }
+
+    private async Task UpdateBookingViews()
+    {
+        bookingViews.Clear();
+
+        if (cartItems != null)
+        {
+            foreach (var item in cartItems)
+            {
+                var eventView = await eventRepo.GetEventView(item.EventModelId);
+
+                BookingViewModel bookingView = new()
+                    {
+                        EventModelId = eventView.Id,
+                        EventViewModel = await eventRepo.GetEventView(item.EventModelId),
+                        Quantity = item.Quantity
+                    };
+                bookingViews.Add(bookingView);
+            }
+        }
+        
     }
 
 

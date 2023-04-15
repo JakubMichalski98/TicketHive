@@ -14,6 +14,7 @@ namespace TicketHive.Server.Controllers
     public class EventsController : ControllerBase
     {
         private readonly EventDbContext context;
+        private static double exchangeRate;
 
         public EventsController(EventDbContext context)
         {
@@ -23,7 +24,37 @@ namespace TicketHive.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<EventModel>>> GetEvents()
         {
-            return await context.Events.ToListAsync();
+
+           return await context.Events.ToListAsync();
+
+        }
+
+        [HttpGet("views")]
+        public async Task<ActionResult<List<EventViewModel>>> GetEventViews()
+        {
+            List<EventModel> events = await context.Events.ToListAsync();
+            List<EventViewModel> eventViews = new();
+
+            foreach (EventModel eventModel in events)
+            {
+                EventViewModel eventViewModel = new()
+                {
+                    Id = eventModel.Id,
+                    EventName = eventModel.EventName,
+                    EventType = eventModel.EventType,
+                    EventPlace = eventModel.EventPlace,
+                    EventDetails = eventModel.EventDetails,
+                    Date = eventModel.Date,
+                    PricePerTicket = eventModel.PricePerTicket * (decimal)exchangeRate,
+                    TotalTickets = eventModel.TotalTickets,
+                    AvailableTickets = eventModel.AvailableTickets,
+                    Image = eventModel.Image
+
+                };
+                eventViews.Add(eventViewModel);
+            }
+
+            return eventViews;
         }
 
         [HttpGet]
@@ -34,7 +65,32 @@ namespace TicketHive.Server.Controllers
 
             if (eventModel != null)
             {
-                return Ok(eventModel);
+                return eventModel;
+            }
+            return NotFound("Event with provided ID not found");
+        }
+
+        [HttpGet("views/{id}")]
+        public async Task<ActionResult<EventViewModel>> GetEventView(int id)
+        {
+            EventModel? eventModel = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (eventModel != null)
+            {
+                EventViewModel eventViewModel = new()
+                {
+                    Id = eventModel.Id,
+                    EventName = eventModel.EventName,
+                    EventType = eventModel.EventType,
+                    EventPlace = eventModel.EventPlace,
+                    EventDetails = eventModel.EventDetails,
+                    Date = eventModel.Date,
+                    PricePerTicket = eventModel.PricePerTicket * (decimal)exchangeRate,
+                    TotalTickets = eventModel.TotalTickets,
+                    AvailableTickets = eventModel.AvailableTickets,
+                    Image = eventModel.Image
+                };
+                return eventViewModel;
             }
             return NotFound("Event with provided ID not found");
         }
@@ -88,6 +144,12 @@ namespace TicketHive.Server.Controllers
             }
 
             return Ok(context.Events.ToListAsync());
+        }
+
+        [HttpPost("{exchangerate}")]
+        public void SetExchangeRate([FromBody]double exchangerate)
+        {
+            exchangeRate = exchangerate;
         }
 
     }
