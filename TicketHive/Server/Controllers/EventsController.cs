@@ -123,10 +123,12 @@ namespace TicketHive.Server.Controllers
 
 
                     context.ChangeTracker.DetectChanges();
+                    context.Entry(foundEvent).State = EntityState.Modified;
 
                     //context.Update(foundEvent);
 
                     await context.SaveChangesAsync();
+                    return Ok();
                 }
             }
             return BadRequest("Something went wrong when updating amount of available tickets for event");

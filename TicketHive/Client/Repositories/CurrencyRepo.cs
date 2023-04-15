@@ -13,6 +13,7 @@ namespace TicketHive.Client.Repositories
         private string currencyCode = "";
         private string accessKey = "LhRJ2zFT23P5DZ8Vg2xfNQ1nXCA6RmoI";
         private Root? currency;
+        private UserModel user;
        
 
         public CurrencyRepo(HttpClient httpClient, IUserRepo userRepo)
@@ -37,7 +38,7 @@ namespace TicketHive.Client.Repositories
         }
         private async Task SetCurrencyCode()
         {
-            UserModel? user = await userRepo.GetLoggedInUser();
+            user = await userRepo.GetLoggedInUser();
 
             currencyCode = user.Currency;
         }
@@ -45,20 +46,27 @@ namespace TicketHive.Client.Repositories
         public async Task SetExchangeRate()
         {
             await SetCurrencyCode();
+            if (user != null)
+            {
+                if (currencyCode == "€")
+                {
+                    exchangeRate = currency.rates.EUR;
 
-            if (currencyCode == "€")
-            {
-                exchangeRate = currency.rates.EUR;
-                
+                }
+                else if (currencyCode == "£")
+                {
+                    exchangeRate = currency.rates.GBP;
+                }
+                else if (currencyCode == "SEK")
+                {
+                    exchangeRate = 1;
+                }
             }
-            else if (currencyCode == "£")
-            {
-                exchangeRate = currency.rates.GBP;
-            }
-            else if (currencyCode == "SEK")
+            else
             {
                 exchangeRate = 1;
             }
+           
             var result = await httpClient.PostAsJsonAsync("api/Events/exchangerate", exchangeRate);
         }
 
