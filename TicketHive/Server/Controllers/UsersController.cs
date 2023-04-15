@@ -95,7 +95,7 @@ namespace TicketHive.Server.Controllers
 
             if (user.UserCountry == "England" || user.UserCountry == "Ireland" || user.UserCountry == "Northern_Ireland" || user.UserCountry == "Scotland")
             {
-                currency = "GBP";
+                currency = "£";
             }
             else if (user.UserCountry == "Sweden")
             {
@@ -103,7 +103,7 @@ namespace TicketHive.Server.Controllers
             }
             else
             {
-                currency =  "EUR";
+                currency = "€";
             }
             if (user != null)
             {

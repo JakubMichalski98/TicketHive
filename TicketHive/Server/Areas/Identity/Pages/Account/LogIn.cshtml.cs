@@ -28,33 +28,26 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
         }
         public async Task<IActionResult> OnPost()
         {
-            //if(ModelState.IsValid)
-            //{
-            //    var signedInResult = await signInManager.PasswordSignInAsync(Username!, Password!,false,false);
-
-
-            //    if (signedInResult.Succeeded)
-            //    {
-            //        return Redirect("~/");
-            //    }
-            //}
-            //return Page();
+           
 
             if (ModelState.IsValid)
             {
-                //var user = await signInManager.UserManager.FindByNameAsync(Username!);
-                //if (Username == null)
-                //{
-                //    ModelState.AddModelError("", "Invalid login attempt.");
-                //    return Page();
-                //}
+                
 
                 var signedInResult = await signInManager.PasswordSignInAsync(Username!, Password!, false, false);
 
                 if (signedInResult.Succeeded)
                 {
-                    return Redirect("/home");
+                    if (Username == "admin")
+                    {
+                        return Redirect("/admin");
+                    }
+                        return Redirect("/home");
+                   
                 }
+                
+
+
                 else if (signedInResult.Succeeded == false)
                 {
                     // Printa ut att lösenordet inte matchar

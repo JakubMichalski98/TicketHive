@@ -6,6 +6,7 @@
 @using System.ComponentModel.DataAnnotations
 @using TicketHive.Shared.Models;
 @using TicketHive.Shared;
+@attribute [Authorize(Roles = "User")]
 @inject AuthenticationStateProvider authStateProvider
 @inject IUserRepo userRepo
 @inject ICurrencyRepo currencyRepo;
