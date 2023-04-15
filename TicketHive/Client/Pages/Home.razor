@@ -82,14 +82,14 @@
 
         allEvents = await eventRepo.GetAllEvents();
 
-        if (currencyRepo.GetExchangeRate() < 0.001 && user != null)
-        {
-            await currencyRepo.GetExchangeRates();
-        }
-        else
-        {
-            userRepo.SetUserCurrency();
-        }
+        //if (currencyRepo.GetExchangeRate() < 0.001 && user != null)
+        //{
+        //    await currencyRepo.GetExchangeRates();
+        //}
+        //else
+        //{
+        //    await userRepo.SetUserCurrency();
+        //}
 
     }
 

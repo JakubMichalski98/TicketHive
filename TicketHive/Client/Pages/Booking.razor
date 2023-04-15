@@ -4,6 +4,7 @@
 @using TicketHive.Shared.Models;
 @inject ICurrencyRepo currencyRepo;
 @inject IEventRepo eventrepo
+@inject IUserRepo userRepo;
 <PageTitle>Booking</PageTitle>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
@@ -116,6 +117,15 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        if (currencyRepo.GetExchangeRate() < 0.001)
+        {
+            await currencyRepo.GetExchangeRates();
+        }
+        else
+        {
+            await userRepo.SetUserCurrency();
+        }
+
         exchangeRate = currencyRepo.GetExchangeRate();
         events = await eventrepo.GetAllEventViews();
 
