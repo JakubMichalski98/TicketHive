@@ -24,7 +24,7 @@
             <h2 class="text-decoration-underline">@eventView.EventName</h2>
             <div><em>@eventView.EventDetails</em></div>
             <div><p><b>@eventView.EventPlace</b> @chosenEvent.Date.ToString("HH:mm")</p></div>
-            <div><p><b>@eventView.PricePerTicket</b>:-</p></div>
+            <div><p><b>@Math.Round(eventView.PricePerTicket, 2)</b>&nbsp;@currencyRepo.GetCurrencyCode()</p></div>
         
         <div>
 
@@ -75,6 +75,7 @@
 @code {
     private string errorMessage = "";
     private double exchangeRate;
+    private string MoneyValue;
     private decimal convertedPrice;
     private bool isDisabled = true;
     private string? username;
@@ -105,7 +106,7 @@
             await shoppingcartRepo.AddToCart(booking);
             navigationManager.NavigateTo("/shoppingcart");
         }
-        
+
         //TODO: Implement message popping up saying that item is already in cart
         errorMessage = "Event already in your cart";
 
@@ -114,5 +115,9 @@
     {
         await AddBooking();
     }
+  
+
+
+
 }
 
