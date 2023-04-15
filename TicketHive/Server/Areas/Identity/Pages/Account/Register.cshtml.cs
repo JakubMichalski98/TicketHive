@@ -80,7 +80,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
                         var signInResult = await signInManager.PasswordSignInAsync(Username!, Password!, false, false);
 
 
-                        return Redirect("/home");
+                        return Redirect("~/");
                     }
 
                 }

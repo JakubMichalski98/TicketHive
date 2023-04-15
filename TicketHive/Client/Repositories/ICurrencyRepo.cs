@@ -5,5 +5,7 @@
         public Task GetExchangeRates();
         public double GetExchangeRate();
         public Task SetExchangeRate();
+
+        public string GetCurrencyCode();
     }
 }

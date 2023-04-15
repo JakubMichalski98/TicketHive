@@ -5,6 +5,7 @@
 @attribute [Authorize]
 @inject IShoppingcartRepo shoppingcartRepo;
 @inject IEventRepo eventRepo;
+@inject ICurrencyRepo currencyRepo
 
 <PageTitle>Confirmation</PageTitle>
 
@@ -22,7 +23,7 @@
         <div id="display-div" class="row row-cols-3 row-cols-md-3 g-4 center">
             @foreach (var item in bookingViews)
             {
-                decimal totalPrice = CalculateTotalPrice(item.EventViewModel.PricePerTicket, item.Quantity);
+                decimal totalPrice = Math.Round(CalculateTotalPrice(item.EventViewModel.PricePerTicket, item.Quantity),2 );
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
@@ -61,6 +62,7 @@
     public decimal CalculateTotalPrice(decimal PricePerTicket, int quantity)
     {
         return PricePerTicket * quantity;
+        currencyRepo.GetCurrencyCode();
     }
 
     private async Task UpdateBookingViews()
