@@ -5,6 +5,7 @@
 @inject ICurrencyRepo currencyRepo;
 @inject IEventRepo eventrepo
 @inject IUserRepo userRepo;
+@attribute [Authorize(Roles = "user")]
 <PageTitle>Booking</PageTitle>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
@@ -53,7 +54,7 @@
                             <hr>
                             <h6 class="fas fa-calendar">&nbsp;@events.Date.ToShortDateString()</h6>
                             <p></p>
-                            <h6 class="fas fa-coins">&nbsp;@events.PricePerTicket.ToString("0") <h6>&nbsp;@currencyRepo.GetCurrencyCode()</h6></h6>
+                            <h6 class="fas fa-coins">&nbsp;@events.PricePerTicket.ToString("0") &nbsp;@currencyRepo.GetCurrencyCode()</h6>
                             <hr>
                             <a href="/event/@events.Id" class="btn btn-primary card-btn">Go to event</a>
                         </div>

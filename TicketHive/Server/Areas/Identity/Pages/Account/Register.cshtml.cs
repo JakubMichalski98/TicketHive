@@ -75,6 +75,8 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
                 {
                     var registerResult = await signInManager.UserManager.CreateAsync(Newuser,Password);
 
+                    await signInManager.UserManager.AddToRoleAsync(Newuser, "User");
+
                     if (registerResult.Succeeded)
                     {  
                         var signInResult = await signInManager.PasswordSignInAsync(Username!, Password!, false, false);

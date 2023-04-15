@@ -1,5 +1,5 @@
 ﻿@page "/shoppingcart"
-@attribute [Authorize]
+@attribute [Authorize(Roles = "User")]
 @using Microsoft.AspNetCore.Authorization;
 @using Newtonsoft.Json;
 @using TicketHive.Shared.Models;

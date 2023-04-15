@@ -1,5 +1,5 @@
 ﻿@page "/home"
-@attribute [Authorize]
+@attribute [Authorize(Roles = "User")]
 @using Microsoft.AspNetCore.Authorization;
 @using TicketHive.Shared.Models;
 @using TicketHive.Shared;
@@ -8,6 +8,7 @@
 @inject IBookingRepo bookingRepo;
 @inject ICurrencyRepo currencyRepo;
 @inject IShoppingcartRepo shoppingcartRepo;
+@attribute [Authorize(Roles = "user")]
 @inject AuthenticationStateProvider authProvider
 
 <PageTitle>Home</PageTitle>
