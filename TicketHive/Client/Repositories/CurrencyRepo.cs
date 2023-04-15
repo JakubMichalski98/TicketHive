@@ -12,6 +12,7 @@ namespace TicketHive.Client.Repositories
         public static double exchangeRate;
         private string currencyCode = "";
         private string accessKey = "LhRJ2zFT23P5DZ8Vg2xfNQ1nXCA6RmoI";
+        private Root? currency;
 
         public CurrencyRepo(HttpClient httpClient, IUserRepo userRepo)
         {
@@ -24,12 +25,25 @@ namespace TicketHive.Client.Repositories
 
             await SetCurrencyCode();
 
-            var response = await httpClient.GetAsync($"https://api.apilayer.com/exchangerates_data/latest?symbols=EUR,GBP&base=SEK");
+           var response = await httpClient.GetAsync($"https://api.apilayer.com/exchangerates_data/latest?symbols=EUR,GBP&base=SEK");
             var content = response.Content;
 
             var stringResponse = await content.ReadAsStringAsync();
 
-            Root? currency = JsonConvert.DeserializeObject<Root>(stringResponse);
+            currency = JsonConvert.DeserializeObject<Root>(stringResponse);
+
+            await SetExchangeRate();
+        }
+        private async Task SetCurrencyCode()
+        {
+            UserModel? user = await userRepo.GetLoggedInUser();
+
+            currencyCode = user.Currency;
+        }
+
+        public async Task SetExchangeRate()
+        {
+            await SetCurrencyCode();
 
             if (currencyCode == "EUR")
             {
@@ -43,18 +57,6 @@ namespace TicketHive.Client.Repositories
             {
                 exchangeRate = 1;
             }
-
-            await SetExchangeRate();
-        }
-        private async Task SetCurrencyCode()
-        {
-            UserModel? user = await userRepo.GetLoggedInUser();
-
-            currencyCode = user.Currency;
-        }
-
-        private async Task SetExchangeRate()
-        {
             var result = await httpClient.PostAsJsonAsync("api/Events/exchangerate", exchangeRate);
         }
 
@@ -62,5 +64,6 @@ namespace TicketHive.Client.Repositories
         {
             return exchangeRate;
         }
+
     }
 }

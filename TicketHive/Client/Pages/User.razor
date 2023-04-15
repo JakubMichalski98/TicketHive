@@ -8,6 +8,7 @@
 @using TicketHive.Shared;
 @inject AuthenticationStateProvider authStateProvider
 @inject IUserRepo userRepo
+@inject ICurrencyRepo currencyRepo;
 @inject NavigationManager navigationManager
 
 <PageTitle>User</PageTitle>
@@ -113,6 +114,7 @@
         {
 
             //var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
+            await userRepo.SetUserCurrency();
 
             navigationManager.NavigateTo("/");
 
@@ -138,6 +140,7 @@
         if (countryChangeSuccessful)
         {
             await userRepo.SetUserCurrency();
+            await currencyRepo.SetExchangeRate();
             navigationManager.NavigateTo("/home");
         }
         

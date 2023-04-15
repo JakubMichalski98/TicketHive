@@ -84,20 +84,17 @@
             Bookings = eventDbUser.Bookings;
             await userRepo.SetUserCurrency();
         }
-        await currencyRepo.GetExchangeRates();
         allEvents = await eventRepo.GetAllEvents();
 
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
+        if (currencyRepo.GetExchangeRate() < 0.001)
         {
             await currencyRepo.GetExchangeRates();
         }
+
     }
 
-}
+    }
+
 
 <style>
     #img{
