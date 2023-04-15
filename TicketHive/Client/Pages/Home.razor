@@ -1,5 +1,5 @@
 ﻿@page "/home"
-@attribute [Authorize]
+@attribute [Authorize(Roles = "User")]
 @using Microsoft.AspNetCore.Authorization;
 @using TicketHive.Shared.Models;
 @using TicketHive.Shared;
@@ -88,7 +88,7 @@
         }
         else
         {
-            userRepo.SetUserCurrency();
+            await userRepo.SetUserCurrency();
         }
 
     }
