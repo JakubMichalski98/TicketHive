@@ -99,23 +99,16 @@
     private List<BookingModel> cartItems = new();
     private List<BookingViewModel> bookingViews = new();
     private List<BookingModel> bookingsToAdd = new();
-    private double exchangeRate;
+    //private double exchangeRate;
     private bool cartExists;
 
     private string Errormessage = "";
 
     protected override async Task OnInitializedAsync()
     {
-        if (currencyRepo.GetExchangeRate() < 0.001)
-        {
-            await currencyRepo.GetExchangeRates();
-        }
-        else
-        {
-            await userRepo.SetUserCurrency();
-        }
+        await currencyRepo.GetExchangeRates();
 
-        exchangeRate = currencyRepo.GetExchangeRate();
+        //exchangeRate = currencyRepo.GetExchangeRate();
         cartExists = await shoppingcartRepo.CheckIfCartExists();
         await UpdateCartItems();
     }

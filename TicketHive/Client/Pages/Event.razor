@@ -76,15 +76,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (currencyRepo.GetExchangeRate() < 0.001)
-        {
-            await currencyRepo.GetExchangeRates();
-        }
-        else
-        {
-            await userRepo.SetUserCurrency();
-        }
-        exchangeRate = currencyRepo.GetExchangeRate();
+        await currencyRepo.GetExchangeRates();
+        //exchangeRate = currencyRepo.GetExchangeRate();
 
         await shoppingcartRepo.CreateCart();
         eventView = await eventRepo.GetEventView(Id);

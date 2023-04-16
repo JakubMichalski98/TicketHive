@@ -111,8 +111,8 @@ else
     private List<EventViewModel> events = new List<EventViewModel>();
     private List<EventViewModel> filteredEvents = new List<EventViewModel>();
     private string searchEvent = "";
-    private decimal convertedPrice;
-    private double exchangeRate;
+
+    //private double exchangeRate;
 
 
     /// <summary>
@@ -121,16 +121,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if (currencyRepo.GetExchangeRate() < 0.001)
-        {
-            await currencyRepo.GetExchangeRates();
-        }
-        else
-        {
-            await userRepo.SetUserCurrency();
-        }
+        
+        await currencyRepo.GetExchangeRates();
 
-        exchangeRate = currencyRepo.GetExchangeRate();
+
+        //exchangeRate = currencyRepo.GetExchangeRate();
         events = await eventrepo.GetAllEventViews();
 
         filteredEvents = events;

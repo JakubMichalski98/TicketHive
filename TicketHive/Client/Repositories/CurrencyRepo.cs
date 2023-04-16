@@ -11,7 +11,7 @@ namespace TicketHive.Client.Repositories
         private readonly IUserRepo userRepo;
         public static double exchangeRate;
         private string currencyCode = "";
-        private string accessKey = "LhRJ2zFT23P5DZ8Vg2xfNQ1nXCA6RmoI";
+        private string accessKey = "a5yaLFgVm9E0f87EOma66SE1S5tvNRxS";
         private Root? currency;
         private UserModel user;
        
@@ -21,60 +21,68 @@ namespace TicketHive.Client.Repositories
             this.httpClient = httpClient;
             this.userRepo = userRepo;
         }
+
+        /// <summary>
+        /// Sends GET request to exchangerates api and sets exchange rate if it has not been set (is lower than 0.001) before
+        /// </summary>
+        /// <returns></returns>
         public async Task GetExchangeRates()
         {
             httpClient.DefaultRequestHeaders.Add("apikey", accessKey);
 
-            await SetCurrencyCode();
+            if (exchangeRate < 0.001)
+            {
+                var response = await httpClient.GetAsync($"https://api.apilayer.com/exchangerates_data/latest?symbols=EUR,GBP&base=SEK");
+                var content = response.Content;
 
-           var response = await httpClient.GetAsync($"https://api.apilayer.com/exchangerates_data/latest?symbols=EUR,GBP&base=SEK");
-            var content = response.Content;
+                var stringResponse = await content.ReadAsStringAsync();
 
-            var stringResponse = await content.ReadAsStringAsync();
+                currency = JsonConvert.DeserializeObject<Root>(stringResponse);
 
-            currency = JsonConvert.DeserializeObject<Root>(stringResponse);
-
-            await SetExchangeRate();
+                await SetExchangeRate();
+            }
         }
-        private async Task SetCurrencyCode()
+
+        /// <summary>
+        /// Sets the exchange rate based on user's currency and sends a post request to the event controller in order to change exchangerate on server
+        /// </summary>
+        /// <returns></returns>
+        public async Task SetExchangeRate()
         {
             user = await userRepo.GetLoggedInUser();
 
-            currencyCode = user.Currency;
-        }
-
-        public async Task SetExchangeRate()
-        {
-            await SetCurrencyCode();
             if (user != null)
             {
-                if (currencyCode == "€")
+                if (user.Currency == "€")
                 {
                     exchangeRate = currency.rates.EUR;
+                    currencyCode = "€";
 
                 }
-                else if (currencyCode == "£")
+                else if (user.Currency == "£")
                 {
                     exchangeRate = currency.rates.GBP;
+                    currencyCode = "£";
                 }
-                else if (currencyCode == "SEK")
+                else if (user.Currency == "SEK")
                 {
                     exchangeRate = 1;
+                    currencyCode = "SEK";
                 }
             }
             else
             {
                 exchangeRate = 1;
             }
-           
-            var result = await httpClient.PostAsJsonAsync("api/Events/exchangerate", exchangeRate);
+
+            
+            await httpClient.PostAsJsonAsync("api/Events/exchangerate", exchangeRate);
         }
 
-        public double GetExchangeRate()
-        {
-            return exchangeRate;
-        }
-
+        /// <summary>
+        /// Returns currency code
+        /// </summary>
+        /// <returns></returns>
         public string GetCurrencyCode()
         {
             return currencyCode;
