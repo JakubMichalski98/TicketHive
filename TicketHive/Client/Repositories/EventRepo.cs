@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Net.Http.Json;
 using System.Text.Json;
+using TicketHive.Shared;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Repositories
@@ -109,7 +110,12 @@ namespace TicketHive.Client.Repositories
         /// <returns></returns>
         public async Task UpdateAvailableEventTickets(int eventModelId, int quantity)
         {
-            var result = await httpClient.PutAsJsonAsync($"api/Events/{eventModelId}", quantity);
+            ChangeAvailableTicketsModel changeAvailableTicketsModel = new()
+            {
+                EventModelId = eventModelId,
+                Quantity = quantity
+            };
+            await httpClient.PutAsJsonAsync($"api/Events/availabletickets", changeAvailableTicketsModel);
         }
 
     }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using TicketHive.Server.Data;
+using TicketHive.Shared;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Server.Controllers
@@ -79,6 +80,7 @@ namespace TicketHive.Server.Controllers
             if (eventModel != null)
             {
                 return eventModel;
+                return Ok();
             }
             return NotFound("Event with provided ID not found");
         }
@@ -138,27 +140,20 @@ namespace TicketHive.Server.Controllers
         /// <param name="eventModelId"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        [HttpPut("{eventModelId}")]
-        public async Task<ActionResult> UpdateAvailableEventTickets(int? eventModelId, [FromBody]int quantity)
+        [HttpPut("{availabletickets}")]
+        public async Task<ActionResult> UpdateAvailableEventTickets(ChangeAvailableTicketsModel changeAvailableTicketsModel)
         {
-            if (eventModelId != null)
+
+            var foundEvent = await GetEvent(changeAvailableTicketsModel.EventModelId);
+            if (foundEvent != null)
             {
-                var foundEvent = await context.Events.FirstOrDefaultAsync(e => e.Id == eventModelId);
-
-                if (foundEvent != null)
-                {
-                    foundEvent.AvailableTickets = foundEvent.AvailableTickets - quantity;
-
-                    context.ChangeTracker.DetectChanges();
-                    context.Entry(foundEvent).State = EntityState.Modified;
-
-                    context.Update(foundEvent);
-
-                    await context.SaveChangesAsync();
-                    return Ok();
-                }
+                foundEvent.Value.AvailableTickets -= changeAvailableTicketsModel.Quantity;
+                context.ChangeTracker.DetectChanges();
+                await context.SaveChangesAsync();
+                return Ok();
             }
-            return BadRequest("Something went wrong when updating amount of available tickets for event");
+            return BadRequest();
+
         }
 
         /// <summary>
