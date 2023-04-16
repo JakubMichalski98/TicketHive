@@ -53,7 +53,7 @@
 
                                 </select>
                             </td>
-                            <td>@Math.Round(TicketPrice(item.EventViewModel.PricePerTicket,item.Quantity),2) @currencyRepo.GetCurrencyCode()</td>
+                            <td>@Math.Round(BookingPrice(item.EventViewModel.PricePerTicket,item.Quantity),2) @currencyRepo.GetCurrencyCode()</td>
                             <td> <button id="btn" class="fas fa-trash-alt" style="background-color:red" type="button" @onclick="(() => RemoveFromCart(item.EventModelId))"></button> </td>
                            <h5>@Errormessage</h5>
                             
@@ -99,7 +99,6 @@
     private List<BookingModel> cartItems = new();
     private List<BookingViewModel> bookingViews = new();
     private List<BookingModel> bookingsToAdd = new();
-    //private double exchangeRate;
     private bool cartExists;
 
     private string Errormessage = "";
@@ -108,34 +107,29 @@
     {
         await currencyRepo.GetExchangeRates();
 
-        //exchangeRate = currencyRepo.GetExchangeRate();
         cartExists = await shoppingcartRepo.CheckIfCartExists();
         await UpdateCartItems();
     }
 
+    /// <summary>
+    /// Removes item from cart and updates cart items
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <returns></returns>
     private async Task RemoveFromCart(int eventId)
     {
         await shoppingcartRepo.RemoveFromCart(eventId);
         await UpdateCartItems();
     }
 
+    /// <summary>
+    /// Populates bookingsToAdd list, and creates a bookinginfomodel in order to add booking to user, updates available tickets for event and navigates to confirmation page
+    /// </summary>
+    /// <returns></returns>
     private async Task AddBookingsToUser()
-    { 
+    {
 
-        foreach (var cartItem in cartItems)
-        {
-            var bookingView = bookingViews.FirstOrDefault(x => x.Id == cartItem.Id);
-
-            BookingModel bookingModel = new()
-            {
-                EventModelId = cartItem.EventModelId,
-                EventModel = cartItem.EventModel,
-                Quantity = bookingView.Quantity
-
-            };
-
-            bookingsToAdd.Add(bookingModel);
-        }
+        PopulateBookingsToAdd();
 
         bool requirementsPassed = false;
         foreach (var item in bookingsToAdd)
@@ -178,28 +172,47 @@
 
     }
 
-    public decimal TicketPrice(decimal PricePerTicket, int quantity)
+    /// <summary>
+    /// Returns total price for a booking
+    /// </summary>
+    /// <param name="PricePerTicket"></param>
+    /// <param name="quantity"></param>
+    /// <returns></returns>
+    public decimal BookingPrice(decimal PricePerTicket, int quantity)
     {
         return PricePerTicket * quantity;
     }
 
+    /// <summary>
+    /// Returns total price of cart items
+    /// </summary>
+    /// <param name="cartItems"></param>
+    /// <returns></returns>
     private decimal TotalPrice(List<BookingViewModel> cartItems)
     {
         decimal totalPrice = 0;
 
         foreach (var item in cartItems)
         {
-            totalPrice += TicketPrice(item.EventViewModel.PricePerTicket, item.Quantity);
+            totalPrice += BookingPrice(item.EventViewModel.PricePerTicket, item.Quantity);
         }
         return totalPrice;
     }
 
+    ///  <summary>
+    /// Sets cartItems to the localstorage "cart"
+    /// </summary>
+    /// <returns></returns>
     private async Task UpdateCartItems()
     {
         cartItems = await shoppingcartRepo.GetCartFromLocalStorage();
         await UpdateBookingViews();
     }
 
+    ///  <summary>
+    /// Populates bookingViews with bookings based on cartitems
+    /// </summary>
+    /// <returns></returns>
     private async Task UpdateBookingViews()
     {
         bookingViews.Clear();
@@ -219,7 +232,28 @@
                 bookingViews.Add(bookingView);
             }
         }
-        
+
+    }
+
+    ///  <summary>
+    /// Populates booingstoadd list based on cart items and bookingview quantity which is bound to ui element
+    /// </summary>
+    private void PopulateBookingsToAdd()
+    {
+        foreach (var cartItem in cartItems)
+        {
+            var bookingView = bookingViews.FirstOrDefault(x => x.Id == cartItem.Id);
+
+            BookingModel bookingModel = new()
+                {
+                    EventModelId = cartItem.EventModelId,
+                    EventModel = cartItem.EventModel,
+                    Quantity = bookingView.Quantity
+
+                };
+
+            bookingsToAdd.Add(bookingModel);
+        }
     }
 }
 <style>
