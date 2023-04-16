@@ -81,7 +81,7 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
             UserCountry = "Sweden"
         };
 
-        signInManager.UserManager.CreateAsync(adminUser, "Password1234!");
+        signInManager.UserManager.CreateAsync(adminUser, "Password1234!").GetAwaiter().GetResult();
     }
     IdentityRole? adminRole = roleManager.FindByNameAsync("Admin").GetAwaiter().GetResult();
 
