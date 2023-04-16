@@ -87,5 +87,16 @@ namespace TicketHive.Client.Repositories
         {
             await localStorage.RemoveItemAsync("cart");
         }
+
+        public async Task UpdateCart(List<BookingModel> bookings)
+        {
+            var cart = await GetCartFromLocalStorage();
+
+            List<BookingModel> updatedBookings = bookings;
+
+            string updatedBookingsJson = JsonConvert.SerializeObject(updatedBookings);
+
+            await localStorage.SetItemAsync("cart", updatedBookings);
+        }
     }
 }

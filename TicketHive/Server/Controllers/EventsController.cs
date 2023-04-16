@@ -120,12 +120,10 @@ namespace TicketHive.Server.Controllers
                 {
                     foundEvent.AvailableTickets = foundEvent.AvailableTickets - quantity;
 
-
-
                     context.ChangeTracker.DetectChanges();
                     context.Entry(foundEvent).State = EntityState.Modified;
 
-                    //context.Update(foundEvent);
+                    context.Update(foundEvent);
 
                     await context.SaveChangesAsync();
                     return Ok();

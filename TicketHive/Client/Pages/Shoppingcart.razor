@@ -45,7 +45,6 @@
 
 
                             <td>
-
                                 <select id="input-combobox" @bind="item.Quantity">
                                     @for (int i = 1; i < 11; i++)
                                     {
@@ -99,6 +98,7 @@
 @code {
     private List<BookingModel> cartItems = new();
     private List<BookingViewModel> bookingViews = new();
+    private List<BookingModel> bookingsToAdd = new();
     private double exchangeRate;
     private bool cartExists;
 
@@ -118,7 +118,6 @@
         exchangeRate = currencyRepo.GetExchangeRate();
         cartExists = await shoppingcartRepo.CheckIfCartExists();
         await UpdateCartItems();
-
     }
 
     private async Task RemoveFromCart(int eventId)
@@ -128,11 +127,29 @@
     }
 
     private async Task AddBookingsToUser()
-    {
-        foreach (var item in cartItems)
+    { 
+
+        foreach (var cartItem in cartItems)
+        {
+            var bookingView = bookingViews.FirstOrDefault(x => x.Id == cartItem.Id);
+
+            BookingModel bookingModel = new()
+            {
+                EventModelId = cartItem.EventModelId,
+                EventModel = cartItem.EventModel,
+                Quantity = bookingView.Quantity
+
+            };
+
+            bookingsToAdd.Add(bookingModel);
+        }
+
+        bool requirementsPassed = false;
+        foreach (var item in bookingsToAdd)
         {
             if (item.Quantity != null && item.Quantity > 0)
             {
+
                 UserModel eventDbUser = await userRepo.GetLoggedInUser();
                 BookingInfoModel bookingInfo = new()
                     {
@@ -144,15 +161,13 @@
                 {
                     await eventRepo.UpdateAvailableEventTickets(item.EventModelId, item.Quantity);
                     await userRepo.AddBookingToUser(bookingInfo);
-                    navigationManager.NavigateTo("/confirmation");
-
+                    requirementsPassed = true;
 
                 }
                 else
                 {
                     Errormessage = "This item already exists";
                 }
-                // TODO: Implement error message code here specifying which item is already booked
 
             }
             else
@@ -160,6 +175,12 @@
                 Errormessage = "Please select amount of tickets!";
             }
 
+        }
+
+        if (requirementsPassed)
+        {
+            await shoppingcartRepo.UpdateCart(bookingsToAdd);
+            navigationManager.NavigateTo("/confirmation");
         }
 
     }
