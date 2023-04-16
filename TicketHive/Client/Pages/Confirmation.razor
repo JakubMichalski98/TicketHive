@@ -62,9 +62,13 @@
     public decimal CalculateTotalPrice(decimal PricePerTicket, int quantity)
     {
         return PricePerTicket * quantity;
-        
+
     }
 
+    /// <summary>
+    /// Populates the bookingviews list with eventviewmodels based on cartitems
+    /// </summary>
+    /// <returns></returns>
     private async Task UpdateBookingViews()
     {
         bookingViews.Clear();
