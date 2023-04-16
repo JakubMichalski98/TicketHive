@@ -91,6 +91,12 @@
         chosenEvent = await eventRepo.GetEvent(Id);
     }
 
+    /// <summary>
+    /// Creates bookingmodel based on event and quantity and adds to the cart
+    /// </summary>
+    /// <returns></returns>
+
+    //TODO: Fix this shit up
     private async Task AddBookingToCart()
     {
         BookingModel booking = new()
