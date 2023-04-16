@@ -130,6 +130,7 @@
         {
             await currencyRepo.GetExchangeRates();
         }
+
         user = await userRepo.GetLoggedInUser();
         userCountry = user.UserCountry;
         changeUserCountryModel.UserCountry = userCountry;

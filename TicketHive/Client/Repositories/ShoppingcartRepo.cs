@@ -14,9 +14,15 @@ namespace TicketHive.Client.Repositories
             this.localStorage = localStorage;
         }
 
-        public async Task CreateCart(List<BookingModel> bookings)
+        /// <summary>
+        /// Creates an empty cart in localstorage
+        /// </summary>
+        /// <param name="bookings"></param>
+        /// <returns></returns>
+        public async Task CreateCart()
         {
-            string bookingsJson = JsonConvert.SerializeObject(bookings);
+            List<BookingModel> empty = new();
+            string bookingsJson = JsonConvert.SerializeObject(empty);
 
             if (!await localStorage.ContainKeyAsync("cart"))
             {
@@ -24,6 +30,10 @@ namespace TicketHive.Client.Repositories
             }
         }
 
+        /// <summary>
+        /// Returns List contained in cart item in localstorage
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<BookingModel>> GetCartFromLocalStorage()
         {
             string? jsonString = await localStorage.GetItemAsync<string>("cart");
@@ -35,6 +45,11 @@ namespace TicketHive.Client.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Checks if list of bookingmodel in cart in localstorage contains provided booking and returns a bool
+        /// </summary>
+        /// <param name="booking"></param>
+        /// <returns></returns>
         public async Task<bool> CheckIfItemExists(BookingModel booking)
         {
             List<BookingModel> bookings = await GetCartFromLocalStorage();
@@ -49,6 +64,11 @@ namespace TicketHive.Client.Repositories
             return false;
         }
 
+        /// <summary>
+        /// Adds a booking to the cart in localstorage
+        /// </summary>
+        /// <param name="booking"></param>
+        /// <returns></returns>
         public async Task AddToCart(BookingModel booking)
         {
             string bookingsJson = await localStorage.GetItemAsync<string>("cart");
@@ -61,6 +81,11 @@ namespace TicketHive.Client.Repositories
             await localStorage.SetItemAsync("cart", updatedBookingsJson);
         }
 
+        /// <summary>
+        /// Removes an item from cart in localstorage
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         public async Task RemoveFromCart(int eventId)
         {
 
@@ -74,6 +99,10 @@ namespace TicketHive.Client.Repositories
 
         }
 
+        /// <summary>
+        /// Checks if localstorage contains cart item and returns a bool based on result
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> CheckIfCartExists()
         {
             if (await localStorage.ContainKeyAsync("cart"))
@@ -83,9 +112,29 @@ namespace TicketHive.Client.Repositories
             return false;
         }
 
+        /// <summary>
+        /// Removes cart from localstorage
+        /// </summary>
+        /// <returns></returns>
         public async Task RemoveCart()
         {
             await localStorage.RemoveItemAsync("cart");
+        }
+
+        /// <summary>
+        /// Sets list of bookingmodel in cart in localstorage to provided list
+        /// </summary>
+        /// <param name="bookings"></param>
+        /// <returns></returns>
+        public async Task UpdateCart(List<BookingModel> bookings)
+        {
+            var cart = await GetCartFromLocalStorage();
+
+            List<BookingModel> updatedBookings = bookings;
+
+            string updatedBookingsJson = JsonConvert.SerializeObject(updatedBookings);
+
+            await localStorage.SetItemAsync("cart", updatedBookings);
         }
     }
 }

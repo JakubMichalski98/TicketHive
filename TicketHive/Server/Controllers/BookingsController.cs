@@ -19,12 +19,21 @@ namespace TicketHive.Server.Controllers
             this.context = context;
         }
 
+        /// <summary>
+        /// Returns All bookings including the events from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<BookingModel>>> GetEvents()
         {
             return await context.Bookings.Include(b => b.EventModel).ToListAsync();
         }
 
+        /// <summary>
+        /// Adds a booking to database
+        /// </summary>
+        /// <param name="bookingModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<List<BookingModel>>> AddBooking(BookingModel bookingModel)
         {
@@ -38,6 +47,11 @@ namespace TicketHive.Server.Controllers
             return BadRequest("Something went wrong when adding booking");
         }
 
+        /// <summary>
+        /// Removes booking with provided id from database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<BookingModel>>> RemoveBooking(int id)
         {

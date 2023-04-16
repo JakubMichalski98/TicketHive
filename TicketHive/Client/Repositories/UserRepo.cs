@@ -17,6 +17,12 @@ namespace TicketHive.Client.Repositories
             this.httpClient = httpClient;
             this.authStateProvider = authStateProvider;
         }
+
+        /// <summary>
+        /// Returns user with provided username from the EventDb database
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public async Task<UserModel> GetUser(string username)
         {
             var response = await httpClient.GetAsync($"api/Users/{username}");
@@ -29,6 +35,10 @@ namespace TicketHive.Client.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Returns user in EventDb database that corresponds to the logged in user from UsersDb database
+        /// </summary>
+        /// <returns></returns>
         public async Task<UserModel> GetLoggedInUser()
         {
             var authState = await authStateProvider.GetAuthenticationStateAsync();
@@ -41,7 +51,12 @@ namespace TicketHive.Client.Repositories
             return null;
         }
 
-        public async Task<bool> CheckIfBookingExists(BookingModel booking)
+        /// <summary>
+        /// Gets logged in user and checks whether user already has a booking with event contained in provided booking
+        /// </summary>
+        /// <param name="booking"></param>
+        /// <returns></returns>
+        public async Task<bool> CheckIfUserHasBooking(BookingModel booking)
         {
             var user = await GetLoggedInUser();
 
@@ -53,11 +68,21 @@ namespace TicketHive.Client.Repositories
             return false;
         }
 
+        /// <summary>
+        /// Sends a POST request to the controller with provided BookingInfoModel
+        /// </summary>
+        /// <param name="bookingInfo"></param>
+        /// <returns></returns>
         public async Task AddBookingToUser(BookingInfoModel bookingInfo)
         {
             var result = await httpClient.PostAsJsonAsync("api/Users", bookingInfo);
         }
 
+        /// <summary>
+        /// Sends a PUT request to the controller with provided BookingInfoModel
+        /// </summary>
+        /// <param name="changePasswordModel"></param>
+        /// <returns></returns>
         public async Task<bool> ChangeUserPassword(ChangePasswordModel changePasswordModel)
         {
             var response = await httpClient.PutAsJsonAsync($"api/Users", changePasswordModel);
@@ -70,6 +95,11 @@ namespace TicketHive.Client.Repositories
             return false;
         }
 
+        /// <summary>
+        /// Sends a PUT request to the controller with provided ChangeUserCountryModel
+        /// </summary>
+        /// <param name="changeUserCountryModel"></param>
+        /// <returns></returns>
         public async Task<bool> ChangeUserCountry(ChangeUserCountryModel changeUserCountryModel)
         {
             var response = await httpClient.PutAsJsonAsync($"api/Users/country", changeUserCountryModel);
@@ -81,6 +111,10 @@ namespace TicketHive.Client.Repositories
             return false;
         }
 
+        /// <summary>
+        /// Sends PUT request to the controller in order to set user currency
+        /// </summary>
+        /// <returns></returns>
         public async Task SetUserCurrency()
         {
             var user = await GetLoggedInUser();
