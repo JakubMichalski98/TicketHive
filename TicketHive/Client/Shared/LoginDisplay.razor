@@ -11,7 +11,7 @@
     <AuthorizeView>
         <Authorized>
             <AuthorizeView Roles="User" Context="User">
-            <button id="btn-cart" class="fas fa-shopping-cart" @onclick="ShoppingCart"><i id="counter">@ItemCount</i></button>
+            <button id="btn-cart" class="fas fa-shopping-cart" @onclick="ShoppingCart"></button>
             <a style="color: #305076" href="/user-page">@context.User.Identity?.Name!</a>
             </AuthorizeView>
             
@@ -88,12 +88,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await ReadLocalStorage();
-        Timer timer = new Timer(async _ =>
-        {
-            await ReadLocalStorage();
-            StateHasChanged();
-        }, null, 0, 1000);
+
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
