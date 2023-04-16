@@ -157,7 +157,7 @@
                         Booking = item
                     };
 
-                if (!await userRepo.CheckIfBookingExists(item))
+                if (!await userRepo.CheckIfUserHasBooking(item))
                 {
                     await eventRepo.UpdateAvailableEventTickets(item.EventModelId, item.Quantity);
                     await userRepo.AddBookingToUser(bookingInfo);

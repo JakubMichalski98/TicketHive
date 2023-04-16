@@ -17,7 +17,7 @@ namespace TicketHive.Client.Repositories
         }
 
         /// <summary>
-        /// Sends HTTP GET request to API in order to fetch all events
+        /// Sends GET request to in order to fetch all events
         /// </summary>
         /// <returns></returns>
         public async Task<List<EventModel>> GetAllEvents()
@@ -32,6 +32,10 @@ namespace TicketHive.Client.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Sends GET request to controller in order to fetch all eventviews
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<EventViewModel>> GetAllEventViews()
         {
             var response = await httpClient.GetAsync("api/events/views");
@@ -44,7 +48,7 @@ namespace TicketHive.Client.Repositories
         }
 
         /// <summary>
-        /// Sends HTTP GET request to API in order to fetch event with provided ID
+        /// Sends GET request to API in order to fetch event with provided ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns>/returns>
@@ -60,6 +64,11 @@ namespace TicketHive.Client.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Sends GET request to API in order to fetch eventview with provided ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<EventViewModel> GetEventView(int id)
         {
             var response = await httpClient.GetAsync($"api/Events/views/{id}");
@@ -73,7 +82,7 @@ namespace TicketHive.Client.Repositories
         }
 
         /// <summary>
-        /// Sends HTTP Post request to API in order to add event
+        /// Sends HTTP Post request to controller in order to add event
         /// </summary>
         /// <param name="eventToAdd"></param>
         /// <returns></returns>
@@ -84,7 +93,7 @@ namespace TicketHive.Client.Repositories
         }
 
         /// <summary>
-        /// Sends HTTP Delete request to API in order to remove an event
+        /// Sends Delete request to controller in order to remove an event
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -94,7 +103,7 @@ namespace TicketHive.Client.Repositories
         }
         
         /// <summary>
-        /// Sends HTTP Put request to API in order to update available tickets property for event
+        /// Sends Put request to controller in order to update available tickets property for event
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>

@@ -75,13 +75,11 @@
 @code {
     private string errorMessage = "";
     private double exchangeRate;
-    private string MoneyValue;
     private decimal convertedPrice;
     private bool isDisabled = true;
     private string? username;
     private EventViewModel? eventView = new();
     private UserModel? eventDbUser;
-    private List<BookingModel> bookings = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,10 +93,9 @@
         }
         exchangeRate = currencyRepo.GetExchangeRate();
 
-        await shoppingcartRepo.CreateCart(bookings);
+        await shoppingcartRepo.CreateCart();
         eventView = await eventRepo.GetEventView(Id);
         chosenEvent = await eventRepo.GetEvent(Id);
-        //await shoppingcartRepo.CreateCart(bookings);
     }
 
     private async Task AddBooking()
@@ -116,7 +113,6 @@
             navigationManager.NavigateTo("/shoppingcart");
         }
 
-        //TODO: Implement message popping up saying that item is already in cart
         errorMessage = "Event already in your cart";
 
     }

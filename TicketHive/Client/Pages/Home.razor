@@ -64,12 +64,10 @@
     private UserModel? eventDbUser;
     List<BookingModel>? Bookings;
     private List<EventModel>? allEvents;
-    List<BookingModel> Empty = new();
 
     protected override async Task OnInitializedAsync()
     {
-        //await shoppingcartRepo.RemoveCart();
-        await shoppingcartRepo.CreateCart(Empty);
+        await shoppingcartRepo.CreateCart();
 
         UserModel? user = await userRepo.GetLoggedInUser();
 
@@ -81,15 +79,6 @@
         }
 
         allEvents = await eventRepo.GetAllEvents();
-
-        //if (currencyRepo.GetExchangeRate() < 0.001 && user != null)
-        //{
-        //    await currencyRepo.GetExchangeRates();
-        //}
-        //else
-        //{
-        //    await userRepo.SetUserCurrency();
-        //}
 
     }
 

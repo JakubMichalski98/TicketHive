@@ -9,7 +9,7 @@ namespace TicketHive.Client.Repositories
 
         public Task<UserModel> GetLoggedInUser();
 
-        public Task<bool> CheckIfBookingExists(BookingModel booking);
+        public Task<bool> CheckIfUserHasBooking(BookingModel booking);
 
         public Task AddBookingToUser(BookingInfoModel bookingInfo);
 
