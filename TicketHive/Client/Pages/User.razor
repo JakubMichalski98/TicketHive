@@ -11,11 +11,6 @@
 @inject NavigationManager navigationManager
 
 <PageTitle>User</PageTitle>
-@if(!string.IsNullOrEmpty(errorMessage))
-{
-    <h3 class="text-danger">@errorMessage</h3>
-}
-
     
   <body>
     <div class="card mx-auto" style="width: 18rem;">
@@ -35,12 +30,39 @@
                     <label for="new-password-input">New Password:</label>
                     <InputText @bind-Value="@changePasswordModel.NewPassword" id="new-password-input" type="password" asp-for="Password" />
                     <ValidationMessage For="@(() => changePasswordModel.NewPassword)" />
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <p class="text-danger">@errorMessage</p>
+                    }
                 </div>
             </div>
             <div class="text-center">
-                <input id="savechanges-id" type="submit" value="Save password" class="btn-savechanges" />
+                <input id="savePassword-id" type="submit" value="Save password" class="btn-savechanges" />
             </div>
         </EditForm>
+
+        @if (passwordChangeModal == true)
+        {
+            <div class="modal" tabindex="-1" role="dialog" style="display:block">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <divid id="modal-header" class="modal-header">
+                            <h5 id="modal-title" class="modal-title">Changes</h5>
+                            <button class="btn btn-close" data-dismiss="modal" @onclick="CloseConfirmation">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </divid>
+                        <div class="modal-body">
+                            <p>Your password have been updated!</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" @onclick="Confirm">Yes</button>
+                            <button type="button" class="btn btn-danger" @onclick="CloseConfirmation" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
 
         <div class="card-body">
             <div class="col text-center">
@@ -55,25 +77,35 @@
                     }
                 </InputSelect>
                 <div class="text-center">
-                    <input id="savechanges-id" type="submit" value="Save country" class="btn-savechanges" />
+                    <input id="saveCountry-id" type="submit" value="Save country" class="btn-savechanges" />
                 </div>
             </EditForm>
             </div>
         </div>
 
-@*   
-
-            <div class="text-center">
-                <input id="savechanges-id" type="submit" value="Save password" class="btn-savechanges" />
+        @if (countryChangeModal == true)
+        {
+            <div class="modal" tabindex="-1" role="dialog" style="display:block">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <divid id="modal-header" class="modal-header">
+                            <h5 id="modal-title" class="modal-title">Changes</h5>
+                            <button class="btn btn-close" data-dismiss="modal" @onclick="CloseConfirmation">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </divid>
+                        <div class="modal-body">
+                            <p>Your coutry have been updated!</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" @onclick="Confirm">Yes</button>
+                            <button type="button" class="btn btn-danger" @onclick="CloseConfirmation" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="text-center">
-                <input id="savechanges-id" type="submit" value="Save country" class="btn-savechanges" @onclick="HandleCountrySubmit" />
-            </div>
-            
+        }
 
-            <div>
-                <span class="text-danger" asp-validation-for="SelectedCountry"></span>
-            </div>*@
     </div>
 
   </body>
@@ -83,66 +115,83 @@
     public ChangePasswordModel changePasswordModel { get; set; } = new();
     public ChangeUserCountryModel changeUserCountryModel { get; set; } = new();
 
-
-
-
-    private string? oldPassword;
-    private string newPassword;
-    private string? oldPasswordError;
-    private string? newPasswordError;
     private string? errorMessage;
     private UserModel user;
     private string userCountry;
+    private bool passwordChangeModal = false;
+    private bool countryChangeModal = false;
 
-
+    /// <summary>
+    /// Initializes the component with necessary data, such as the user's current country
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
+        if (currencyRepo.GetExchangeRate() < 0.001)
+        {
+            await currencyRepo.GetExchangeRates();
+        }
         user = await userRepo.GetLoggedInUser();
         userCountry = user.UserCountry;
+        changeUserCountryModel.UserCountry = userCountry;
     }
 
+    /// <summary>
+    /// Handles the submission of the change password form
+    /// </summary>
     private async Task HandleValidSubmit()
     {
         changePasswordModel.Username = user.Username;
-        changeUserCountryModel.Username = user.Username;
-
+        changeUserCountryModel.Username = user.Username;       
 
         var passwordChangeSuccessful = await userRepo.ChangeUserPassword(changePasswordModel);
-        //var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
+
         if (passwordChangeSuccessful)
         {
+            passwordChangeModal = true;
 
-            //var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
             await userRepo.SetUserCurrency();
 
-            navigationManager.NavigateTo("/");
-
         }
-        //else if (countryChangeSuccessful)
-        //{
-        //    navigationManager.NavigateTo("/");
-        //}
         else
         {
-            errorMessage = "Your password is not strong enough";
+            errorMessage = "Your password doesn't match or is not strong enough";
         }
 
     }
 
+    /// <summary>
+    /// Navigates to the home page
+    /// </summary>
+    private void Confirm()
+    {
+        navigationManager.NavigateTo("/");
+    }
+
+    /// <summary>
+    /// Closes the password and country change modals
+    /// </summary>
+    private void CloseConfirmation()
+    {
+        passwordChangeModal = false;
+        countryChangeModal = false;
+    }
+
+    /// <summary>
+    /// Handles the submission of change country
+    /// </summary>
     private async Task HandleCountrySubmit()
     {
         changeUserCountryModel.Username = user.Username;
-
 
         var countryChangeSuccessful = await userRepo.ChangeUserCountry(changeUserCountryModel);
 
         if (countryChangeSuccessful)
         {
+            countryChangeModal = true;
             await userRepo.SetUserCurrency();
             await currencyRepo.SetExchangeRate();
-            navigationManager.NavigateTo("/home");
+            
         }
-        
 
     }
 }
@@ -194,8 +243,8 @@
     }
 
     .btn-savechanges {
-        font-size: 0.8rem;
-        width: 50%;
+        font-size: 0.9rem;
+        min-width: 120px;
         display: inline-block;
         outline: 0;
         border: 0;
@@ -205,8 +254,8 @@
         color: #000;
         background: #fff;
         border-radius: 40px;
-        font-size: 30px;
-        font-weight: 600;
+        font-size: 15px;
+        font-weight: 100;
         box-shadow: #fbe89c -2px -2px 0px 2px, #000000 0px 0px 0px 4px, rgba(0, 0, 0, 0.05) 0px 0px 2px 7px;
         transition: all 0.2s;
     }
@@ -216,8 +265,12 @@
             transform: scale(1.01);
     }
 
-    #savechanges-id {
+    #saveCountry-id {
         margin: 10px;
+    }
+
+    #savePassword-id{
+        margin:10px;
     }
 
     #input-combobox {

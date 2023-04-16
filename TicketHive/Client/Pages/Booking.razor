@@ -115,6 +115,10 @@ else
     private double exchangeRate;
 
 
+    /// <summary>
+    /// Initializes the component with the exchange rate and events
+    /// </summary>
+
     protected override async Task OnInitializedAsync()
     {
         if (currencyRepo.GetExchangeRate() < 0.001)
@@ -132,6 +136,10 @@ else
         filteredEvents = events;
 
     }
+
+    /// <summary>
+    /// Handles the input change event and filters the events based on the search query
+    /// </summary>
 
     private void HandleInput(ChangeEventArgs e)
     {
@@ -152,6 +160,10 @@ else
         }
     }
 
+    /// <summary>
+    /// Clears the search query and resets the filtered events to the original events
+    /// </summary>
+
     private void ClearSearch()
     {
         searchEvent = "";
@@ -162,6 +174,10 @@ else
         Ascending,
         Descending
     }
+
+    /// <summary>
+    /// Sorts the events by date in descending order
+    /// </summary>
 
     private void SortDateByDescending()
     {
@@ -178,9 +194,12 @@ else
                 || e.EventPlace.ToLower().Contains(searchEvent.ToLower()))
                 .ToList();
         }
-        
+
     }    
 
+    /// <summary>
+    /// Sorts the events by price in ascending order
+    /// </summary>
     private void OrderByPrice()
     {
 
