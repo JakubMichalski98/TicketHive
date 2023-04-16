@@ -143,18 +143,25 @@
                         User = eventDbUser,
                         Booking = item
                     };
-
-                if (!await userRepo.CheckIfUserHasBooking(item))
+                if (item.Quantity <= bookingInfo.Booking.EventModel.AvailableTickets)
                 {
-                    await eventRepo.UpdateAvailableEventTickets(item.EventModelId, item.Quantity);
-                    await userRepo.AddBookingToUser(bookingInfo);
-                    requirementsPassed = true;
+                    if (!await userRepo.CheckIfUserHasBooking(item))
+                    {
+                        await eventRepo.UpdateAvailableEventTickets(item.EventModelId, item.Quantity);
+                        await userRepo.AddBookingToUser(bookingInfo);
+                        requirementsPassed = true;
 
+                    }
+                    else
+                    {
+                        Errormessage = "This item already exists";
+                    }
                 }
                 else
                 {
-                    Errormessage = "This item already exists";
+                    Errormessage = "Not enough available tickets";
                 }
+
 
             }
             else

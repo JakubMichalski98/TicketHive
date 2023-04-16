@@ -77,7 +77,6 @@
     protected override async Task OnInitializedAsync()
     {
         await currencyRepo.GetExchangeRates();
-        //exchangeRate = currencyRepo.GetExchangeRate();
 
         await shoppingcartRepo.CreateCart();
         eventView = await eventRepo.GetEventView(Id);
@@ -88,8 +87,6 @@
     /// Creates bookingmodel based on event and quantity and adds to the cart
     /// </summary>
     /// <returns></returns>
-
-    //TODO: Fix this shit up
     private async Task AddBookingToCart()
     {
         BookingModel booking = new()
