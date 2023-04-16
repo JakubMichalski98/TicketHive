@@ -26,6 +26,10 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
         public void OnGet()
         {
         }
+
+        /// <summary>
+        /// Handles the post request for user authentication
+        /// </summary>
         public async Task<IActionResult> OnPost()
         {
            
@@ -54,7 +58,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
                     ModelState.AddModelError("Password", "Your Username or Password are incorrect");
                 }
             }
-            //ModelState.AddModelError("", "Invalid login attempt.");
+            
             return Page();
 
         }
