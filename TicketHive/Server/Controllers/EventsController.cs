@@ -142,12 +142,14 @@ namespace TicketHive.Server.Controllers
         [HttpPut("{availabletickets}")]
         public async Task<ActionResult> UpdateAvailableEventTickets(ChangeAvailableTicketsModel changeAvailableTicketsModel)
         {
-            var eventId = changeAvailableTicketsModel.EventModelId;
+            int eventId = changeAvailableTicketsModel.EventModelId;
+            int quantity = changeAvailableTicketsModel.Quantity;
+            
 
             var foundEvent = await context.Events.FirstOrDefaultAsync(x => x.Id == eventId);
             if (foundEvent != null)
             {
-                foundEvent.AvailableTickets -= changeAvailableTicketsModel.Quantity;
+                foundEvent.AvailableTickets -= quantity;
                 context.ChangeTracker.DetectChanges();
                 await context.SaveChangesAsync();
                 return Ok();
