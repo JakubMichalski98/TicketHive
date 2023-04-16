@@ -29,6 +29,12 @@ namespace TicketHive.Server.Controllers
             this.context = context;
             this.signInManager=signInManager;
         }
+
+        /// <summary>
+        /// Gets user with provided username from the database
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [HttpGet("{username}")]
         public async Task<ActionResult<UserModel>> GetUser(string username)
         {
@@ -41,6 +47,11 @@ namespace TicketHive.Server.Controllers
             return NotFound("User with provided username not found");
         }
 
+        /// <summary>
+        /// Adds provided booking to provided user into the database
+        /// </summary>
+        /// <param name="bookingInfo"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<List<UserModel>>> AddBookingToUser(BookingInfoModel bookingInfo)
         {
@@ -55,6 +66,11 @@ namespace TicketHive.Server.Controllers
             return BadRequest("Something went wrong when adding booking to user");
         }
 
+        /// <summary>
+        /// Changes user password based on the informtion contained in the changePasswordModel
+        /// </summary>
+        /// <param name="changePasswordModel"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> ChangeUserPassword(ChangePasswordModel changePasswordModel)
         {
@@ -73,6 +89,11 @@ namespace TicketHive.Server.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Changes user country based on the information contained in the changeUserCountryModel
+        /// </summary>
+        /// <param name="changeUserCountryModel"></param>
+        /// <returns></returns>
         [HttpPut("country")]
         public async Task<IActionResult> ChangeUserCountry(ChangeUserCountryModel changeUserCountryModel)
         {
@@ -87,6 +108,12 @@ namespace TicketHive.Server.Controllers
 
             return BadRequest();
         }
+
+        /// <summary>
+        /// Sets provided user's currency based on their country
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [HttpPut("currency")]
         public async Task SetUserCurrency([FromBody] string username)
         {
