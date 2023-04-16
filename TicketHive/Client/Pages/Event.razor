@@ -38,13 +38,6 @@
             }
             else
             {
-                   @* <select id="input-combobox" @bind="NumberOfTickets">
-                        @for (int i = 1; i < 11; i++)
-                        {
-                            <option value=@i>@i.ToString()</option>
-                        }
-
-                    </select>*@
                 <input type="submit" style="text-align:center" value="Add to cart" />
 
                     @if (!string.IsNullOrEmpty(errorMessage))
@@ -98,7 +91,7 @@
         chosenEvent = await eventRepo.GetEvent(Id);
     }
 
-    private async Task AddBooking()
+    private async Task AddBookingToCart()
     {
         BookingModel booking = new()
             {
@@ -118,7 +111,7 @@
     }
     private async Task HandleSubmit()
     {
-        await AddBooking();
+        await AddBookingToCart();
     }
   
 

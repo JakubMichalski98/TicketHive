@@ -79,8 +79,7 @@ namespace TicketHive.Server.Controllers
 
             if (eventModel != null)
             {
-                return eventModel;
-                return Ok();
+                return Ok(eventModel);
             }
             return NotFound("Event with provided ID not found");
         }

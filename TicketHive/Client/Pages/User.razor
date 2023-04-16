@@ -116,8 +116,8 @@
     public ChangeUserCountryModel changeUserCountryModel { get; set; } = new();
 
     private string? errorMessage;
-    private UserModel user;
-    private string userCountry;
+    private UserModel? user;
+    private string? userCountry;
     private bool passwordChangeModal = false;
     private bool countryChangeModal = false;
 
